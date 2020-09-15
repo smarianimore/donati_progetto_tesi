@@ -22,23 +22,23 @@
                 style="color: white;">Risk scores</b>
 
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input id="lace" name="risk-scores" type="radio">LACE<span
+            <label class="radio-inline"><input type="radio" name="risk-scores" :value="LACE" v-model="lace" :id="LACE">LACE<span
                 class="success"></span></label>
 
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input id="charlson" name="risk-scores" type="radio">Charlson<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Charlson" v-model="charlson" :id="Charlson">Charlson<span
                 class="success"></span></label>
 
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input id="gma" name="risk-scores" type="radio">GMA<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="GMA" v-model="gma" :id="GMA">GMA<span
                 class="success"></span></label>
 
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input id="barthel" name="risk-scores" type="radio">Barthel<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Barthel" v-model="barthel" :id="Barthel">Barthel<span
                 class="success"></span></label>
 
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input id="asa" name="risk-scores" type="radio">ASA<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="ASA" v-model="asa" :id="ASA">ASA<span
                 class="success"></span></label>
         </li>
         </ul>
@@ -49,7 +49,43 @@
 
 <script>
 export default {
-name: "Home_top_second_row"
+  name: "Home_top_second_row",
+  props: ['item', 'bus'],
+  data: () => ({
+    d_selected: '',
+    lace: '',
+    charlson: '',
+    gma: '',
+    barthel: '',
+    asa: ''
+  }),
+  computed: {
+    selected: {
+      get() {
+        return this.d_selected;
+      },
+      set(v) {
+        if (v === this.d_selected) {
+          this.d_selected = false;
+        } else {
+          this.d_selected = v;
+        }
+      }
+    }
+  },
+  methods: {
+    uncheckRadio: function () {
+      this.lace = null
+      this.charlson = null
+      this.gma = null
+      this.barthel = null
+      this.asa = null
+      this.d_selected = false
+    }
+  },
+  mounted() {
+    this.bus.$on('uncheckRadio', this.uncheckRadio)
+  },
 }
 </script>
 

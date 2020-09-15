@@ -42,12 +42,12 @@
                     type="button">
               <b>Toggle blinking</b></button>
 
-            <button class="mw-100 btn btn-default botdrop"
+            <button v-on:click.prevent= "deselectRiskScore" class="mw-100 btn btn-default botdrop"
                     data-content="Click to deselect risk score, resetting colouring"
                     data-placement="bottom"
                     data-toggle="popover" data-trigger="hover" id="toggleRisk"
                     style="opacity:0.7"
-                    type="button">
+                    type="submit">
               <b>Deselect risk score</b></button>
           </div>
         </div>
@@ -71,7 +71,7 @@
     </div>
     <div class="Home_top_second_row">
       <template>
-        <Home_top_second_row></Home_top_second_row>
+        <Home_top_second_row :item="item" :bus="bus" ref="childRadio"></Home_top_second_row>
       </template>
     </div>
     <div class="Home_left_and_map">
@@ -83,13 +83,23 @@
 <script>
 import Home_top_second_row from "@/components/Home_top_second_row";
 import Home_left_and_map from "@/components/Home_left_and_map";
+import Vue from 'vue';
 
 export default {
+  data: () => ({
+    item: {},
+    bus: new Vue(),
+  }),
   components: {
     Home_top_second_row,
     Home_left_and_map,
   },
-name: "Home_top_first_row",
+  name: "Home_top_first_row",
+  methods: {
+    deselectRiskScore: function () {
+      this.bus.$emit('uncheckRadio')
+    }
+  }
 }
 </script>
 

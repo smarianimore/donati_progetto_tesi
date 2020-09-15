@@ -24,7 +24,6 @@
       <template v-slot:top>
         <v-text-field v-model="search" label="Search (UPPER CASE ONLY)" class="mx-4"></v-text-field>
     </template>
-
     </v-data-table>
   </div>
 </template>

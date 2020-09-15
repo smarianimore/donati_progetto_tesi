@@ -32,9 +32,9 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 
-div {
+body {
   background-image: url('assets/text1.jpg');
 }
 
