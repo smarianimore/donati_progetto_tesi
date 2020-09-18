@@ -2,41 +2,23 @@
   <div class="container-fluid" style="margin-top: 20px;">
     <div class="row">
       <div class="col-sm-3">
-        <!--<form>
-            <div class="input-group">
-                <input class="form-control" id="myInput" placeholder="Search patient on map" style="height: 40px;"
-                       type="text">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" id="searchButton" style="height: 40px;">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>-->
       </div>
       <div class="col-sm-9">
         <ul class="list-inline list-group-flush">
-
           <li class="mw-100 list-group-item" style="text-align: center; background-color: #583470; opacity: 0.8;">
-            <b
-                style="color: white;">Risk scores</b>
-
+            <b style="color: white;">Risk scores</b>
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
             <label class="radio-inline"><input type="radio" name="risk-scores" :value="LACE" v-model="lace" :id="LACE">LACE<span
                 class="success"></span></label>
-
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
             <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Charlson" v-model="charlson" :id="Charlson">Charlson<span
                 class="success"></span></label>
-
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
             <label class="radio-inline"><input type="radio"  name="risk-scores" :value="GMA" v-model="gma" :id="GMA">GMA<span
                 class="success"></span></label>
-
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
             <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Barthel" v-model="barthel" :id="Barthel">Barthel<span
                 class="success"></span></label>
-
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
             <label class="radio-inline"><input type="radio"  name="risk-scores" :value="ASA" v-model="asa" :id="ASA">ASA<span
                 class="success"></span></label>

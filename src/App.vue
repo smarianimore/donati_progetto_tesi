@@ -10,12 +10,11 @@
     <link href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" rel="stylesheet"/>
     <link href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css" rel="stylesheet">
     <link href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" rel="stylesheet"/>
-    <Home_top_first_row/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import Home_top_first_row from './components/Home_top_first_row.vue'
 
 export default {
   name: 'App',
@@ -24,18 +23,11 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
-  },
-  components: {
-    Home_top_first_row
   }
 }
 
 </script>
 
 <style>
-
-body {
-  background-image: url('assets/text1.jpg');
-}
 
 </style>

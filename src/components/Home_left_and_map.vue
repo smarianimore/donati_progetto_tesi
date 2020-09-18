@@ -23,9 +23,6 @@
             <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
               <label class="checkbox-inline"><input id="carer" type="checkbox">Carer skills<span
                   class="success"></span></label>
-              <!--<li class="list-group-item" style="height: 50px; font-size: 13px; opacity: 0.9;">
-                  <label class="checkbox-inline"><input type="checkbox" id="checkAll">Toggle ALL barriers<span
-                          class="success"></span></label>-->
             <li class="list-group-item">
               <button class="list-group-item list-group-item-action toggle-all"
                       data-content="Click to check or uncheck all the barriers above" data-placement="bottom"
