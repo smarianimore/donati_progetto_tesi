@@ -28,13 +28,30 @@
   </div>
 </template>
 
+
 <script>
+var faker = require('faker');
+faker.locale = "it";
+
+class Person {
+  constructor() {
+    this.firstName = faker.name.firstName();
+    this.lastName = faker.name.lastName();
+  //  this.phoneNumber = faker.phone.phoneNumber();
+  //  this.email = faker.internet.email();
+    this.latitude = faker.address.latitude();
+    this.longitude = faker.address.longitude();
+    this.image = faker.image.image();
+  }
+}
+var peopleArray = [];
 
 export default {
 
   name: "Patients_table",
   data () {
     return {
+      peopleArray: peopleArray,
       search: '',
       singleSelect: false,
       selected: [],
@@ -45,8 +62,8 @@ export default {
           sortable: false,
           value: 'id',
         },
-        { text: 'Name', value: 'name' },
-        { text: 'Surname', value: 'surname' },
+        { text: 'Name', value: 'firstName' },
+        { text: 'Surname', value: 'lastName' },
         { text: 'LACE', value: 'lace' },
         { text: 'Charlson', value: 'charlson' },
         { text: 'GMA', value: 'gma' },
@@ -58,11 +75,11 @@ export default {
         { text: 'Dwelling', value: 'dwelling' },
         { text: 'Carer', value: 'carer' },
       ],
-      //patients: ''
+      patients: peopleArray
     }
   },
   created() {
-    this.fillPatientsTable();
+    this.generateData();
   },
   methods: {
     filterOnlyCapsText (value, search) {
@@ -71,8 +88,17 @@ export default {
           typeof value === 'string' &&
           value.toString().toLocaleUpperCase().indexOf(search) !== -1
     },
-    fillPatientsTable() {
-
+    generateData() {
+      var i;
+      for(i = 0; i < 20; i++){
+        let person = new Person();
+        peopleArray.unshift(person);
+      }
+    },
+    deleteAllData: () => {
+      while (peopleArray.length > 0) {
+        peopleArray.pop();
+      }
     }
   },
 }

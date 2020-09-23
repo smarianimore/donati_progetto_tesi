@@ -22,7 +22,7 @@ name: "ConfigPage",
       router.push('home_patients')
     },
     showVehicles() {
-      // to do
+      router.push('home_vehicles')
     },
   }
 }
