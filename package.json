@@ -13,6 +13,7 @@
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "dns": "^0.2.2",
+    "faker": "github:marak/Faker.js",
     "jQuery": "^1.7.4",
     "jquery": "^3.5.1",
     "leaflet": "^1.7.1",

@@ -9,7 +9,7 @@
         :items-per-page="5"
         :sort-desc="[false, true]"
         :single-select="singleSelect"
-        item-key="name"
+        item-key="firstName"
         show-select
         class="elevation-1"
         :search="search"
@@ -37,13 +37,40 @@ class Person {
   constructor() {
     this.firstName = faker.name.firstName();
     this.lastName = faker.name.lastName();
+    this.lace = this.generateRandomIntegerNumber(10, 80);
+    this.charlson = this.generateRandomDecimalNumber(1.0, 5.0);
+    this.gma = this.generateRandomIntegerNumber(1, 4);
+    this.barthel = this.generateRandomIntegerNumber(20, 100);
+    this.asa = this.generateRandomStringFromArray(['I','II','III']);
+    this.skills = this.generateRandomIntegerNumber(0, 2);
+    this.retrieval = this.generateRandomStringFromArray(['YES', 'NO']);
+    this.selfcare = this.generateRandomIntegerNumber(0, 2);
+    this.dwelling = this.generateRandomIntegerNumber(1, 3);
+    this.career = this.generateRandomIntegerNumber(0, 2);
+  //  this.latitude = faker.address.latitude();
+  //  this.longitude = faker.address.longitude();
+    this.image = faker.image.image();
   //  this.phoneNumber = faker.phone.phoneNumber();
   //  this.email = faker.internet.email();
-    this.latitude = faker.address.latitude();
-    this.longitude = faker.address.longitude();
-    this.image = faker.image.image();
   }
+
+  generateRandomIntegerNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  generateRandomDecimalNumber(min, max) {
+    return (Math.random() * (max - min) + min).toFixed(2);
+  }
+
+  generateRandomStringFromArray(textArray) {
+    var randomNumber = Math.floor(Math.random()*textArray.length);
+    return textArray[randomNumber];
+  }
+
 }
+
 var peopleArray = [];
 
 export default {
@@ -73,7 +100,7 @@ export default {
         { text: 'Retrieval', value: 'retrieval' },
         { text: 'Selfcare', value: 'selfcare' },
         { text: 'Dwelling', value: 'dwelling' },
-        { text: 'Carer', value: 'carer' },
+        { text: 'Career', value: 'career' },
       ],
       patients: peopleArray
     }
@@ -99,8 +126,8 @@ export default {
       while (peopleArray.length > 0) {
         peopleArray.pop();
       }
-    }
-  },
+    },
+  }
 }
 </script>
 

@@ -9,7 +9,7 @@
                   :items-per-page="5"
                   :sort-desc="[false, true]"
                   :single-select="singleSelect"
-                  item-key="name"
+                  item-key="vehicle"
                   show-select
                   class="elevation-1"
                   :search="search"
@@ -31,16 +31,17 @@
 <script>
 var faker = require('faker');
 faker.locale = "it";
+faker.seed(123);
 
 class Vehicle {
   constructor() {
-    this.vehicle = faker.vehicle;
-    this.manufacturer = faker.manufacturer;
-    this.model = faker.model;
-    this.type = faker.type;
-    this.fuel = faker.fuel;
-    this.vin = faker.vin;
-    this.color = faker.color;
+    this.vehicle = faker.vehicle.vehicle();
+    this.manufacturer = faker.vehicle.manufacturer();
+    this.model = faker.vehicle.model();
+    this.type = faker.vehicle.type();
+    this.fuel = faker.vehicle.fuel();
+    this.vin = faker.vehicle.vin();
+    this.color = faker.vehicle.color();
   }
 }
 
