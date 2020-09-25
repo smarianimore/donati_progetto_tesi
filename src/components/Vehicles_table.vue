@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import * as generateData from '../assets/js/generate-data.js';
+import { bus } from '../main'
 var faker = require('faker');
 faker.locale = "it";
 faker.seed(123);
@@ -42,6 +44,7 @@ class Vehicle {
     this.fuel = faker.vehicle.fuel();
     this.vin = faker.vehicle.vin();
     this.color = faker.vehicle.color();
+    this.location = generateData.generateRandomPoint({ 'lat':44.694773, 'lng':10.769152},20000)
   }
 }
 
@@ -81,14 +84,17 @@ name: "Vehicles_table",
       var i;
       for(i = 0; i < 20; i++){
         let vehicle = new Vehicle();
-        console.log('' + vehicle.vehicle + ' ' + vehicle.manufacturer)
         vehicleArray.unshift(vehicle);
       }
+      this.createMarkersOnMap();
     },
     deleteAllData: () => {
       while (vehicleArray.length > 0) {
         vehicleArray.pop();
       }
+    },
+    createMarkersOnMap () {
+      bus.$emit('createMarkers', vehicleArray)
     }
   },
 }

@@ -14,25 +14,34 @@
         @update:bounds="boundsUpdated"
     >
       <l-tile-layer :url="url"></l-tile-layer>
+      <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.location" ></l-marker>
     </l-map>
   </div>
 </template>
 
 <script>
-import {LMap, LTileLayer} from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+import { bus } from '../main';
 
 export default {
   name: "Map",
+  props: {
+    peopleArray: {
+      type: Array
+    }
+  },
   components: {
     LMap,
     LTileLayer,
+    LMarker
   },
   data: function () {
     return {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 12,
       center: [44.694773,10.769152],
-      bounds: null
+      bounds: null,
+      markers: []
     };
   },
   methods: {
@@ -44,8 +53,22 @@ export default {
     },
     boundsUpdated (bounds) {
       this.bounds = bounds;
+    },
+    createMarkers(dataArray) {
+      let i;
+      for(i = 0; i < dataArray.length; i++) {
+        this.markers.push({
+          id: i,
+          location: dataArray[i].location
+        });
+      }
     }
-  }
+  },
+  created() {
+    bus.$on('createMarkers', (data) => {
+      this.createMarkers(data)
+    })
+  },
 }
 </script>
 

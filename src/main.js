@@ -6,6 +6,8 @@ import vuetify from '@/plugins/vuetify' // path to vuetify export
 Vue.config.productionTip = false
 Vue.use(require('vue-faker'));
 
+export const bus = new Vue();
+
 new Vue({
   router,
   vuetify,

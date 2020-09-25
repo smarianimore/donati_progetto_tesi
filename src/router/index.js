@@ -21,7 +21,7 @@ const routes = [
         path: "/home_vehicles",
         name: 'Patients_left_and_map',
         component: Vehicles_left_and_map
-    },
+    }
 ]
 
 const router = new Router({

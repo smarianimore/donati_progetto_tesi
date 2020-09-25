@@ -30,65 +30,45 @@
 
 
 <script>
-var faker = require('faker');
+import * as generateData from '../assets/js/generate-data.js';
+import { bus } from '../main'
+
+let faker = require('faker');
 faker.locale = "it";
 
 class Person {
   constructor() {
     this.firstName = faker.name.firstName();
     this.lastName = faker.name.lastName();
-    this.lace = this.generateRandomIntegerNumber(10, 80);
-    this.charlson = this.generateRandomDecimalNumber(1.0, 5.0);
-    this.gma = this.generateRandomIntegerNumber(1, 4);
-    this.barthel = this.generateRandomIntegerNumber(20, 100);
-    this.asa = this.generateRandomStringFromArray(['I','II','III']);
-    this.skills = this.generateRandomIntegerNumber(0, 2);
-    this.retrieval = this.generateRandomStringFromArray(['YES', 'NO']);
-    this.selfcare = this.generateRandomIntegerNumber(0, 2);
-    this.dwelling = this.generateRandomIntegerNumber(1, 3);
-    this.career = this.generateRandomIntegerNumber(0, 2);
-  //  this.latitude = faker.address.latitude();
-  //  this.longitude = faker.address.longitude();
-    this.image = faker.image.image();
-  //  this.phoneNumber = faker.phone.phoneNumber();
-  //  this.email = faker.internet.email();
-  }
-
-  generateRandomIntegerNumber(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  generateRandomDecimalNumber(min, max) {
-    return (Math.random() * (max - min) + min).toFixed(2);
-  }
-
-  generateRandomStringFromArray(textArray) {
-    var randomNumber = Math.floor(Math.random()*textArray.length);
-    return textArray[randomNumber];
+    //Range of data chosen based on the previous thesis work
+    this.lace = generateData.generateRandomIntegerNumber(10, 80);
+    this.charlson = generateData.generateRandomDecimalNumber(1.0, 5.0);
+    this.gma = generateData.generateRandomIntegerNumber(1, 4);
+    this.barthel = generateData.generateRandomIntegerNumber(20, 100);
+    this.asa = generateData.generateRandomStringFromArray(['I','II','III']);
+    this.skills = generateData.generateRandomIntegerNumber(0, 2);
+    this.retrieval = generateData.generateRandomStringFromArray(['YES', 'NO']);
+    this.selfcare = generateData.generateRandomIntegerNumber(0, 2);
+    this.dwelling = generateData.generateRandomIntegerNumber(1, 3);
+    this.career = generateData.generateRandomIntegerNumber(0, 2);
+    //Center in Reggio Emilia, Radius 10km
+    this.location = generateData.generateRandomPoint({ 'lat':44.694773, 'lng':10.769152},20000)
   }
 
 }
 
-var peopleArray = [];
+let peopleArray = [];
 
 export default {
 
   name: "Patients_table",
+  props: {peopleArray: peopleArray},
   data () {
     return {
-      peopleArray: peopleArray,
       search: '',
       singleSelect: false,
       selected: [],
       headers: [
-        {
-          text: '#',
-          align: 'start',
-          sortable: false,
-          value: 'id',
-        },
         { text: 'Name', value: 'firstName' },
         { text: 'Surname', value: 'lastName' },
         { text: 'LACE', value: 'lace' },
@@ -121,12 +101,16 @@ export default {
         let person = new Person();
         peopleArray.unshift(person);
       }
+      this.createMarkersOnMap();
     },
     deleteAllData: () => {
       while (peopleArray.length > 0) {
         peopleArray.pop();
       }
     },
+    createMarkersOnMap () {
+      bus.$emit('createMarkers', peopleArray)
+    }
   }
 }
 </script>
