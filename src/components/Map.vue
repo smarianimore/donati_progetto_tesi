@@ -14,13 +14,15 @@
         @update:bounds="boundsUpdated"
     >
       <l-tile-layer :url="url"></l-tile-layer>
-      <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.location" ></l-marker>
+      <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.location">
+        <l-popup :content="item.informations"></l-popup>
+      </l-marker>
     </l-map>
   </div>
 </template>
 
 <script>
-import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
 import { bus } from '../main';
 
 export default {
@@ -33,7 +35,8 @@ export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
+    LPopup
   },
   data: function () {
     return {
@@ -57,17 +60,37 @@ export default {
     createMarkers(dataArray) {
       let i;
       for(i = 0; i < dataArray.length; i++) {
-        this.markers.push({
-          id: i,
-          location: dataArray[i].location
-        });
+        if(dataArray[i].person){
+          this.markers.push({
+            id: i,
+            location: dataArray[i].location,
+            informations: 'Phone: ' + dataArray[i].phone + '<br> Email: ' + dataArray[i].email
+          });
+        }else if(dataArray[i].vehicle){
+          this.markers.push({
+            id: i,
+            location: dataArray[i].location,
+            informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
+                + dataArray[i].color
+          });
+        }
+      }
+    },
+    highlightMarkers(dataArray) {
+      let i;
+      for(i = 0; i < dataArray.length; i++) {
+        this.center = dataArray[i].location;
+        console.log('Location nella Map: ' + dataArray[i].location)
       }
     }
   },
   created() {
     bus.$on('createMarkers', (data) => {
       this.createMarkers(data)
-    })
+    });
+    bus.$on('highlightMarker', (data) => {
+      this.highlightMarkers(data)
+    });
   },
 }
 </script>

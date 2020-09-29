@@ -14,6 +14,7 @@
                   class="elevation-1"
                   :search="search"
                   :custom-filter="filterOnlyCapsText"
+                  @item-selected="highlightMarker(selected)"
     >
       <template v-slot:header.name="{ header }">
         {{ header.text.toUpperCase() }}
@@ -95,6 +96,10 @@ name: "Vehicles_table",
     },
     createMarkersOnMap () {
       bus.$emit('createMarkers', vehicleArray)
+    },
+    highlightMarker (data) {
+      console.log ('I selezionati sono pari a: ' + this.selected.length)
+      bus.$emit('highlightMarker', data)
     }
   },
 }

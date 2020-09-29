@@ -14,6 +14,7 @@
         class="elevation-1"
         :search="search"
         :custom-filter="filterOnlyCapsText"
+                  @item-selected="highlightMarker(selected)"
     >
       <template v-slot:header.name="{ header }">
         {{ header.text.toUpperCase() }}
@@ -52,7 +53,11 @@ class Person {
     this.dwelling = generateData.generateRandomIntegerNumber(1, 3);
     this.career = generateData.generateRandomIntegerNumber(0, 2);
     //Center in Reggio Emilia, Radius 10km
-    this.location = generateData.generateRandomPoint({ 'lat':44.694773, 'lng':10.769152},20000)
+    this.location = generateData.generateRandomPoint({ 'lat':44.694773, 'lng':10.769152},20000);
+    this.phone = faker.phone.phoneNumber();
+    this.email = faker.internet.email();
+    //For the map recognition
+    this.person = true
   }
 
 }
@@ -110,6 +115,10 @@ export default {
     },
     createMarkersOnMap () {
       bus.$emit('createMarkers', peopleArray)
+    },
+    highlightMarker (data) {
+      console.log ('I selezionati sono pari a: ' + this.selected.length)
+      bus.$emit('highlightMarker', data)
     }
   }
 }
