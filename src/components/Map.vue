@@ -64,7 +64,7 @@ export default {
           this.markers.push({
             id: i,
             location: dataArray[i].location,
-            informations: 'Phone: ' + dataArray[i].phone + '<br> Email: ' + dataArray[i].email
+            informations: dataArray[i].firstName + ' ' + dataArray[i].lastName + '<br> Phone: ' + dataArray[i].phone + '<br> Email: ' + dataArray[i].email
           });
         }else if(dataArray[i].vehicle){
           this.markers.push({
