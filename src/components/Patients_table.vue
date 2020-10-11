@@ -40,6 +40,7 @@ faker.locale = "it";
 
 class Person {
   constructor() {
+    this.id = generateData.generateRandomIntegerNumber(1, 10000)
     this.firstName = faker.name.firstName();
     this.lastName = faker.name.lastName();
     //Range of data chosen based on the previous thesis work
@@ -92,6 +93,7 @@ export default {
     }
   },
   created() {
+    this.deleteAllData();
     this.generateData();
   },
   methods: {
@@ -118,9 +120,8 @@ export default {
       bus.$emit('createMarkers', peopleArray)
     },
     highlightMarker (data) {
-      console.log ('I selezionati sono pari a: ' + this.selected.length)
       bus.$emit('highlightMarker', data)
-    }
+    },
   }
 }
 </script>

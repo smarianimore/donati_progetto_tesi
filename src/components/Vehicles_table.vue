@@ -38,6 +38,7 @@ faker.seed(123);
 
 class Vehicle {
   constructor() {
+    this.id = generateData.generateRandomIntegerNumber(1, 10000)
     this.vehicle = faker.vehicle.vehicle();
     this.manufacturer = faker.vehicle.manufacturer();
     this.model = faker.vehicle.model();
@@ -72,6 +73,7 @@ name: "Vehicles_table",
     }
   },
   created() {
+    this.deleteAllData();
     this.generateData();
   },
   methods: {
@@ -98,7 +100,6 @@ name: "Vehicles_table",
       bus.$emit('createMarkers', vehicleArray)
     },
     highlightMarker (data) {
-      console.log ('I selezionati sono pari a: ' + this.selected.length)
       bus.$emit('highlightMarker', data)
     }
   },
