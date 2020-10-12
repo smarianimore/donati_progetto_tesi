@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import * as constant from '../assets/js/constants'
 import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
 import L from 'leaflet';
 import { bus } from '../main';
@@ -44,7 +45,7 @@ export default {
     return {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 12,
-      center: [44.694773,10.769152],
+      center: constant.CENTER_OF_MAP,
       bounds: null,
       markers: [],
     };
@@ -68,9 +69,9 @@ export default {
             location: dataArray[i].location,
             informations: dataArray[i].firstName + ' ' + dataArray[i].lastName + '<br> Phone: ' + dataArray[i].phone +
                 '<br> Email: ' + dataArray[i].email,
-            color:'#38a938',
-            strokeColor:'#157315',
-            circleColor:'#ecc9c9',
+            color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
+            strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+            circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
             highlighted: false
           });
         }else if(dataArray[i].vehicle){
@@ -79,9 +80,9 @@ export default {
             location: dataArray[i].location,
             informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
                 + dataArray[i].color,
-            color:'#38a938',
-            strokeColor:'#157315',
-            circleColor:'#ecc9c9',
+            color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
+            strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+            circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
             highlighted: false
           });
         }
@@ -100,9 +101,9 @@ export default {
         for (j = 0; j < this.markers.length; j++) {
           this.center = dataArray[i].location;
           if(this.markers[j].id == dataArray[i].id) {
-                this.markers[j].color = '#c11a1a',
-                this.markers[j].strokeColor = '#d73534',
-                this.markers[j].circleColor = '#590000'
+                this.markers[j].color = constant.MARKER_HIGHLIGHTED_COLOR,
+                this.markers[j].strokeColor = constant.MARKER_HIGHLIGHTED_STROKE_COLOR,
+                this.markers[j].circleColor = constant.MARKER_HIGHLIGHTED_CIRCLE_COLOR,
                 this.markers[j].highlighted = true
           }
         }
@@ -115,9 +116,9 @@ export default {
       for(i = 0; i < dataArray.length; i++) {
         for (j = 0; j < this.markers.length; j++) {
           if(this.markers[j].id != dataArray[i].id && this.markers[j].highlighted == false){
-                this.markers[j].color = '#38a938',
-                this.markers[j].strokeColor = '#157315',
-                this.markers[j].circleColor = '#ecc9c9'
+                this.markers[j].color = constant.MARKER_NOT_HIGHLIGHTED_COLOR,
+                this.markers[j].strokeColor = constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+                this.markers[j].circleColor = constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR
                 this.markers[j].highlighted = false
           }
         }
@@ -125,9 +126,9 @@ export default {
     },
     deselectAllMarkers() {
       for(let j = 0; j < this.markers.length; j++){
-            this.markers[j].color = '#38a938',
-            this.markers[j].strokeColor = '#157315',
-            this.markers[j].circleColor = '#ecc9c9'
+            this.markers[j].color = constant.MARKER_NOT_HIGHLIGHTED_COLOR,
+            this.markers[j].strokeColor = constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+            this.markers[j].circleColor = constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
             this.markers[j].highlighted = false
       }
     },

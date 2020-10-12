@@ -32,13 +32,15 @@
 <script>
 import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
+import * as constant from '../assets/js/constants'
+
 var faker = require('faker');
 faker.locale = "it";
 faker.seed(123);
 
 class Vehicle {
   constructor() {
-    this.id = generateData.generateRandomIntegerNumber(1, 10000)
+    this.id = generateData.generateRandomIntegerNumber(constant.MINIMUM_ID, constant.MAXIMUM_ID)
     this.vehicle = faker.vehicle.vehicle();
     this.manufacturer = faker.vehicle.manufacturer();
     this.model = faker.vehicle.model();
@@ -46,7 +48,7 @@ class Vehicle {
     this.fuel = faker.vehicle.fuel();
     this.vin = faker.vehicle.vin();
     this.color = faker.vehicle.color();
-    this.location = generateData.generateRandomPoint({ 'lat':44.694773, 'lng':10.769152},20000)
+    this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS)
   }
 }
 
@@ -85,7 +87,7 @@ name: "Vehicles_table",
     },
     generateData() {
       var i;
-      for(i = 0; i < 20; i++){
+      for(i = 0; i < constant.NUMBER_OF_ITEMS_IN_TABLE; i++){
         let vehicle = new Vehicle();
         vehicleArray.unshift(vehicle);
       }

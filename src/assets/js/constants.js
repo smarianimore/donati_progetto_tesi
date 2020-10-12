@@ -1,0 +1,32 @@
+export const MINIMUM_ID = 1;
+export const MAXIMUM_ID = 10000;
+export const MIN_LACE = 10;
+export const MAX_LACE = 80;
+export const MIN_CHARLSON = 1.0;
+export const MAX_CHARLSON = 5.0;
+export const MIN_GMA = 1;
+export const MAX_GMA = 4;
+export const MIN_BARTHEL = 20;
+export const MAX_BARTHEL = 100;
+export const ARRAY_ASA = ['I','II','III'];
+export const MIN_SKILLS = 0;
+export const MAX_SKILLS = 2;
+export const ARRAY_RETRIEVAL = ['YES', 'NO'];
+export const MIN_SELFCARE = 0;
+export const MAX_SELFCARE = 2;
+export const MIN_DWELLING = 1;
+export const MAX_DWELLING = 3;
+export const MIN_CAREER = 0;
+export const MAX_CAREER = 2;
+export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152}
+export const RADIUS = 20000;
+
+export const NUMBER_OF_ITEMS_IN_TABLE = 20;
+
+export const CENTER_OF_MAP = [44.694773,10.769152];
+export const MARKER_NOT_HIGHLIGHTED_COLOR = '#00BFFF';
+export const MARKER_NOT_HIGHLIGHTED_STROKE_COLOR = '#1E90FF';
+export const MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR = '#F8F8FF';
+export const MARKER_HIGHLIGHTED_COLOR = '#4B0082';
+export const MARKER_HIGHLIGHTED_STROKE_COLOR = '#c9b2da';
+export const MARKER_HIGHLIGHTED_CIRCLE_COLOR = '#F8F8FF';

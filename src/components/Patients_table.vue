@@ -34,28 +34,29 @@
 <script>
 import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
+import * as constant from '../assets/js/constants'
 
 let faker = require('faker');
 faker.locale = "it";
 
 class Person {
   constructor() {
-    this.id = generateData.generateRandomIntegerNumber(1, 10000)
+    this.id = generateData.generateRandomIntegerNumber(constant.MINIMUM_ID, constant.MAXIMUM_ID)
     this.firstName = faker.name.firstName();
     this.lastName = faker.name.lastName();
     //Range of data chosen based on the previous thesis work
-    this.lace = generateData.generateRandomIntegerNumber(10, 80);
-    this.charlson = generateData.generateRandomDecimalNumber(1.0, 5.0);
-    this.gma = generateData.generateRandomIntegerNumber(1, 4);
-    this.barthel = generateData.generateRandomIntegerNumber(20, 100);
-    this.asa = generateData.generateRandomStringFromArray(['I','II','III']);
-    this.skills = generateData.generateRandomIntegerNumber(0, 2);
-    this.retrieval = generateData.generateRandomStringFromArray(['YES', 'NO']);
-    this.selfcare = generateData.generateRandomIntegerNumber(0, 2);
-    this.dwelling = generateData.generateRandomIntegerNumber(1, 3);
-    this.career = generateData.generateRandomIntegerNumber(0, 2);
+    this.lace = generateData.generateRandomIntegerNumber(constant.MIN_LACE, constant.MAX_LACE);
+    this.charlson = generateData.generateRandomDecimalNumber(constant.MIN_CHARLSON, constant.MAX_CHARLSON);
+    this.gma = generateData.generateRandomIntegerNumber(constant.MIN_GMA, constant.MAX_GMA);
+    this.barthel = generateData.generateRandomIntegerNumber(constant.MIN_BARTHEL, constant.MAX_BARTHEL);
+    this.asa = generateData.generateRandomStringFromArray(constant.ARRAY_ASA);
+    this.skills = generateData.generateRandomIntegerNumber(constant.MIN_SKILLS, constant.MAX_SKILLS);
+    this.retrieval = generateData.generateRandomStringFromArray(constant.ARRAY_RETRIEVAL);
+    this.selfcare = generateData.generateRandomIntegerNumber(constant.MIN_SELFCARE, constant.MAX_SELFCARE);
+    this.dwelling = generateData.generateRandomIntegerNumber(constant.MIN_DWELLING, constant.MAX_DWELLING);
+    this.career = generateData.generateRandomIntegerNumber(constant.MIN_CAREER, constant.MAX_CAREER);
     //Center in Reggio Emilia, Radius 10km
-    this.location = generateData.generateRandomPoint({ 'lat':44.694773, 'lng':10.769152},20000);
+    this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS);
     this.phone = faker.phone.phoneNumber();
     this.email = faker.internet.email();
     //For the map recognition
@@ -105,7 +106,7 @@ export default {
     },
     generateData() {
       var i;
-      for(i = 0; i < 20; i++){
+      for(i = 0; i < constant.NUMBER_OF_ITEMS_IN_TABLE; i++){
         let person = new Person();
         peopleArray.unshift(person);
       }
