@@ -14,8 +14,7 @@
         class="elevation-1"
         :search="search"
         :custom-filter="filterOnlyCapsText"
-
-                  @current-items ="highlightMarker(selected)"
+        @current-items ="highlightMarker(selected)"
     >
       <template v-slot:header.name="{ header }">
         {{ header.text.toUpperCase() }}

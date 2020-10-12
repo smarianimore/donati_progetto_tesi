@@ -8,19 +8,19 @@
           <li class="mw-100 list-group-item" style="text-align: center; background-color: #583470; opacity: 0.8;">
             <b style="color: white;">Risk scores</b>
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input type="radio" name="risk-scores" :value="LACE" v-model="lace" :id="LACE">LACE<span
+            <label class="radio-inline"><input type="radio" name="risk-scores" :value="LACE" v-on:click="selectLace" v-model="lace" :id="LACE" >LACE<span
                 class="success"></span></label>
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Charlson" v-model="charlson" :id="Charlson">Charlson<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Charlson" v-on:click="selectCharlson" v-model="charlson" :id="Charlson">Charlson<span
                 class="success"></span></label>
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="GMA" v-model="gma" :id="GMA">GMA<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="GMA" v-on:click="selectGMA" v-model="gma" :id="GMA">GMA<span
                 class="success"></span></label>
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Barthel" v-model="barthel" :id="Barthel">Barthel<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Barthel"  v-on:click="selectBarthel" v-model="barthel" :id="Barthel">Barthel<span
                 class="success"></span></label>
           <li class="mw-100 list-group-item" style="font-size: 13px; opacity: 0.9;">
-            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="ASA" v-model="asa" :id="ASA">ASA<span
+            <label class="radio-inline"><input type="radio"  name="risk-scores" :value="ASA"  v-on:click="selectASA" v-model="asa" :id="ASA">ASA<span
                 class="success"></span></label>
         </li>
         </ul>
@@ -30,9 +30,11 @@
 </template>
 
 <script>
+import { bus } from '../main'
+
 export default {
   name: "Home_top_second_row",
-  props: ['item', 'bus'],
+  props: ['item'],
   data: () => ({
     d_selected: '',
     lace: '',
@@ -63,10 +65,25 @@ export default {
       this.barthel = null
       this.asa = null
       this.d_selected = false
+    },
+    selectLace: function () {
+      bus.$emit('selectLace')
+    },
+    selectCharlson: function () {
+      bus.$emit('selectCharlson')
+    },
+    selectGMA: function () {
+      bus.$emit('selectGMA')
+    },
+    selectBarthel: function () {
+      bus.$emit('selectBarthel')
+    },
+    selectASA: function () {
+      bus.$emit('selectASA')
     }
   },
   mounted() {
-    this.bus.$on('uncheckRadio', this.uncheckRadio)
+    bus.$on('uncheckRadio', this.uncheckRadio)
   },
 }
 </script>

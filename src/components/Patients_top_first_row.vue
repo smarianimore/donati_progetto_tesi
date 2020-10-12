@@ -35,12 +35,11 @@
 <script>
 import Home_top_second_row from "@/components/Patients_top_second_row";
 import Home_left_and_map from "@/components/Patients_left_and_map";
-import Vue from 'vue';
+import { bus } from '../main'
 
 export default {
   data: () => ({
     item: {},
-    bus: new Vue(),
   }),
   components: {
     Home_top_second_row,
@@ -49,7 +48,7 @@ export default {
   name: "Home_top_first_row",
   methods: {
     deselectRiskScore: function () {
-      this.bus.$emit('uncheckRadio')
+      bus.$emit('uncheckRadio')
     }
   }
 }
