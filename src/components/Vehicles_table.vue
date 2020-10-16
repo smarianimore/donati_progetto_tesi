@@ -33,6 +33,7 @@
 import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
 import * as constant from '../assets/js/constants'
+import {generateRandomDecimalNumber} from "../assets/js/generate-data.js";
 
 var faker = require('faker');
 faker.locale = "it";
@@ -48,6 +49,7 @@ class Vehicle {
     this.fuel = faker.vehicle.fuel();
     this.vin = faker.vehicle.vin();
     this.color = faker.vehicle.color();
+    this.noise = generateRandomDecimalNumber(10.0, 100.0);
     this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS)
   }
 }
@@ -70,6 +72,7 @@ name: "Vehicles_table",
         { text: 'Fuel', value: 'fuel' },
         { text: 'Vin', value: 'vin' },
         { text: 'Color', value: 'color' },
+        { text: 'Noise (db/A)', value: 'noise' },
       ],
       vehicles: vehicleArray
     }

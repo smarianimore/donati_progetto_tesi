@@ -26,6 +26,11 @@ export const MIN_DWELLING = 1;
 export const MAX_DWELLING = 3;
 export const MIN_CAREER = 0;
 export const MAX_CAREER = 2;
+
+export const NOISE_BOTHER_THRESHOLD = 30;
+export const NOISE_DISTURBANCE_THRESHOLD = 65;
+export const NOISE_DAMAGE_THRESHOLD = 85;
+
 export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152}
 export const RADIUS = 20000;
 
@@ -44,9 +49,15 @@ export const MARKER_HIGHLIGHTED_CIRCLE_COLOR = '#F8F8FF';
 export const MARKER_NO_RISK_COLOR = '#008000';
 export const MARKER_NO_RISK_STROKE_COLOR = '#006400';
 export const MARKER_NO_RISK_CIRCLE_COLOR = '#F0FFF0';
+
+export const MARKER_LITTLE_RISK_COLOR = '#FFFF00';
+export const MARKER_LITTLE_RISK_STROKE_COLOR = '#9ACD32';
+export const MARKER_LITTLE_RISK_CIRCLE_COLOR = '#FAFAD2';
+
 export const MARKER_SOME_RISK_COLOR = '#FFA500';
 export const MARKER_SOME_RISK_STROKE_COLOR = '#FF8C00';
 export const MARKER_SOME_RISK_CIRCLE_COLOR = '#F0FFF0';
+
 export const MARKER_HIGH_RISK_COLOR = '#FF0000';
 export const MARKER_HIGH_RISK_STROKE_COLOR = '#8B0000';
 export const MARKER_HIGH_RISK_CIRCLE_COLOR = '#F0FFF0';

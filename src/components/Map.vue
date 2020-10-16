@@ -85,6 +85,7 @@ export default {
             location: dataArray[i].location,
             informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
                 + dataArray[i].color,
+            noise: dataArray[i].noise,
             color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
             strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
             circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
@@ -239,6 +240,27 @@ export default {
           this.markers[i].circleColor = constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
         }
       }
+    },
+    selectNoise() {
+      for(let i = 0; i < this.markers.length; i++) {
+        if(this.markers[i].noise < constant.NOISE_BOTHER_THRESHOLD){
+          this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (this.markers[i].noise >= constant.NOISE_BOTHER_THRESHOLD && this.markers[i].noise < constant.NOISE_DISTURBANCE_THRESHOLD){
+          this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (this.markers[i].noise >= constant.NOISE_DISTURBANCE_THRESHOLD && this.markers[i].noise < constant.NOISE_DAMAGE_THRESHOLD){
+          this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else {
+          this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        }
+      }
     }
   },
   created() {
@@ -265,6 +287,9 @@ export default {
     });
     bus.$on('uncheckRadio',() => {
       this.deselectAllMarkers()
+    });
+    bus.$on('selectNoise',() => {
+      this.selectNoise()
     });
   },
 }

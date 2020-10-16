@@ -17,18 +17,18 @@
           <div class="card">
             <div>
               <button class="list-group-item list-group-item-action toggle-all"
-                      data-content="Click to display all hospitals"
+                      data-content="Click to display all garages"
                       data-placement="bottom"
                       data-toggle="popover" data-trigger="hover"
-                      id="showHospitals"
+                      id="showGarages"
                       type="button">
                 Show Garages
               </button>
               <button class="list-group-item list-group-item-action toggle-all"
-                      data-content="Click to display all hospitals"
+                      data-content="Click to display all garages"
                       data-placement="bottom"
                       data-toggle="popover" data-trigger="hover"
-                      id="hideHospitals"
+                      id="hideGarages"
                       type="button">
                 Hide Garages
               </button>
@@ -38,15 +38,26 @@
               <button class="list-group-item list-group-item-action toggle-all"
                       data-placement="bottom"
                       data-toggle="popover" data-trigger="hover"
-                      id="infoPersona"
+                      id="infoVehicle"
                       type="button">
                 Vehicle Infos
               </button>
             </div>
             <br>
             <div>
+              <button v-on:click.prevent= "deselectRiskScore" class="list-group-item list-group-item-action toggle-all"
+                      data-placement="bottom"
+                      data-toggle="popover" data-trigger="hover"
+                      id="risksIndexes"
+                      type="button">
+                Deselect Risks
+              </button>
+            </div>
+            <br>
+            <div>
               <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
-                <label><input id="accesoh" type="checkbox" value="true">Show suggested garages<span class="success"></span></label>
+                <label><input type="radio" name="risk-scores" :value="Noise" v-on:click="selectNoise"
+                              v-model="noise" :id="Noise"> Noise index <span class="success"></span></label>
               </li>
             </div>
           </div>
@@ -95,10 +106,40 @@
 <script>
 import Map from "@/components/Map";
 import Vehicles_table from "@/components/Vehicles_table";
+import { bus } from '../main'
 
 export default {
 name: "Vehicles_left_and_map",
-  components: {Vehicles_table, Map}
+  components: {Vehicles_table, Map},
+  props: ['item'],
+  data: () => ({
+    d_selected: '',
+    noise: '',
+  }),
+  computed: {
+    selected: {
+      get() {
+        return this.d_selected;
+      },
+      set(v) {
+        if (v === this.d_selected) {
+          this.d_selected = false;
+        } else {
+          this.d_selected = v;
+        }
+      }
+    }
+  },
+  methods: {
+    deselectRiskScore: function () {
+      this.noise = null
+      this.d_selected = false
+      bus.$emit('uncheckRadio')
+    },
+    selectNoise: function () {
+      bus.$emit('selectNoise')
+    }
+  }
 }
 </script>
 
