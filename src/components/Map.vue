@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 600px;">
+  <div style="height: 800px;">
     <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
     <div class="info" style="height: 15%">
       <span>Center: {{ center }}</span>
