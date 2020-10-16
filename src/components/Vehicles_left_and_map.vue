@@ -35,30 +35,43 @@
             </div>
             <br>
             <div>
-              <button class="list-group-item list-group-item-action toggle-all"
-                      data-placement="bottom"
-                      data-toggle="popover" data-trigger="hover"
-                      id="infoVehicle"
-                      type="button">
-                Vehicle Infos
-              </button>
+              <li class="mw-100 list-group-item" style="text-align: center; background-color: #583470; opacity: 0.8;">
+                <b style="color: white;">Risk scores</b>
+              </li>
+              <div class="btn-group mygroup dropdown">
+                <button v-on:click.prevent= "deselectRiskScore" class="mw-100 btn btn-default botdrop"
+                        data-content="Click to deselect risk score, resetting colouring"
+                        data-placement="bottom"
+                        data-toggle="popover" data-trigger="hover" id="toggleRisk"
+                        type="submit">
+                  <b>Deselect risk score</b>
+                </button>
+              </div>
             </div>
-            <br>
-            <div>
-              <button v-on:click.prevent= "deselectRiskScore" class="list-group-item list-group-item-action toggle-all"
-                      data-placement="bottom"
-                      data-toggle="popover" data-trigger="hover"
-                      id="risksIndexes"
-                      type="button">
-                Deselect Risks
-              </button>
-            </div>
-            <br>
             <div>
               <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
                 <label><input type="radio" name="risk-scores" :value="Noise" v-on:click="selectNoise"
                               v-model="noise" :id="Noise"> Noise index <span class="success"></span></label>
               </li>
+            </div>
+            <br>
+            <br>
+            <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
+            <div>
+              <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
+                <label><input id="myCheck" onclick="syncMapTable()" type="checkbox"> Keep map
+                  and table synchronised<span class="success"></span></label>
+              </li>
+            </div>
+            <div>
+              <button class="list-group-item list-group-item-action toggle-all"
+                      data-content="Click to display a route visiting all the patient(s) selected in the table (in a circular path"
+                      data-placement="bottom"
+                      data-toggle="popover" data-trigger="hover"
+                      id="bRouting"
+                      type="button">
+                Calculate route
+              </button>
             </div>
           </div>
         </div>
@@ -68,32 +81,6 @@
       </div>
       <div class="row">
         <div class="col-sm-3">
-          <div>
-            <button class="list-group-item list-group-item-action toggle-all"
-                    data-content="Click to locate on map the patient(s) selected in the table"
-                    data-placement="bottom"
-                    data-toggle="popover" data-trigger="hover"
-                    id="b"
-                    type="button">Locate on map
-            </button>
-          </div>
-          <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
-          <div>
-            <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
-              <label><input id="myCheck" onclick="syncMapTable()" type="checkbox"> Keep map
-                and table synchronised<span class="success"></span></label>
-            </li>
-          </div>
-          <div>
-            <button class="list-group-item list-group-item-action toggle-all"
-                    data-content="Click to display a route visiting all the patient(s) selected in the table (in a circular path"
-                    data-placement="bottom"
-                    data-toggle="popover" data-trigger="hover"
-                    id="bRouting"
-                    type="button">
-              Calculate route
-            </button>
-          </div>
         </div>
         <div class="col-sm-9">
           <Vehicles_table></Vehicles_table>
@@ -216,11 +203,16 @@ thead th {
   border-color: #ffffff;
 }
 
+
+
 .btn-group.mygroup {
   white-space: nowrap;
 }
 
 .btn.btn-default {
+  color: #ffffff;
+  background-color: #583470;
+  border-color: #ffffff;
   float: none;
 }
 

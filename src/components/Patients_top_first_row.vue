@@ -11,7 +11,6 @@
                     data-content="Click to deselect risk score, resetting colouring"
                     data-placement="bottom"
                     data-toggle="popover" data-trigger="hover" id="toggleRisk"
-                    style="opacity:0.7"
                     type="submit">
               <b>Deselect risk score</b></button>
           </div>

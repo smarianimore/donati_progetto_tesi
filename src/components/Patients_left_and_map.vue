@@ -53,16 +53,6 @@
           </div>
           <br>
           <div>
-            <button class="list-group-item list-group-item-action toggle-all"
-                    data-placement="bottom"
-                    data-toggle="popover" data-trigger="hover"
-                    id="infoPersona"
-                    type="button">
-              Info Persona
-            </button>
-          </div>
-          <br>
-          <div>
             <li class="list-group-item" style="height: 60px; font-size: 13px; opacity: 0.9;">
               <label><input id="acceso" type="checkbox" value="true">Show the patients' managers
                 on the map<span class="success"></span></label>
@@ -82,15 +72,6 @@
     </div>
     <div class="row">
       <div class="col-sm-3">
-        <div>
-          <button class="list-group-item list-group-item-action toggle-all"
-                  data-content="Click to locate on map the patient(s) selected in the table"
-                  data-placement="bottom"
-                  data-toggle="popover" data-trigger="hover"
-                  id="b"
-                  type="button">Locate on map
-          </button>
-        </div>
         <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
         <div>
           <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
