@@ -37,6 +37,13 @@ export default {
 
 <style scoped>
 
+.row {
+  background-image: url("../assets/profile-background-motive.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 td {
   padding: 0 10px 0 10px
 }

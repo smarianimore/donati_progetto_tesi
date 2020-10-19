@@ -3,7 +3,7 @@
     <div class="container-fluid" style="margin-top: 5px">
       <div class="row">
         <div class="col-lg-2 text-center">
-
+          <img alt="Vehicles (logo)" class="img-rounded logo" src="../photo/vehicles.jpg">
         </div>
         <div class="col-lg-7 text-center">
         </div>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="container-fluid">
-      <div class="row">
+      <div class="row2">
         <div class="col-sm-3">
           <div class="card">
             <div>
@@ -83,7 +83,7 @@
           <Map> </Map>
         </div>
       </div>
-      <div class="row">
+      <div class="row3">
         <div class="col-sm-3">
         </div>
         <div class="col-sm-9">
@@ -141,6 +141,13 @@ name: "Vehicles_left_and_map",
 
 <style scoped>
 
+.row {
+  background-image: url("../assets/profile-background-motive.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 td {
   padding: 0 10px 0 10px
 }
@@ -157,23 +164,6 @@ td {
 thead th {
   background-color: rgba(86, 61, 124, 0.8);
   color: white;
-}
-
-.sp {
-  margin-top: 20px;
-}
-
-.imgpatient {
-  height: 50px;
-}
-.infoh{
-  background-color:white;
-  color:black;
-}
-
-/* DO NOT REMOVE, ACTUALLY USED (leaflet)*/
-.blinking {
-  animation: fade 1s infinite alternate;
 }
 
 @keyframes fade {
@@ -197,8 +187,9 @@ thead th {
   }
 }
 
-.list-inline {
-  display: flex;
+.logo {
+  margin-left: 20px;
+  height: 100px;
 }
 
 .list-inline li {
@@ -211,8 +202,6 @@ thead th {
   background-color: #583470;
   border-color: #ffffff;
 }
-
-
 
 .btn-group.mygroup {
   white-space: nowrap;
