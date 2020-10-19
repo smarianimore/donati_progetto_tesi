@@ -50,6 +50,7 @@ class Vehicle {
     this.vin = faker.vehicle.vin();
     this.color = faker.vehicle.color();
     this.noise = generateRandomDecimalNumber(10.0, 100.0);
+    this.vibrations = generateRandomDecimalNumber(0.30, 0.55);
     this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS)
   }
 }
@@ -73,6 +74,7 @@ name: "Vehicles_table",
         { text: 'Vin', value: 'vin' },
         { text: 'Color', value: 'color' },
         { text: 'Noise (db/A)', value: 'noise' },
+        { text: 'Vibrations (m/s^2)', value: 'vibrations' },
       ],
       vehicles: vehicleArray
     }

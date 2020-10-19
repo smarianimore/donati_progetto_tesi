@@ -27,14 +27,17 @@ export const MAX_DWELLING = 3;
 export const MIN_CAREER = 0;
 export const MAX_CAREER = 2;
 
-export const NOISE_BOTHER_THRESHOLD = 30;
+export const NOISE_BOTHER_THRESHOLD = 30;       //db(A)
 export const NOISE_DISTURBANCE_THRESHOLD = 65;
 export const NOISE_DAMAGE_THRESHOLD = 85;
 
-export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152}
-export const RADIUS = 20000;
+export const VIBRATIONS_LOWER_THRESHOLD = 2.5;   // m/s^2
+export const VIBRATIONS_HIGHER_THRESHOLD = 5.0;
 
-export const NUMBER_OF_ITEMS_IN_TABLE = 20;
+export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152} //Between Reggio Emilia and Modena
+export const RADIUS = 20000; //Meters
+
+export const NUMBER_OF_ITEMS_IN_TABLE = 40;
 
 export const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 

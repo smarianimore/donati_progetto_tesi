@@ -86,6 +86,7 @@ export default {
             informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
                 + dataArray[i].color,
             noise: dataArray[i].noise,
+            vibrations: dataArray[i].vibrations,
             color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
             strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
             circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
@@ -261,6 +262,23 @@ export default {
           this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
       }
+    },
+    selectVibrations() {
+      for(let i = 0; i < this.markers.length; i++) {
+        if(this.markers[i].vibrations < constant.VIBRATIONS_LOWER_THRESHOLD){
+          this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (this.markers[i].vibrations >= constant.VIBRATIONS_LOWER_THRESHOLD && this.markers[i].vibrations <= constant.VIBRATIONS_HIGHER_THRESHOLD){
+          this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else {
+          this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        }
+      }
     }
   },
   created() {
@@ -290,6 +308,9 @@ export default {
     });
     bus.$on('selectNoise',() => {
       this.selectNoise()
+    });
+    bus.$on('selectVibrations',() => {
+      this.selectVibrations()
     });
   },
 }
