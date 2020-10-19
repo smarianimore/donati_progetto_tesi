@@ -4,6 +4,14 @@
       <div class="col-sm-3">
       </div>
       <div class="col-sm-9">
+        <div class="btn-group mygroup dropdown">
+          <button v-on:click.prevent= "uncheckRadio" class="mw-100 btn btn-default botdrop"
+                  data-content="Click to deselect risk score, resetting colouring"
+                  data-placement="bottom"
+                  data-toggle="popover" data-trigger="hover" id="toggleRisk"
+                  type="submit">
+            <b>Deselect risk score</b></button>
+        </div>
         <ul class="list-inline list-group-flush">
           <li class="mw-100 list-group-item" style="text-align: center; background-color: #583470; opacity: 0.8;">
             <b style="color: white;">Risk scores</b>
@@ -59,6 +67,7 @@ export default {
   },
   methods: {
     uncheckRadio: function () {
+      bus.$emit('uncheckRadio')
       this.lace = null
       this.charlson = null
       this.gma = null
@@ -81,10 +90,7 @@ export default {
     selectASA: function () {
       bus.$emit('selectASA')
     }
-  },
-  mounted() {
-    bus.$on('uncheckRadio', this.uncheckRadio)
-  },
+  }
 }
 </script>
 
@@ -150,6 +156,23 @@ thead th {
 .list-inline li {
   flex: 1;
   text-align: left;
+}
+
+.btn.btn-warning {
+  color: #ffffff;
+  background-color: #583470;
+  border-color: #ffffff;
+}
+
+.btn-group.mygroup {
+  white-space: nowrap;
+}
+
+.btn.btn-default {
+  color: #ffffff;
+  background-color: #583470;
+  border-color: #ffffff;
+  float: none;
 }
 
 </style>

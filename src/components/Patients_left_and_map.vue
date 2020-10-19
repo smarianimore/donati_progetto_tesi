@@ -64,6 +64,25 @@
               <label><input id="accesoh" type="checkbox" value="true">Show suggested hospitals<span class="success"></span></label>
             </li>
           </div>
+          <br>
+          <br>
+          <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
+          <div>
+            <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
+              <label><input id="myCheck" onclick="syncMapTable()" type="checkbox"> Keep map
+                and table synchronised<span class="success"></span></label>
+            </li>
+          </div>
+          <div>
+            <button class="list-group-item list-group-item-action toggle-all"
+                    data-content="Click to display a route visiting all the patient(s) selected in the table (in a circular path"
+                    data-placement="bottom"
+                    data-toggle="popover" data-trigger="hover"
+                    id="bRouting"
+                    type="button">
+              Calculate route
+            </button>
+          </div>
         </div>
       </div>
       <div class="col-sm-9">
@@ -72,23 +91,7 @@
     </div>
     <div class="row">
       <div class="col-sm-3">
-        <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
-        <div>
-          <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
-            <label><input id="myCheck" onclick="syncMapTable()" type="checkbox"> Keep map
-              and table synchronised<span class="success"></span></label>
-          </li>
-        </div>
-        <div>
-          <button class="list-group-item list-group-item-action toggle-all"
-                  data-content="Click to display a route visiting all the patient(s) selected in the table (in a circular path"
-                  data-placement="bottom"
-                  data-toggle="popover" data-trigger="hover"
-                  id="bRouting"
-                  type="button">
-            Calculate route
-          </button>
-        </div>
+
       </div>
       <div class="col-sm-9">
         <Patients_table></Patients_table>
