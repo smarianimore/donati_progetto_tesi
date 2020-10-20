@@ -34,6 +34,10 @@ export const NOISE_DAMAGE_THRESHOLD = 85;
 export const VIBRATIONS_LOWER_THRESHOLD = 2.5;   // m/s^2
 export const VIBRATIONS_HIGHER_THRESHOLD = 5.0;
 
+export const FUEL_LOWER_THRESHOLD = 25.0;
+export const FUEL_MEDIUM_THRESHOLD = 50.0;
+export const FUEL_HIGHER_THRESHOLD = 75.0;
+
 export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152} //Between Reggio Emilia and Modena
 export const RADIUS = 20000; //Meters
 

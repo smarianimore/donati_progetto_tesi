@@ -57,6 +57,10 @@
                 <label><input type="radio" name="risk-scores" :value="Vibrations" v-on:click="selectVibrations"
                               v-model="vibrations" :id="Vibrations"> Vibrations <span class="success"></span></label>
               </li>
+              <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
+                <label><input type="radio" name="risk-scores" :value="Fuel" v-on:click="selectFuel"
+                              v-model="fuel" :id="Fuel"> Fuel <span class="success"></span></label>
+              </li>
             </div>
             <br>
             <br>
@@ -107,6 +111,7 @@ name: "Vehicles_left_and_map",
     d_selected: '',
     noise: '',
     vibrations: '',
+    fuel: '',
   }),
   computed: {
     selected: {
@@ -126,6 +131,7 @@ name: "Vehicles_left_and_map",
     deselectRiskScore: function () {
       this.noise = null
       this.vibrations = null
+      this.fuel = null
       this.d_selected = false
       bus.$emit('uncheckRadio')
     },
@@ -134,6 +140,9 @@ name: "Vehicles_left_and_map",
     },
     selectVibrations: function () {
       bus.$emit('selectVibrations')
+    },
+    selectFuel: function () {
+      bus.$emit('selectFuel')
     }
   }
 }

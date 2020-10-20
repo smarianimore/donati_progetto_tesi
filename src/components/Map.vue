@@ -87,6 +87,7 @@ export default {
                 + dataArray[i].color,
             noise: dataArray[i].noise,
             vibrations: dataArray[i].vibrations,
+            fuel: dataArray[i].fuel,
             color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
             strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
             circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
@@ -279,6 +280,27 @@ export default {
           this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
       }
+    },
+    selectFuel() {
+      for(let i = 0; i < this.markers.length; i++) {
+        if(this.markers[i].fuel <= constant.FUEL_LOWER_THRESHOLD){
+          this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        } else if (this.markers[i].fuel > constant.FUEL_LOWER_THRESHOLD && this.markers[i].fuel <= constant.FUEL_MEDIUM_THRESHOLD){
+          this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (this.markers[i].fuel > constant.FUEL_MEDIUM_THRESHOLD && this.markers[i].fuel <= constant.FUEL_HIGHER_THRESHOLD) {
+          this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else {
+          this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
+          this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
+          this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
+        }
+      }
     }
   },
   created() {
@@ -311,6 +333,9 @@ export default {
     });
     bus.$on('selectVibrations',() => {
       this.selectVibrations()
+    });
+    bus.$on('selectFuel',() => {
+      this.selectFuel()
     });
   },
 }
