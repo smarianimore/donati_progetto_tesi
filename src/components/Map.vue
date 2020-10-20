@@ -1,18 +1,10 @@
 <template>
   <div style="height: 800px;">
     <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-    <div class="info" style="height: 15%">
-      <span>Center: {{ center }}</span>
-      <span>Zoom: {{ zoom }}</span>
-      <span>Bounds: {{ bounds }}</span>
-    </div>
     <l-map
         style="height: 80%; width: 100%"
         :zoom="zoom"
         :center="center"
-        @update:zoom="zoomUpdated"
-        @update:center="centerUpdated"
-        @update:bounds="boundsUpdated"
     >
       <l-tile-layer :url="url"></l-tile-layer>
       <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.location" :icon="getIcon(item)">
@@ -53,12 +45,6 @@ export default {
   methods: {
     zoomUpdated (zoom) {
       this.zoom = zoom;
-    },
-    centerUpdated (center) {
-      this.center = center;
-    },
-    boundsUpdated (bounds) {
-      this.bounds = bounds;
     },
     createMarkers(dataArray) {
       let i;
