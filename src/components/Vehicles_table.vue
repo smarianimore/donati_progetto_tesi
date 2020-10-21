@@ -50,8 +50,9 @@ class Vehicle {
     this.color = faker.vehicle.color();
     this.noise = generateData.generateRandomDecimalNumber(10.0, 100.0);
     this.vibrations = generateData.generateRandomDecimalNumber(0.30, 0.55);
-    this.fuel = generateData.generateRandomDecimalNumber(0.0, 100.0)
-    this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS)
+    this.fuel = generateData.generateRandomDecimalNumber(0.0, 100.0);
+    this.ergonomics = generateData.generateRandomDecimalNumber(0.0, 100.0);
+    this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS);
   }
 }
 
@@ -76,6 +77,7 @@ name: "Vehicles_table",
         { text: 'Noise (db/A)', value: 'noise' },
         { text: 'Vibrations (m/s^2)', value: 'vibrations' },
         { text: 'Fuel %', value: 'fuel' },
+        { text: 'Ergonomics %', value: 'ergonomics' },
       ],
       vehicles: vehicleArray
     }
