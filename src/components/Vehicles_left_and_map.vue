@@ -49,22 +49,9 @@
               </div>
             </div>
             <div>
-              <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
-                <label><input type="radio" name="risk-scores" :value="Noise" v-on:click="selectNoise"
-                              v-model="noise" :id="Noise"> Noise <span class="success"></span></label>
-              </li>
-              <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
-                <label><input type="radio" name="risk-scores" :value="Vibrations" v-on:click="selectVibrations"
-                              v-model="vibrations" :id="Vibrations"> Vibrations <span class="success"></span></label>
-              </li>
-              <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
-                <label><input type="radio" name="risk-scores" :value="Fuel" v-on:click="selectFuel"
-                              v-model="fuel" :id="Fuel"> Fuel <span class="success"></span></label>
-              </li>
-              <li class="list-group-item" style="font-size: 13px; opacity: 0.9;">
-                <label><input type="radio" name="risk-scores" :value="Ergonomics" v-on:click="selectErgonomics"
-                              v-model="ergonomics" :id="Ergonomics"> Ergonomics <span class="success"></span></label>
-              </li>
+              <template v-for="block in myjson">
+                <component :is="block.component" :block="block" :key="block.text"></component>
+              </template>
             </div>
             <br>
             <br>
@@ -106,31 +93,17 @@
 import Map from "@/components/Map";
 import Vehicles_table from "@/components/Vehicles_table";
 import { bus } from '../main'
+import  myJson from '../main';
+import IndexButton from "@/components/IndexButton";
 
 export default {
 name: "Vehicles_left_and_map",
-  components: {Vehicles_table, Map},
-  props: ['item'],
+  components: {Vehicles_table, Map, IndexButton},
   data: () => ({
-    d_selected: '',
-    noise: '',
-    vibrations: '',
-    fuel: '',
-    ergonomics: ''
+    myjson: [],
   }),
-  computed: {
-    selected: {
-      get() {
-        return this.d_selected;
-      },
-      set(v) {
-        if (v === this.d_selected) {
-          this.d_selected = false;
-        } else {
-          this.d_selected = v;
-        }
-      }
-    }
+  created() {
+    this.myjson = myJson.data().myJson.indexes
   },
   methods: {
     deselectRiskScore: function () {
@@ -140,18 +113,6 @@ name: "Vehicles_left_and_map",
       this.ergonomics = null
       this.d_selected = false
       bus.$emit('uncheckRadio')
-    },
-    selectNoise: function () {
-      bus.$emit('selectNoise')
-    },
-    selectVibrations: function () {
-      bus.$emit('selectVibrations')
-    },
-    selectFuel: function () {
-      bus.$emit('selectFuel')
-    },
-    selectErgonomics: function () {
-      bus.$emit('selectErgonomics')
     }
   }
 }

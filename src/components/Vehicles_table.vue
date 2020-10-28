@@ -33,6 +33,7 @@
 import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
 import * as constant from '../assets/js/constants'
+import  myJson from '../main';
 
 var faker = require('faker');
 faker.locale = "it";
@@ -66,23 +67,12 @@ name: "Vehicles_table",
       search: '',
       singleSelect: false,
       selected: [],
-      headers: [
-        { text: 'Vehicle', value: 'vehicle' },
-        { text: 'Manufacturer', value: 'manufacturer' },
-        { text: 'Model', value: 'model' },
-        { text: 'Type', value: 'type' },
-        { text: 'Fuel', value: 'fuel' },
-        { text: 'Vin', value: 'vin' },
-        { text: 'Color', value: 'color' },
-        { text: 'Noise (db/A)', value: 'noise' },
-        { text: 'Vibrations (m/s^2)', value: 'vibrations' },
-        { text: 'Fuel %', value: 'fuel' },
-        { text: 'Ergonomics %', value: 'ergonomics' },
-      ],
+      headers: '',
       vehicles: vehicleArray
     }
   },
   created() {
+    this.headers = myJson.data().myJson.values;
     this.deleteAllData();
     this.generateData();
   },

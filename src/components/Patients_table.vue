@@ -34,6 +34,7 @@
 import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
 import * as constant from '../assets/js/constants'
+import  myJson from '../main';
 
 let faker = require('faker');
 faker.locale = "it";
@@ -75,24 +76,12 @@ export default {
       search: '',
       singleSelect: false,
       selected: [],
-      headers: [
-        { text: 'Name', value: 'firstName' },
-        { text: 'Surname', value: 'lastName' },
-        { text: 'LACE', value: 'lace' },
-        { text: 'Charlson', value: 'charlson' },
-        { text: 'GMA', value: 'gma' },
-        { text: 'Barthel', value: 'barthel' },
-        { text: 'ASA', value: 'asa' },
-        { text: 'Skills', value: 'skills' },
-        { text: 'Retrieval', value: 'retrieval' },
-        { text: 'Selfcare', value: 'selfcare' },
-        { text: 'Dwelling', value: 'dwelling' },
-        { text: 'Career', value: 'career' },
-      ],
+      headers: '',
       patients: peopleArray
     }
   },
   created() {
+    this.headers = myJson.data().myJson.values;
     this.deleteAllData();
     this.generateData();
   },
@@ -104,8 +93,7 @@ export default {
           value.toString().toLocaleUpperCase().indexOf(search) !== -1
     },
     generateData() {
-      var i;
-      for(i = 0; i < constant.NUMBER_OF_ITEMS_IN_TABLE; i++){
+      for(let i = 0; i < constant.NUMBER_OF_ITEMS_IN_TABLE; i++){
         let person = new Person();
         peopleArray.unshift(person);
       }

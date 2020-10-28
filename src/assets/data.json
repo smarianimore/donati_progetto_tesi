@@ -1,0 +1,19 @@
+{
+  "entity": "patients",
+  "indexes": [
+    { "component": "IndexButton","text": "Lace", "criteria": "tertile" },
+    { "component": "IndexButton", "text": "Charlston", "criteria": "tertile" },
+    { "component": "IndexButton", "text": "ASA", "criteria": "tertile" },
+    { "component": "IndexButton", "text": "GMA", "criteria": "tertile" }
+  ],
+  "values": [
+    { "text": "Name", "value": "firstName" },
+    { "text": "Surname", "value": "lastName" },
+    { "text": "Retrieval", "value": "retrieval" },
+    { "text": "Selfcare", "value": "selfcare" },
+    { "text": "Dwelling", "value": "dwelling" },
+    { "text": "Career", "value": "career" },
+    { "text": "ASA", "value": "asa" },
+    { "text": "GMA", "value": "gma" }
+  ]
+}

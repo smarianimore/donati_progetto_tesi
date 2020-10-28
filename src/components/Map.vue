@@ -181,7 +181,7 @@ export default {
     },
     selectGMA() {
       for(let i = 0; i < this.markers.length; i++) {
-        if(this.markers[i].gma > constant.MIN_GMA && this.markers[i].gma < constant.MEDIUM_GMA){
+        if(this.markers[i].gma >= constant.MIN_GMA && this.markers[i].gma < constant.MEDIUM_GMA){
           this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
           this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
           this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;

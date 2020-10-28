@@ -10,11 +10,16 @@
     <link href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" rel="stylesheet"/>
     <link href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css" rel="stylesheet">
     <link href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" rel="stylesheet"/>
+    <template v-for="block in myjson">
+      <component :is="block.component" :block="block" :key="block.entity"></component>
+    </template>
     <router-view/>
   </div>
 </template>
 
 <script>
+import myJson from './main';
+import router from "@/router";
 
 export default {
   name: 'App',
@@ -23,6 +28,26 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
+  },
+  data: function () {
+    return {
+      myjson: '',
+      mydata: ''
+    };
+  },
+  methods: {
+    selectCategory() {
+      this.mydata = myJson.data().myJson.entity;
+      if(this.mydata === "patients") {
+        router.push('home_patients')
+      } else if (this.mydata === "vehicles") {
+        router.push('home_vehicles')
+      }
+    }
+  },
+  created() {
+    this.myjson = myJson.data().myJson
+    this.selectCategory()
   }
 }
 
