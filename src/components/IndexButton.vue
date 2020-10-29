@@ -25,7 +25,7 @@
       <label><input type="radio" name="risk-scores" :value="Fuel" v-on:click="selectFuel"
                     v-model="fuel" :id="Fuel"> {{ block.text }} <span class="success"></span></label>
     <li class="list-group-item" v-if="block.text === 'Ergonomics'" style="font-size: 13px; opacity: 0.9;">
-      <label><input type="radio" name="risk-scores" :value="Ergonomics" v-on:click="selectErgonomics"
+      <label><input type="radio" name="risk-scores" :value="Ergonomics" v-on:click="selectCriterion"
                     v-model="ergonomics" :id="Ergonomics"> {{ block.text }} <span class="success"></span></label>
     </li>
   </div>
@@ -34,9 +34,11 @@
 <script>
 import {bus} from "@/main";
 
+
 export default {
   props: {
     block: Object,
+
   },
   name: "IndexButton",
   data: () => ({
@@ -68,6 +70,7 @@ export default {
   methods: {
     uncheckRadio: function () {
       bus.$emit('uncheckRadio')
+      this.d_selected = false
       this.lace = null
       this.charlson = null
       this.gma = null
@@ -77,7 +80,10 @@ export default {
       this.vibrations = null
       this.fuel = null
       this.ergonomics = null
-      this.d_selected = false
+    },
+    selectCriterion: function () {
+      let data = [{text: this.block.text, criterion: this.block.criterion }]
+      bus.$emit('selectCriterion', data)
     },
     selectLace: function () {
       bus.$emit('selectLace')
@@ -102,9 +108,6 @@ export default {
     },
     selectFuel: function () {
       bus.$emit('selectFuel')
-    },
-    selectErgonomics: function () {
-      bus.$emit('selectErgonomics')
     }
   }
 }

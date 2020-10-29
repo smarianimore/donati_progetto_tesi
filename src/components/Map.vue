@@ -289,24 +289,51 @@ export default {
         }
       }
     },
-    selectErgonomics() {
-      for(let i = 0; i < this.markers.length; i++) {
-        if(this.markers[i].ergonomics <= constant.ERGONOMICS_LOWER_THRESHOLD){
-          this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-          this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-          this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-        } else if (this.markers[i].ergonomics > constant.ERGONOMICS_LOWER_THRESHOLD && this.markers[i].ergonomics <= constant.ERGONOMICS_MEDIUM_THRESHOLD){
-          this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-          this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-          this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (this.markers[i].ergonomics > constant.ERGONOMICS_MEDIUM_THRESHOLD && this.markers[i].ergonomics <= constant.ERGONOMICS_HIGHER_THRESHOLD) {
-          this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-          this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-          this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else {
-          this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-          this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-          this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
+    selectCriterion(data){
+      if(data.criterion === 'tertile') {
+        switch(data.text){
+          case 'Ergonomics':
+            alert('The best criterion for this index is quartile!')
+            for(let i = 0; i < this.markers.length; i++) {
+              if(this.markers[i].ergonomics <= constant.TERTILE_LOWER_THRESHOLD){
+                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
+              } else if (this.markers[i].ergonomics > constant.TERTILE_LOWER_THRESHOLD && this.markers[i].ergonomics <= constant.TERTILE_MEDIUM_THRESHOLD){
+                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
+              } else {
+                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
+              }
+            }
+            break
+        }
+      } else if(data.criterion === 'quartile') {
+        switch(data.text){
+          case 'Ergonomics':
+            for(let i = 0; i < this.markers.length; i++) {
+              if(this.markers[i].ergonomics <= constant.ERGONOMICS_LOWER_THRESHOLD){
+                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
+              } else if (this.markers[i].ergonomics > constant.ERGONOMICS_LOWER_THRESHOLD && this.markers[i].ergonomics <= constant.ERGONOMICS_MEDIUM_THRESHOLD){
+                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
+              } else if (this.markers[i].ergonomics > constant.ERGONOMICS_MEDIUM_THRESHOLD && this.markers[i].ergonomics <= constant.ERGONOMICS_HIGHER_THRESHOLD) {
+                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+              } else {
+                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
+                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
+                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
+              }
+            }
+            break
         }
       }
     }
@@ -345,17 +372,13 @@ export default {
     bus.$on('selectFuel',() => {
       this.selectFuel()
     });
-    bus.$on('selectErgonomics',() => {
-      this.selectErgonomics()
+    bus.$on('selectCriterion',(data) => {
+      this.selectCriterion(data[0])
     });
   },
 }
 </script>
 
 <style scoped>
-
-.my-custom-pin{
-  background-color: transparent;
-}
 
 </style>

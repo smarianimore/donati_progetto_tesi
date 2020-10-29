@@ -42,6 +42,9 @@ export const ERGONOMICS_LOWER_THRESHOLD = 25.0;
 export const ERGONOMICS_MEDIUM_THRESHOLD = 50.0;
 export const ERGONOMICS_HIGHER_THRESHOLD = 75.0;
 
+export const TERTILE_LOWER_THRESHOLD = 33.3;
+export const TERTILE_MEDIUM_THRESHOLD = 66.6;
+
 export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152} //Between Reggio Emilia and Modena
 export const RADIUS = 20000; //Meters
 

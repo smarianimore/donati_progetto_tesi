@@ -1,19 +1,16 @@
 {
-  "entity": "patients",
+  "entity": "vehicles",
   "indexes": [
-    { "component": "IndexButton","text": "Lace", "criteria": "tertile" },
-    { "component": "IndexButton", "text": "Charlston", "criteria": "tertile" },
-    { "component": "IndexButton", "text": "ASA", "criteria": "tertile" },
-    { "component": "IndexButton", "text": "GMA", "criteria": "tertile" }
+    { "component": "IndexButton","text": "Noise", "criterion": "tertile" },
+    { "component": "IndexButton", "text": "Vibrations", "criterion": "tertile" },
+    { "component": "IndexButton", "text": "Ergonomics", "criterion": "quartile" }
   ],
   "values": [
-    { "text": "Name", "value": "firstName" },
-    { "text": "Surname", "value": "lastName" },
-    { "text": "Retrieval", "value": "retrieval" },
-    { "text": "Selfcare", "value": "selfcare" },
-    { "text": "Dwelling", "value": "dwelling" },
-    { "text": "Career", "value": "career" },
-    { "text": "ASA", "value": "asa" },
-    { "text": "GMA", "value": "gma" }
+    { "text": "Vehicle", "value": "vehicle" },
+    { "text": "Manufacturer", "value": "manufacturer" },
+    { "text": "Model", "value": "model" },
+    { "text": "Type", "value": "type" },
+    { "text": "Fuel", "value": "fuel" },
+    { "text": "Vin", "value": "vin" }
   ]
 }
