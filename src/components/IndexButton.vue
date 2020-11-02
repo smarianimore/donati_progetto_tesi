@@ -1,28 +1,28 @@
 <template>
   <div>
     <li class="mw-100 list-group-item" v-if="block.text === 'Lace'" style="font-size: 13px; opacity: 0.9;">
-      <label class="radio-inline"><input type="radio" name="risk-scores" :value="LACE" v-on:click="selectLace" v-model="lace" :id="LACE" >{{ block.text }}<span
+      <label class="radio-inline"><input type="radio" name="risk-scores" :value="LACE" v-on:click="selectCriterion" v-model="lace" :id="LACE" >{{ block.text }}<span
           class="success"></span></label>
     <li class="mw-100 list-group-item" v-if="block.text === 'Charlston'" style="font-size: 13px; opacity: 0.9;">
-      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Charlson" v-on:click="selectCharlson" v-model="charlson" :id="Charlson">{{ block.text }}<span
+      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Charlson" v-on:click="selectCriterion" v-model="charlson" :id="Charlson">{{ block.text }}<span
           class="success"></span></label>
     <li class="mw-100 list-group-item" v-if="block.text === 'ASA'" style="font-size: 13px; opacity: 0.9;">
-      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="ASA" v-on:click="selectASA" v-model="asa" :id="ASA">{{ block.text }}<span
+      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="ASA" v-on:click="selectCriterion" v-model="asa" :id="ASA">{{ block.text }}<span
           class="success"></span></label>
     <li class="mw-100 list-group-item" v-if="block.text === 'Barthel'" style="font-size: 13px; opacity: 0.9;">
-      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Barthel"  v-on:click="selectBarthel" v-model="barthel" :id="Barthel">{{ block.text }}<span
+      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="Barthel"  v-on:click="selectCriterion" v-model="barthel" :id="Barthel">{{ block.text }}<span
           class="success"></span></label>
     <li class="mw-100 list-group-item" v-if="block.text === 'GMA'" style="font-size: 13px; opacity: 0.9;">
-      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="GMA"  v-on:click="selectGMA" v-model="gma" :id="GMA">{{ block.text }}<span
+      <label class="radio-inline"><input type="radio"  name="risk-scores" :value="GMA"  v-on:click="selectCriterion" v-model="gma" :id="GMA">{{ block.text }}<span
           class="success"></span></label>
     <li class="list-group-item" v-if="block.text === 'Noise'" style="font-size: 13px; opacity: 0.9;">
-      <label><input type="radio" name="risk-scores" :value="Noise" v-on:click="selectNoise"
+      <label><input type="radio" name="risk-scores" :value="Noise" v-on:click="selectCriterion"
                     v-model="noise" :id="Noise"> {{ block.text }} <span class="success"></span></label>
     <li class="list-group-item" v-if="block.text === 'Vibrations'" style="font-size: 13px; opacity: 0.9;">
-      <label><input type="radio" name="risk-scores" :value="Vibrations" v-on:click="selectVibrations"
+      <label><input type="radio" name="risk-scores" :value="Vibrations" v-on:click="selectCriterion"
                     v-model="vibrations" :id="Vibrations"> {{ block.text }} <span class="success"></span></label>
     <li class="list-group-item" v-if="block.text === 'Fuel'" style="font-size: 13px; opacity: 0.9;">
-      <label><input type="radio" name="risk-scores" :value="Fuel" v-on:click="selectFuel"
+      <label><input type="radio" name="risk-scores" :value="Fuel" v-on:click="selectCriterion"
                     v-model="fuel" :id="Fuel"> {{ block.text }} <span class="success"></span></label>
     <li class="list-group-item" v-if="block.text === 'Ergonomics'" style="font-size: 13px; opacity: 0.9;">
       <label><input type="radio" name="risk-scores" :value="Ergonomics" v-on:click="selectCriterion"
@@ -84,30 +84,6 @@ export default {
     selectCriterion: function () {
       let data = [{text: this.block.text, criterion: this.block.criterion }]
       bus.$emit('selectCriterion', data)
-    },
-    selectLace: function () {
-      bus.$emit('selectLace')
-    },
-    selectCharlson: function () {
-      bus.$emit('selectCharlson')
-    },
-    selectGMA: function () {
-      bus.$emit('selectGMA')
-    },
-    selectBarthel: function () {
-      bus.$emit('selectBarthel')
-    },
-    selectASA: function () {
-      bus.$emit('selectASA')
-    },
-    selectNoise: function () {
-      bus.$emit('selectNoise')
-    },
-    selectVibrations: function () {
-      bus.$emit('selectVibrations')
-    },
-    selectFuel: function () {
-      bus.$emit('selectFuel')
     }
   }
 }

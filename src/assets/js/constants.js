@@ -1,5 +1,6 @@
 export const MINIMUM_ID = 1;
 export const MAXIMUM_ID = 10000;
+
 export const MIN_LACE = 10;
 export const MAX_LACE = 80;
 export const MIN_CHARLSON = 1.0;
@@ -34,16 +35,19 @@ export const NOISE_DAMAGE_THRESHOLD = 85;
 export const VIBRATIONS_LOWER_THRESHOLD = 2.5;   // m/s^2
 export const VIBRATIONS_HIGHER_THRESHOLD = 5.0;
 
-export const FUEL_LOWER_THRESHOLD = 25.0;
+export const FUEL_LOWER_THRESHOLD = 25.0;    // %
 export const FUEL_MEDIUM_THRESHOLD = 50.0;
 export const FUEL_HIGHER_THRESHOLD = 75.0;
 
-export const ERGONOMICS_LOWER_THRESHOLD = 25.0;
+export const ERGONOMICS_LOWER_THRESHOLD = 25.0;  // %
 export const ERGONOMICS_MEDIUM_THRESHOLD = 50.0;
 export const ERGONOMICS_HIGHER_THRESHOLD = 75.0;
 
-export const TERTILE_LOWER_THRESHOLD = 33.3;
-export const TERTILE_MEDIUM_THRESHOLD = 66.6;
+export const TERTILE_LOWER_THRESHOLD = 33.3;  // %
+export const TERTILE_MEDIUM_THRESHOLD = 66.6;  // %
+export const QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD = 1.0; // m/s^2
+export const QUARTILE_GMA_MIDDLE_THRESHOLD = 2;
+export const QUARTILE_BARTHEL_LOWER_THRESHOLD_30 = 30;
 
 export const CENTER_POINT = { 'lat':44.694773, 'lng':10.769152} //Between Reggio Emilia and Modena
 export const RADIUS = 20000; //Meters
