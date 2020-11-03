@@ -42,6 +42,15 @@ export default {
   },
   name: "IndexButton",
   data: () => ({
+    LACE: false,
+    Charlson: false,
+    ASA: false,
+    GMA: false,
+    Barthel: false,
+    Noise: false,
+    Vibrations: false,
+    Fuel: false,
+    Ergonomics: false,
     d_selected: '',
     lace: '',
     charlson: '',
@@ -53,6 +62,11 @@ export default {
     fuel: '',
     ergonomics: ''
   }),
+  created() {
+    bus.$on('uncheckRadio',() => {
+      this.uncheckRadio()
+    });
+  },
   computed: {
     selected: {
       get() {
@@ -69,8 +83,6 @@ export default {
   },
   methods: {
     uncheckRadio: function () {
-      bus.$emit('uncheckRadio')
-      this.d_selected = false
       this.lace = null
       this.charlson = null
       this.gma = null
@@ -80,6 +92,7 @@ export default {
       this.vibrations = null
       this.fuel = null
       this.ergonomics = null
+      this.d_selected = false
     },
     selectCriterion: function () {
       let data = [{text: this.block.text, criterion: this.block.criterion }]

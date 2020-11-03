@@ -127,7 +127,7 @@ name: "Page",
   data () {
     return {
       myjson: '',
-      myjson_indexes: []
+      myjson_indexes: [],
     }
   },
   created() {
@@ -136,16 +136,6 @@ name: "Page",
   },
   methods: {
     deselectRiskScore: function () {
-      this.noise = null
-      this.vibrations = null
-      this.fuel = null
-      this.ergonomics = null
-      this.lace = null
-      this.charlson = null
-      this.gma = null
-      this.barthel = null
-      this.asa = null
-      this.d_selected = false
       bus.$emit('uncheckRadio')
     }
   }
