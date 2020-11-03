@@ -2,8 +2,11 @@
   <div class="home">
     <div class="container-fluid" style="margin-top: 5px">
       <div class="row">
-        <div class="col-lg-2 text-center">
+        <div class="col-lg-2 text-center" v-if="myjson.entity === 'vehicles'">
           <img alt="Vehicles (logo)" class="img-rounded logo" src="../photo/vehicles.jpg">
+        </div>
+        <div class="col-lg-2 text-center" v-if="myjson.entity === 'patients'">
+          <img alt="Patients (logo)" class="img-rounded logo" src="../photo/patients.png">
         </div>
         <div class="col-lg-7 text-center">
         </div>
@@ -15,7 +18,7 @@
       <div class="row2">
         <div class="col-sm-3">
           <div class="card">
-            <div>
+            <div v-if="myjson.entity === 'vehicles'">
               <button class="list-group-item list-group-item-action toggle-all"
                       data-content="Click to display all garages"
                       data-placement="bottom"
@@ -31,6 +34,24 @@
                       id="hideGarages"
                       type="button">
                 Hide Garages
+              </button>
+            </div>
+            <div v-if="myjson.entity === 'patients'">
+              <button class="list-group-item list-group-item-action toggle-all"
+                      data-content="Click to display all hospitals"
+                      data-placement="bottom"
+                      data-toggle="popover" data-trigger="hover"
+                      id="showHospitals"
+                      type="button">
+                Show Hospitals
+              </button>
+              <button class="list-group-item list-group-item-action toggle-all"
+                      data-content="Click to hide all hospitals"
+                      data-placement="bottom"
+                      data-toggle="popover" data-trigger="hover"
+                      id="hideHospitals"
+                      type="button">
+                Hide Hospitals
               </button>
             </div>
             <br>
@@ -49,7 +70,7 @@
               </div>
             </div>
             <div>
-              <template v-for="block in myjson">
+              <template v-for="block in myjson_indexes">
                 <component :is="block.component" :block="block" :key="block.text"></component>
               </template>
             </div>
@@ -81,8 +102,11 @@
       <div class="row3">
         <div class="col-sm-3">
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" v-if="myjson.entity === 'vehicles'">
           <Vehicles_table></Vehicles_table>
+        </div>
+        <div class="col-sm-9" v-if="myjson.entity === 'patients'">
+          <Patients_table></Patients_table>
         </div>
       </div>
     </div>
@@ -92,18 +116,23 @@
 <script>
 import Map from "@/components/Map";
 import Vehicles_table from "@/components/Vehicles_table";
+import Patients_table from "@/components/Patients_table";
 import { bus } from '../main'
 import  myJson from '../main';
 import IndexButton from "@/components/IndexButton";
 
 export default {
-name: "Vehicles_left_and_map",
-  components: {Vehicles_table, Map, IndexButton},
-  data: () => ({
-    myjson: [],
-  }),
+name: "Page",
+  components: {Vehicles_table, Map, Patients_table, IndexButton},
+  data () {
+    return {
+      myjson: '',
+      myjson_indexes: []
+    }
+  },
   created() {
-    this.myjson = myJson.data().myJson.indexes
+    this.myjson = myJson.data().myJson;
+    this.myjson_indexes = myJson.data().myJson.indexes;
   },
   methods: {
     deselectRiskScore: function () {
@@ -111,6 +140,11 @@ name: "Vehicles_left_and_map",
       this.vibrations = null
       this.fuel = null
       this.ergonomics = null
+      this.lace = null
+      this.charlson = null
+      this.gma = null
+      this.barthel = null
+      this.asa = null
       this.d_selected = false
       bus.$emit('uncheckRadio')
     }

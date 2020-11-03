@@ -37,12 +37,14 @@ export default {
   },
   methods: {
     selectCategory() {
-      this.mydata = myJson.data().myJson.entity;
+      /*    this.mydata = myJson.data().myJson.entity;
       if(this.mydata === "patients") {
         router.push('home_patients')
       } else if (this.mydata === "vehicles") {
         router.push('home_vehicles')
       }
+    }*/
+      router.push('home_page')
     }
   },
   created() {

@@ -1,20 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home_top_first_row from "@/components/Patients_top_first_row";
-import Vehicles_left_and_map from "@/components/Vehicles_left_and_map";
+import Page from "@/components/Page";
 
 Vue.use(Router)
 
 const routes = [
     {
-        path: "/home_patients",
-        name: 'Home_top_first_row',
-        component: Home_top_first_row
-    },
-    {
-        path: "/home_vehicles",
-        name: 'Patients_left_and_map',
-        component: Vehicles_left_and_map
+        path: "/home_page",
+        name: 'Page',
+        component: Page
     }
 ]
 
