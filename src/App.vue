@@ -13,13 +13,14 @@
     <template v-for="block in myjson">
       <component :is="block.component" :block="block" :key="block.entity"></component>
     </template>
-    <router-view/>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
 <script>
 import myJson from './main';
 import router from "@/router";
+import axios from "axios";
 
 export default {
   name: 'App',
@@ -32,18 +33,24 @@ export default {
   data: function () {
     return {
       myjson: '',
-      mydata: ''
+      mydata: '',
+      peopleArray: [],
+      vehicleArray: []
     };
   },
   methods: {
     selectCategory() {
-      /*    this.mydata = myJson.data().myJson.entity;
+      this.mydata = myJson.data().myJson.entity;
       if(this.mydata === "patients") {
-        router.push('home_patients')
+        axios.get('http://localhost:8000/entities/patients').then(response => {
+          console.log('RISPOSTA ' + response.data[0].id);
+          this.peopleArray = response.data
+        });
       } else if (this.mydata === "vehicles") {
-        router.push('home_vehicles')
+        axios.get('http://localhost:8000/entities/vehicles').then(response => {
+          this.vehicleArray = response.data
+        });
       }
-    }*/
       router.push('home_page')
     }
   },

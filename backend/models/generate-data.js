@@ -1,19 +1,19 @@
-export function generateRandomIntegerNumber(min, max) {
+module.exports.generateRandomIntegerNumber = function(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function generateRandomDecimalNumber(min, max) {
+module.exports.generateRandomDecimalNumber = function(min, max) {
     return (Math.random() * (max - min) + min).toFixed(2);
 }
 
-export function generateRandomStringFromArray(textArray) {
+module.exports.generateRandomStringFromArray = function(textArray) {
     var randomNumber = Math.floor(Math.random()*textArray.length);
     return textArray[randomNumber];
 }
 
-export function generateRandomPoint(center, radius) {
+module.exports.generateRandomPoint = function (center, radius) {
     var x0 = center.lng;
     var y0 = center.lat;
     // Convert Radius from meters to degrees.
