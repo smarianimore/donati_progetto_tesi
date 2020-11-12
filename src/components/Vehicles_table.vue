@@ -30,32 +30,8 @@
 </template>
 
 <script>
-import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
-import * as constant from '../assets/js/constants'
 import  myJson from '../main';
-
-var faker = require('faker');
-faker.locale = "it";
-faker.seed(123);
-
-class Vehicle {
-  constructor() {
-    this.id = generateData.generateRandomIntegerNumber(constant.MINIMUM_ID, constant.MAXIMUM_ID)
-    this.vehicle = faker.vehicle.vehicle();
-    this.manufacturer = faker.vehicle.manufacturer();
-    this.model = faker.vehicle.model();
-    this.type = faker.vehicle.type();
-    this.fuel = faker.vehicle.fuel();
-    this.vin = faker.vehicle.vin();
-    this.color = faker.vehicle.color();
-    this.noise = generateData.generateRandomDecimalNumber(10.0, 100.0);
-    this.vibrations = generateData.generateRandomDecimalNumber(0.30, 0.55);
-    this.fuel = generateData.generateRandomDecimalNumber(0.0, 100.0);
-    this.ergonomics = generateData.generateRandomDecimalNumber(0.0, 100.0);
-    this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS);
-  }
-}
 
 var vehicleArray = [];
 
@@ -72,9 +48,13 @@ name: "Vehicles_table",
     }
   },
   created() {
+    bus.$on('receivedData', (data) => {
+      vehicleArray = data
+      this.createMarkersOnMap();
+    });
     this.headers = myJson.data().myJson.values;
     this.deleteAllData();
-    this.generateData();
+    bus.$emit('pageCreatedVehicles');
   },
   methods: {
     filterOnlyCapsText (value, search) {
@@ -82,14 +62,6 @@ name: "Vehicles_table",
           search != null &&
           typeof value === 'string' &&
           value.toString().toLocaleUpperCase().indexOf(search) !== -1
-    },
-    generateData() {
-      var i;
-      for(i = 0; i < constant.NUMBER_OF_ITEMS_IN_TABLE; i++){
-        let vehicle = new Vehicle();
-        vehicleArray.unshift(vehicle);
-      }
-      this.createMarkersOnMap();
     },
     deleteAllData: () => {
       while (vehicleArray.length > 0) {

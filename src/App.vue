@@ -21,6 +21,7 @@
 import myJson from './main';
 import router from "@/router";
 import axios from "axios";
+import { bus } from './main'
 
 export default {
   name: 'App',
@@ -32,10 +33,10 @@ export default {
   },
   data: function () {
     return {
+      peopleArray: [],
+      vehicleArray: [],
       myjson: '',
       mydata: '',
-      peopleArray: [],
-      vehicleArray: []
     };
   },
   methods: {
@@ -43,20 +44,26 @@ export default {
       this.mydata = myJson.data().myJson.entity;
       if(this.mydata === "patients") {
         axios.get('http://localhost:8000/entities/patients').then(response => {
-          console.log('RISPOSTA ' + response.data[0].id);
           this.peopleArray = response.data
+          router.push('home_page')
         });
       } else if (this.mydata === "vehicles") {
         axios.get('http://localhost:8000/entities/vehicles').then(response => {
           this.vehicleArray = response.data
+          router.push('home_page')
         });
       }
-      router.push('home_page')
     }
   },
   created() {
     this.myjson = myJson.data().myJson
     this.selectCategory()
+    bus.$on('pageCreatedPatients', () => {
+      bus.$emit('receivedData', this.peopleArray)
+    });
+    bus.$on('pageCreatedVehicles', () => {
+      bus.$emit('receivedData', this.vehicleArray)
+    });
   }
 }
 

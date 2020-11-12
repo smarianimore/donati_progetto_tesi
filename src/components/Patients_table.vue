@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="btn-group mygroup dropdown">
+      <button v-on:click.prevent= "loadTable" class="mw-100 btn btn-default botdrop"
+              data-content="Click to load the data table"
+              data-placement="bottom"
+              data-toggle="popover" data-trigger="hover" id="toggleRisk"
+              type="submit">
+        <b>Load Table</b>
+      </button>
+    </div>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
     <v-data-table dense
@@ -31,39 +40,8 @@
 
 
 <script>
-import * as generateData from '../assets/js/generate-data.js';
 import { bus } from '../main'
-import * as constant from '../assets/js/constants'
 import  myJson from '../main';
-
-let faker = require('faker');
-faker.locale = "it";
-
-class Person {
-  constructor() {
-    this.id = generateData.generateRandomIntegerNumber(constant.MINIMUM_ID, constant.MAXIMUM_ID)
-    this.firstName = faker.name.firstName();
-    this.lastName = faker.name.lastName();
-    //Range of data chosen based on the previous thesis work
-    this.lace = generateData.generateRandomIntegerNumber(constant.MIN_LACE, constant.MAX_LACE);
-    this.charlson = generateData.generateRandomDecimalNumber(constant.MIN_CHARLSON, constant.MAX_CHARLSON);
-    this.gma = generateData.generateRandomIntegerNumber(constant.MIN_GMA, constant.MAX_GMA);
-    this.barthel = generateData.generateRandomIntegerNumber(constant.MIN_BARTHEL, constant.MAX_BARTHEL);
-    this.asa = generateData.generateRandomStringFromArray(constant.ARRAY_ASA);
-    this.skills = generateData.generateRandomIntegerNumber(constant.MIN_SKILLS, constant.MAX_SKILLS);
-    this.retrieval = generateData.generateRandomStringFromArray(constant.ARRAY_RETRIEVAL);
-    this.selfcare = generateData.generateRandomIntegerNumber(constant.MIN_SELFCARE, constant.MAX_SELFCARE);
-    this.dwelling = generateData.generateRandomIntegerNumber(constant.MIN_DWELLING, constant.MAX_DWELLING);
-    this.career = generateData.generateRandomIntegerNumber(constant.MIN_CAREER, constant.MAX_CAREER);
-    //Center in Reggio Emilia, Radius 10km
-    this.location = generateData.generateRandomPoint(constant.CENTER_POINT,constant.RADIUS);
-    this.phone = faker.phone.phoneNumber();
-    this.email = faker.internet.email();
-    //For the map recognition
-    this.person = true
-  }
-
-}
 
 let peopleArray = [];
 
@@ -81,9 +59,13 @@ export default {
     }
   },
   created() {
+    bus.$on('receivedData', (data) => {
+      peopleArray = data
+      this.createMarkersOnMap();
+    });
     this.headers = myJson.data().myJson.values;
     this.deleteAllData();
-    this.generateData();
+    bus.$emit('pageCreatedPatients');
   },
   methods: {
     filterOnlyCapsText (value, search) {
@@ -91,13 +73,6 @@ export default {
           search != null &&
           typeof value === 'string' &&
           value.toString().toLocaleUpperCase().indexOf(search) !== -1
-    },
-    generateData() {
-      for(let i = 0; i < constant.NUMBER_OF_ITEMS_IN_TABLE; i++){
-        let person = new Person();
-        peopleArray.unshift(person);
-      }
-      this.createMarkersOnMap();
     },
     deleteAllData: () => {
       while (peopleArray.length > 0) {
@@ -110,6 +85,9 @@ export default {
     highlightMarker (data) {
       bus.$emit('highlightMarker', data)
     },
+    loadTable() {
+      this.patients = peopleArray
+    }
   }
 }
 </script>
