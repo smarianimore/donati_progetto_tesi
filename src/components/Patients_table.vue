@@ -15,7 +15,6 @@
         :search="search"
         :custom-filter="filterOnlyCapsText"
         @current-items ="highlightMarker(selected)"
-        @change="loadTable"
     >
       <template v-slot:header.name="{ header }">
         {{ header.text.toUpperCase() }}
@@ -73,7 +72,7 @@ export default {
       }
     },
     createMarkersOnMap () {
-      bus.$emit('createMarkers', peopleArray)
+      bus.$emit('createMarkersPatients')
     },
     highlightMarker (data) {
       bus.$emit('highlightMarker', data)

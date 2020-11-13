@@ -70,7 +70,7 @@ name: "Vehicles_table",
       }
     },
     createMarkersOnMap () {
-      bus.$emit('createMarkers', vehicleArray)
+      bus.$emit('createMarkersVehicles')
     },
     highlightMarker (data) {
       bus.$emit('highlightMarker', data)

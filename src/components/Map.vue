@@ -19,6 +19,7 @@ import * as constant from '../assets/js/constants'
 import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
 import L from 'leaflet';
 import { bus } from '../main';
+import axios from "axios";
 
 export default {
   name: "Map",
@@ -46,42 +47,15 @@ export default {
     zoomUpdated (zoom) {
       this.zoom = zoom;
     },
-    createMarkers(dataArray) {
-      let i;
-      for(i = 0; i < dataArray.length; i++) {
-        if(dataArray[i].person){
-          this.markers.push({
-            id: dataArray[i].id,
-            location: dataArray[i].location,
-            informations: dataArray[i].firstName + ' ' + dataArray[i].lastName + '<br> Phone: ' + dataArray[i].phone +
-                '<br> Email: ' + dataArray[i].email,
-            lace: dataArray[i].lace,
-            charlson: dataArray[i].charlson,
-            gma: dataArray[i].gma,
-            barthel: dataArray[i].barthel,
-            asa: dataArray[i].asa,
-            color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
-            strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
-            circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
-            highlighted: false
-          });
-        }else if(dataArray[i].vehicle){
-          this.markers.push({
-            id: dataArray[i].id,
-            location: dataArray[i].location,
-            informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
-                + dataArray[i].color,
-            noise: dataArray[i].noise,
-            vibrations: dataArray[i].vibrations,
-            fuel: dataArray[i].fuel,
-            ergonomics: dataArray[i].ergonomics,
-            color: constant.MARKER_NOT_HIGHLIGHTED_COLOR,
-            strokeColor: constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
-            circleColor: constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
-            highlighted: false
-          });
-        }
-      }
+    createMarkersPatients() {
+      axios.get('http://localhost:8000/entities/patients/markers').then(response => {
+        this.markers = response.data
+      });
+    },
+    createMarkersVehicles() {
+      axios.get('http://localhost:8000/entities/vehicles/markers').then(response => {
+        this.markers = response.data
+      });
     },
     highlightMarkers(dataArray) {
       if(dataArray.length == 0){
@@ -145,366 +119,121 @@ export default {
               </svg>`
       });
     },
-    selectCriterion(data){
-      if(data.criterion === 'tertile') {
-        switch(data.text){
+    selectCriterion(data) {
+      if (data.criterion === 'tertile') {
+        switch (data.text) {
           case 'Ergonomics':
-            alert('The best criterion for this index is quartile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].ergonomics <= constant.TERTILE_LOWER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].ergonomics > constant.TERTILE_LOWER_THRESHOLD && this.markers[i].ergonomics <= constant.TERTILE_MEDIUM_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              }
-            }
+            alert('The best criterion for this index is quartile!');
+            axios.get('http://localhost:8000/entities/tertile/ergonomics').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Vibrations':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].vibrations < constant.VIBRATIONS_LOWER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].vibrations >= constant.VIBRATIONS_LOWER_THRESHOLD && this.markers[i].vibrations <= constant.VIBRATIONS_HIGHER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/vibrations').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Fuel':
             alert('The best criterion for this index is quartile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].fuel <= constant.TERTILE_LOWER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].fuel > constant.TERTILE_LOWER_THRESHOLD && this.markers[i].fuel <= constant.TERTILE_MEDIUM_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/fuel').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Noise':
             alert('The best criterion for this index is quartile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].noise < constant.NOISE_BOTHER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].noise >= constant.NOISE_BOTHER_THRESHOLD && this.markers[i].noise < constant.NOISE_DAMAGE_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/noise').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Lace':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].lace <= (constant.MAX_LACE / 3)){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].lace > (constant.MAX_LACE / 3) && this.markers[i].lace <= 2 * (constant.MAX_LACE / 3)) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].lace > 2 * (constant.MAX_LACE / 3) && this.markers[i].lace <= constant.MAX_LACE) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/lace').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Charlston':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].charlson <= (constant.MAX_CHARLSON / 3)){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].charlson > (constant.MAX_CHARLSON / 3) && this.markers[i].charlson <= 2 * (constant.MAX_CHARLSON / 3)) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].charlson > 2 * (constant.MAX_CHARLSON / 3) && this.markers[i].charlson <= constant.MAX_CHARLSON) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/charlston').then(response => {
+              this.markers = response.data
+            });
             break
           case 'ASA':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].asa === constant.ASA_II){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].asa === constant.ASA_III) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_NOT_HIGHLIGHTED_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/asa').then(response => {
+              this.markers = response.data
+            });
             break
           case 'GMA':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].gma >= constant.MIN_GMA && this.markers[i].gma < constant.MEDIUM_GMA){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].gma == constant.MEDIUM_GMA) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].gma == constant.MAX_GMA) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/gma').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Barthel':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].barthel >= constant.MEDIUM_BARTHEL_91 && this.markers[i].barthel <= constant.MAX_BARTHEL){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].barthel >= constant.MEDIUM_BARTHEL_61 && this.markers[i].barthel <= constant.MEDIUM_BARTHEL_90) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].barthel <= constant.MEDIUM_BARTHEL_60) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/tertile/barthel').then(response => {
+              this.markers = response.data
+            });
             break
         }
-      } else if(data.criterion === 'quartile') {
-        switch(data.text){
+      } else if (data.criterion === 'quartile') {
+        switch (data.text) {
           case 'Ergonomics':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].ergonomics <= constant.ERGONOMICS_LOWER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].ergonomics > constant.ERGONOMICS_LOWER_THRESHOLD && this.markers[i].ergonomics <= constant.ERGONOMICS_MEDIUM_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].ergonomics > constant.ERGONOMICS_MEDIUM_THRESHOLD && this.markers[i].ergonomics <= constant.ERGONOMICS_HIGHER_THRESHOLD) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/ergonomics').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Vibrations':
             alert('The best criterion for this index is tertile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].vibrations < constant.QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].vibrations >= constant.QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD && this.markers[i].vibrations <= constant.VIBRATIONS_LOWER_THRESHOLD) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].vibrations >= constant.VIBRATIONS_LOWER_THRESHOLD && this.markers[i].vibrations <= constant.VIBRATIONS_HIGHER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/vibrations').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Fuel':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].fuel <= constant.FUEL_LOWER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].fuel > constant.FUEL_LOWER_THRESHOLD && this.markers[i].fuel <= constant.FUEL_MEDIUM_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].fuel > constant.FUEL_MEDIUM_THRESHOLD && this.markers[i].fuel <= constant.FUEL_HIGHER_THRESHOLD) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/fuel').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Noise':
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].noise < constant.NOISE_BOTHER_THRESHOLD){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].noise >= constant.NOISE_BOTHER_THRESHOLD && this.markers[i].noise < constant.NOISE_DISTURBANCE_THRESHOLD){
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].noise >= constant.NOISE_DISTURBANCE_THRESHOLD && this.markers[i].noise < constant.NOISE_DAMAGE_THRESHOLD){
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/noise').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Lace':
             alert('The best criterion for this index is tertile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].lace <= (constant.MAX_LACE / 4)){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].lace > (constant.MAX_LACE / 4) && this.markers[i].lace <= 2 * (constant.MAX_LACE / 4)) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].lace > 2 * (constant.MAX_LACE / 4) && this.markers[i].lace <= 3 * (constant.MAX_LACE / 4)) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].lace > 3 * (constant.MAX_LACE / 4) && this.markers[i].lace <= constant.MAX_LACE) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/lace').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Charlston':
             alert('The best criterion for this index is tertile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].charlson <= (constant.MAX_CHARLSON / 4)){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].charlson > (constant.MAX_CHARLSON / 4) && this.markers[i].charlson <= 2 * (constant.MAX_CHARLSON / 4)) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].charlson > 2 * (constant.MAX_CHARLSON / 4) && this.markers[i].charlson <= 3 * (constant.MAX_CHARLSON / 4)) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].charlson > 3 * (constant.MAX_CHARLSON / 4) && this.markers[i].charlson <= constant.MAX_CHARLSON) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/charlston').then(response => {
+              this.markers = response.data
+            });
             break
           case 'ASA':
             alert('It is NOT POSSBILE to show this index in quartiles!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].asa === constant.ASA_II){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].asa === constant.ASA_III) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              } else {
-                this.markers[i].color = constant.MARKER_NOT_HIGHLIGHTED_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/asa').then(response => {
+              this.markers = response.data
+            });
             break
           case 'GMA':
             alert('The best criterion for this index is tertile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].gma >= constant.MIN_GMA && this.markers[i].gma < constant.QUARTILE_GMA_MIDDLE_THRESHOLD){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].gma == constant.QUARTILE_GMA_MIDDLE_THRESHOLD) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].gma == constant.MEDIUM_GMA) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].gma == constant.MAX_GMA) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/gma').then(response => {
+              this.markers = response.data
+            });
             break
           case 'Barthel':
             alert('The best criterion for this index is tertile!')
-            for(let i = 0; i < this.markers.length; i++) {
-              if(this.markers[i].barthel >= constant.MEDIUM_BARTHEL_91 && this.markers[i].barthel <= constant.MAX_BARTHEL){
-                this.markers[i].color = constant.MARKER_NO_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_NO_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_NO_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].barthel >= constant.MEDIUM_BARTHEL_61 && this.markers[i].barthel <= constant.MEDIUM_BARTHEL_90) {
-                this.markers[i].color = constant.MARKER_LITTLE_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_LITTLE_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].barthel <= constant.MEDIUM_BARTHEL_60 && this.markers[i].barthel > constant.QUARTILE_BARTHEL_LOWER_THRESHOLD_30) {
-                this.markers[i].color = constant.MARKER_SOME_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_SOME_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_SOME_RISK_CIRCLE_COLOR;
-              } else if (this.markers[i].barthel <= constant.QUARTILE_BARTHEL_LOWER_THRESHOLD_30) {
-                this.markers[i].color = constant.MARKER_HIGH_RISK_COLOR;
-                this.markers[i].strokeColor = constant.MARKER_HIGH_RISK_STROKE_COLOR;
-                this.markers[i].circleColor = constant.MARKER_HIGH_RISK_CIRCLE_COLOR;
-              }
-            }
+            axios.get('http://localhost:8000/entities/quartile/barthel').then(response => {
+              this.markers = response.data
+            });
             break
         }
       }
     }
   },
   created() {
-    bus.$on('createMarkers', (data) => {
-      this.createMarkers(data)
+    bus.$on('createMarkersPatients', () => {
+      this.createMarkersPatients()
+    });
+    bus.$on('createMarkersVehicles', () => {
+      this.createMarkersVehicles()
     });
     bus.$on('highlightMarker', (data) => {
       this.highlightMarkers(data)
@@ -517,6 +246,7 @@ export default {
     });
   },
 }
+
 </script>
 
 <style scoped>
