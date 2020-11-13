@@ -1,17 +1,8 @@
 <template>
   <div>
-    <div class="btn-group mygroup dropdown">
-      <button v-on:click.prevent= "loadTable" class="mw-100 btn btn-default botdrop"
-              data-content="Click to load the data table"
-              data-placement="bottom"
-              data-toggle="popover" data-trigger="hover" id="toggleRisk"
-              type="submit">
-        <b>Load Table</b>
-      </button>
-    </div>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <v-data-table dense
+    <v-data-table ref="table" dense
         v-model="selected"
         :headers="headers"
         :items="patients"
@@ -24,6 +15,7 @@
         :search="search"
         :custom-filter="filterOnlyCapsText"
         @current-items ="highlightMarker(selected)"
+        @change="loadTable"
     >
       <template v-slot:header.name="{ header }">
         {{ header.text.toUpperCase() }}
@@ -61,6 +53,7 @@ export default {
   created() {
     bus.$on('receivedData', (data) => {
       peopleArray = data
+      this.patients = peopleArray
       this.createMarkersOnMap();
     });
     this.headers = myJson.data().myJson.values;
@@ -84,9 +77,6 @@ export default {
     },
     highlightMarker (data) {
       bus.$emit('highlightMarker', data)
-    },
-    loadTable() {
-      this.patients = peopleArray
     }
   }
 }
