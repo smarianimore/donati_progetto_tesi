@@ -50,6 +50,7 @@ name: "Vehicles_table",
   created() {
     bus.$on('receivedData', (data) => {
       vehicleArray = data
+      this.vehicles = vehicleArray
       this.createMarkersOnMap();
     });
     this.headers = myJson.data().myJson.values;
