@@ -225,6 +225,10 @@ export default {
             });
             break
         }
+      } else {
+        axios.get('http://localhost:8000/entities/expression', {params: {criterion: data.criterion}}).then(response => {
+          this.markers = response.data
+        });
       }
     }
   },

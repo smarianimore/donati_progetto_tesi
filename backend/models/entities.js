@@ -2,6 +2,8 @@
 const gendata = require("../models/generate-data")
 const constants = require("../models/constants")
 
+const mozjexl = require('mozjexl');
+
 let faker = require('faker');
 faker.locale = "it";
 faker.seed(123);
@@ -49,6 +51,8 @@ class Vehicle {
     }
 }
 
+var context;
+
 module.exports.generateData = function(entity) {
     if(entity === "patients"){
         let peopleArray = [];
@@ -56,6 +60,10 @@ module.exports.generateData = function(entity) {
             let person = new Person();
             peopleArray.unshift(person);
         }
+        context = {
+            people: peopleArray
+        };
+        console.log(context)
         return peopleArray
     }
     if(entity === "vehicles") {
@@ -64,6 +72,10 @@ module.exports.generateData = function(entity) {
             let vehicle = new Vehicle();
             vehicleArray.unshift(vehicle);
         }
+            context = {
+            vehicles: vehicleArray
+        };
+        console.log(context)
         return vehicleArray
     }
 }
@@ -482,4 +494,19 @@ module.exports.createIndexColorQuartileBarthel = function() {
         }
     }
     return markers
+}
+
+module.exports.resolveExpression = async function (criterion) {
+    return await mozjexl.eval(criterion, context).then(function (res) {
+        for (let j = 0; j < res.length; j++) {
+            for (let i = 0; i < markers.length; i++) {
+                if (markers[i].id == res[j].id) {
+                    markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
+                    markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+                    markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+                }
+            }
+        }
+        return markers;
+    });
 }

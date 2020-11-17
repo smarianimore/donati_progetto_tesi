@@ -1,12 +1,14 @@
 const func = require("../models/entities");
 
 module.exports = function(app) {
-    let peopleArray =  func.generateData("patients");
-    let vehicleArray =  func.generateData("vehicles");
+    let peopleArray =  [];
+    let vehicleArray = [];
     app.get('/entities/patients', (req, res) => {
+        peopleArray = func.generateData("patients");
         res.send(peopleArray);
     });
     app.get('/entities/vehicles', (req, res) => {
+        vehicleArray = func.generateData("vehicles");
         res.send(vehicleArray);
     });
 
@@ -74,5 +76,12 @@ module.exports = function(app) {
     });
     app.get('/entities/quartile/barthel', (req, res) => {
         res.send(func.createIndexColorQuartileBarthel());
+    });
+
+    app.get('/entities/expression', (req, res) => {
+        let result = func.resolveExpression(req.query.criterion);
+        result.then( function (result){
+            res.send(result)
+        })
     });
 }
