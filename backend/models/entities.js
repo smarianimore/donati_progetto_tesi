@@ -498,6 +498,7 @@ module.exports.createIndexColorQuartileBarthel = function() {
 
 module.exports.resolveExpression = async function (criterion) {
     return await mozjexl.eval(criterion, context).then(function (res) {
+        deselectAllMarkers()
         for (let j = 0; j < res.length; j++) {
             for (let i = 0; i < markers.length; i++) {
                 if (markers[i].id == res[j].id) {
@@ -509,4 +510,13 @@ module.exports.resolveExpression = async function (criterion) {
         }
         return markers;
     });
+}
+
+function deselectAllMarkers() {
+    for(let j = 0; j < markers.length; j++){
+        markers[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+            markers[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+            markers[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
+            markers[j].highlighted = false
+    }
 }

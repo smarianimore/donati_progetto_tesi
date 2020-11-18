@@ -80,10 +80,8 @@ export default {
       this.deselectMarkers(dataArray);
     },
     deselectMarkers(dataArray) {
-      let i;
-      let j;
-      for(i = 0; i < dataArray.length; i++) {
-        for (j = 0; j < this.markers.length; j++) {
+      for(let i = 0; i < dataArray.length; i++) {
+        for (let j = 0; j < this.markers.length; j++) {
           if(this.markers[j].id != dataArray[i].id && this.markers[j].highlighted == false){
                 this.markers[j].color = constant.MARKER_NOT_HIGHLIGHTED_COLOR,
                 this.markers[j].strokeColor = constant.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
@@ -124,48 +122,57 @@ export default {
         switch (data.text) {
           case 'Ergonomics':
             alert('The best criterion for this index is quartile!');
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/ergonomics').then(response => {
               this.markers = response.data
             });
             break
           case 'Vibrations':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/vibrations').then(response => {
               this.markers = response.data
             });
             break
           case 'Fuel':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is quartile!')
             axios.get('http://localhost:8000/entities/tertile/fuel').then(response => {
               this.markers = response.data
             });
             break
           case 'Noise':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is quartile!')
             axios.get('http://localhost:8000/entities/tertile/noise').then(response => {
               this.markers = response.data
             });
             break
           case 'Lace':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/lace').then(response => {
               this.markers = response.data
             });
             break
           case 'Charlston':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/charlston').then(response => {
               this.markers = response.data
             });
             break
           case 'ASA':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/asa').then(response => {
               this.markers = response.data
             });
             break
           case 'GMA':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/gma').then(response => {
               this.markers = response.data
             });
             break
           case 'Barthel':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/tertile/barthel').then(response => {
               this.markers = response.data
             });
@@ -174,51 +181,60 @@ export default {
       } else if (data.criterion === 'quartile') {
         switch (data.text) {
           case 'Ergonomics':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/quartile/ergonomics').then(response => {
               this.markers = response.data
             });
             break
           case 'Vibrations':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
             axios.get('http://localhost:8000/entities/quartile/vibrations').then(response => {
               this.markers = response.data
             });
             break
           case 'Fuel':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/quartile/fuel').then(response => {
               this.markers = response.data
             });
             break
           case 'Noise':
+            this.deselectAllMarkers()
             axios.get('http://localhost:8000/entities/quartile/noise').then(response => {
               this.markers = response.data
             });
             break
           case 'Lace':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
             axios.get('http://localhost:8000/entities/quartile/lace').then(response => {
               this.markers = response.data
             });
             break
           case 'Charlston':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
             axios.get('http://localhost:8000/entities/quartile/charlston').then(response => {
               this.markers = response.data
             });
             break
           case 'ASA':
+            this.deselectAllMarkers()
             alert('It is NOT POSSBILE to show this index in quartiles!')
             axios.get('http://localhost:8000/entities/quartile/asa').then(response => {
               this.markers = response.data
             });
             break
           case 'GMA':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
             axios.get('http://localhost:8000/entities/quartile/gma').then(response => {
               this.markers = response.data
             });
             break
           case 'Barthel':
+            this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
             axios.get('http://localhost:8000/entities/quartile/barthel').then(response => {
               this.markers = response.data
@@ -226,6 +242,7 @@ export default {
             break
         }
       } else {
+        this.deselectAllMarkers()
         axios.get('http://localhost:8000/entities/expression', {params: {criterion: data.criterion}}).then(response => {
           this.markers = response.data
         });
