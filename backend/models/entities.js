@@ -61,9 +61,8 @@ module.exports.generateData = function(entity) {
             peopleArray.unshift(person);
         }
         context = {
-            people: peopleArray
+            patients: peopleArray
         };
-        console.log(context)
         return peopleArray
     }
     if(entity === "vehicles") {
@@ -75,7 +74,6 @@ module.exports.generateData = function(entity) {
             context = {
             vehicles: vehicleArray
         };
-        console.log(context)
         return vehicleArray
     }
 }
@@ -118,7 +116,7 @@ module.exports.createMarkers = function(dataArray) {
             });
         }
     }
-    markers = markers_created;
+    markers = [...markers_created];
     return markers_created
 }
 

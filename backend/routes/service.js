@@ -1,14 +1,12 @@
 const func = require("../models/entities");
 
 module.exports = function(app) {
-    let peopleArray =  [];
-    let vehicleArray = [];
+    let peopleArray =  func.generateData("patients");
+    let vehicleArray = func.generateData("vehicles");
     app.get('/entities/patients', (req, res) => {
-        peopleArray = func.generateData("patients");
         res.send(peopleArray);
     });
     app.get('/entities/vehicles', (req, res) => {
-        vehicleArray = func.generateData("vehicles");
         res.send(vehicleArray);
     });
 
@@ -19,7 +17,6 @@ module.exports = function(app) {
     app.get('/entities/vehicles/markers', (req, res) => {
         res.send(func.createMarkers(vehicleArray));
     });
-
 
     app.get('/entities/tertile/ergonomics', (req, res) => {
         res.send(func.createIndexColorTertileErgonomics());
