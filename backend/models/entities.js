@@ -1,6 +1,6 @@
-
 const gendata = require("../models/generate-data")
 const constants = require("../models/constants")
+const turf = require('@turf/turf')
 
 const mozjexl = require('mozjexl');
 
@@ -117,7 +117,27 @@ module.exports.createMarkers = function(dataArray) {
         }
     }
     markers = [...markers_created];
+    changeCoordinatesEveryFiveSeconds();
     return markers_created
+}
+
+function changeCoordinatesEveryFiveSeconds(){
+    setInterval(function(){
+        console.log('Cambio le Coordinate!');
+        changeCoordinates();
+    }, 6000);
+}
+
+function changeCoordinates(){
+    for (let i = 0; i < markers.length; i++){
+        console.log(markers[i].location)
+        let point = turf.point([markers[i].location.lat, markers[i].location.lng]);
+        let distance = gendata.generateRandomDecimalNumber(0.1, 0.5);
+        let bearing = gendata.generateRandomIntegerNumber(20, 50);
+        markers[i].location.lat = turf.destination(point, distance, bearing).geometry.coordinates[0];
+        markers[i].location.lng = turf.destination(point, distance, bearing).geometry.coordinates[1];
+        console.log(markers[i].location)
+    }
 }
 
 module.exports.createIndexColorTertileErgonomics = function() {

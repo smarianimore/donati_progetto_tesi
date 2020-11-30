@@ -52,7 +52,7 @@ module.exports.QUARTILE_BARTHEL_LOWER_THRESHOLD_30 = 30;
 module.exports.CENTER_POINT = { 'lat':44.694773, 'lng':10.769152} //Between Reggio Emilia and Modena
 module.exports.RADIUS = 20000; //Meters
 
-module.exports.NUMBER_OF_ITEMS_IN_TABLE = 40;
+module.exports.NUMBER_OF_ITEMS_IN_TABLE = 3;
 
 module.exports.MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
