@@ -47,6 +47,12 @@ export default {
     zoomUpdated (zoom) {
       this.zoom = zoom;
     },
+    changeCoordinates() {
+      axios.get('http://localhost:8000/entities/markers/updated').then(response => {
+        this.markers = response.data
+        console.log(this.markers)
+      });
+    },
     createMarkersPatients() {
       axios.get('http://localhost:8000/entities/patients/markers').then(response => {
         this.markers = response.data
@@ -261,9 +267,13 @@ export default {
     });
     bus.$on('uncheckRadio',() => {
       this.deselectAllMarkers()
+      axios.put('http://localhost:8000/entities/markers/deselect');
     });
     bus.$on('selectCriterion',(data) => {
       this.selectCriterion(data[0])
+    });
+    bus.$on('changeCoordinates',() => {
+      this.changeCoordinates()
     });
   },
 }

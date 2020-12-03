@@ -23,13 +23,15 @@
     "mongodb": "^3.6.2",
     "mongodb-client-encryption": "^1.1.0",
     "request": "^2.79.0",
+    "socket.io": "^3.0.3",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-datatables-net": "git+https://github.com/niiknow/vue-datatables-net.git",
     "vue-faker": "^2.0.0",
     "vue-router": "^3.4.3",
     "vue2-leaflet": "^2.5.2",
-    "vuetify": "^2.3.10"
+    "vuetify": "^2.3.10",
+    "ws": "^7.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

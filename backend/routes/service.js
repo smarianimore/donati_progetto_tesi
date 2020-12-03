@@ -10,6 +10,13 @@ module.exports = function(app) {
         res.send(vehicleArray);
     });
 
+    app.get('/entities/markers/updated', (req, res) => {
+        res.send(func.getUpdatedMarkers());
+    });
+
+    app.put('/entities/markers/deselect', () => {
+        func.deselectAllMarkers()
+    });
 
     app.get('/entities/patients/markers', (req, res) => {
         res.send(func.createMarkers(peopleArray));

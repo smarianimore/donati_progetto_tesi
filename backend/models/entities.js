@@ -117,15 +117,15 @@ module.exports.createMarkers = function(dataArray) {
         }
     }
     markers = [...markers_created];
-    changeCoordinatesEveryFiveSeconds();
+    changeCoordinatesEveryTotSeconds()
     return markers_created
 }
 
-function changeCoordinatesEveryFiveSeconds(){
+function changeCoordinatesEveryTotSeconds(){
     setInterval(function(){
         console.log('Cambio le Coordinate!');
         changeCoordinates();
-    }, 6000);
+    }, 3000);
 }
 
 function changeCoordinates(){
@@ -138,6 +138,10 @@ function changeCoordinates(){
         markers[i].location.lng = turf.destination(point, distance, bearing).geometry.coordinates[1];
         console.log(markers[i].location)
     }
+}
+
+module.exports.getUpdatedMarkers = function () {
+    return markers
 }
 
 module.exports.createIndexColorTertileErgonomics = function() {
@@ -516,7 +520,7 @@ module.exports.createIndexColorQuartileBarthel = function() {
 
 module.exports.resolveExpression = async function (criterion) {
     return await mozjexl.eval(criterion, context).then(function (res) {
-        deselectAllMarkers()
+        this.deselectAllMarkers()
         for (let j = 0; j < res.length; j++) {
             for (let i = 0; i < markers.length; i++) {
                 if (markers[i].id == res[j].id) {
@@ -530,7 +534,8 @@ module.exports.resolveExpression = async function (criterion) {
     });
 }
 
-function deselectAllMarkers() {
+module.exports.deselectAllMarkers = function (){
+    console.log("DESELEZIONO I MARKERS!")
     for(let j = 0; j < markers.length; j++){
         markers[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
             markers[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,

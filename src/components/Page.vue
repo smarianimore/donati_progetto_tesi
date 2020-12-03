@@ -121,6 +121,11 @@ import { bus } from '../main'
 import  myJson from '../main';
 import IndexButton from "@/components/IndexButton";
 
+setInterval(function(){
+  console.log('Prendo le coordinate nuove!');
+  bus.$emit('changeCoordinates')
+}, 3000);
+
 export default {
 name: "Page",
   components: {Vehicles_table, Map, Patients_table, IndexButton},

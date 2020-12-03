@@ -19,6 +19,9 @@
     "express": "^4.17.1",
     "jexl": "^2.3.0",
     "mozjexl": "^1.1.6",
-    "nodemon": "^2.0.3"
+    "node-static": "^0.7.11",
+    "nodemon": "^2.0.3",
+    "socket.io": "^3.0.3",
+    "ws": "^7.4.0"
   }
 }
