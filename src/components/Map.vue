@@ -50,7 +50,6 @@ export default {
     changeCoordinates() {
       axios.get('http://localhost:8000/entities/markers/updated').then(response => {
         this.markers = response.data
-        console.log(this.markers)
       });
     },
     createMarkersPatients() {

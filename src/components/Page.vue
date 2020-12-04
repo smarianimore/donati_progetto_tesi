@@ -122,9 +122,8 @@ import  myJson from '../main';
 import IndexButton from "@/components/IndexButton";
 
 setInterval(function(){
-  console.log('Prendo le coordinate nuove!');
   bus.$emit('changeCoordinates')
-}, 3000);
+}, 2000);
 
 export default {
 name: "Page",

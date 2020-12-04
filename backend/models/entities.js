@@ -123,20 +123,17 @@ module.exports.createMarkers = function(dataArray) {
 
 function changeCoordinatesEveryTotSeconds(){
     setInterval(function(){
-        console.log('Cambio le Coordinate!');
         changeCoordinates();
-    }, 3000);
+    }, 1500);
 }
 
 function changeCoordinates(){
     for (let i = 0; i < markers.length; i++){
-        console.log(markers[i].location)
         let point = turf.point([markers[i].location.lat, markers[i].location.lng]);
-        let distance = gendata.generateRandomDecimalNumber(0.1, 0.5);
-        let bearing = gendata.generateRandomIntegerNumber(20, 50);
+        let distance = gendata.generateRandomDecimalNumber(0.0, 0.5);
+        let bearing = gendata.generateRandomIntegerNumber(0, 360);
         markers[i].location.lat = turf.destination(point, distance, bearing).geometry.coordinates[0];
         markers[i].location.lng = turf.destination(point, distance, bearing).geometry.coordinates[1];
-        console.log(markers[i].location)
     }
 }
 
@@ -520,7 +517,7 @@ module.exports.createIndexColorQuartileBarthel = function() {
 
 module.exports.resolveExpression = async function (criterion) {
     return await mozjexl.eval(criterion, context).then(function (res) {
-        this.deselectAllMarkers()
+        module.exports.deselectAllMarkers()
         for (let j = 0; j < res.length; j++) {
             for (let i = 0; i < markers.length; i++) {
                 if (markers[i].id == res[j].id) {
@@ -535,7 +532,6 @@ module.exports.resolveExpression = async function (criterion) {
 }
 
 module.exports.deselectAllMarkers = function (){
-    console.log("DESELEZIONO I MARKERS!")
     for(let j = 0; j < markers.length; j++){
         markers[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
             markers[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
