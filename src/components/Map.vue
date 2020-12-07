@@ -63,16 +63,17 @@ export default {
       });
     },
     highlightMarkers(dataArray) {
-      if(dataArray.length == 0){
+      axios.put('http://localhost:8000/entities/markers/highlight',  { data: dataArray}).catch(error => {
+        console.log("Error in highlightMarkers "+error)
+      });
+     if(dataArray.length == 0){
         this.deselectAllMarkers();
       }
       for(let z = 0; z < this.markers.length; z++){
         this.markers[z].highlighted = false
       }
-      let i;
-      let j;
-      for(i = 0; i < dataArray.length; i++) {
-        for (j = 0; j < this.markers.length; j++) {
+      for(let i = 0; i < dataArray.length; i++) {
+        for (let j = 0; j < this.markers.length; j++) {
           this.center = dataArray[i].location;
           if(this.markers[j].id == dataArray[i].id) {
                 this.markers[j].color = constant.MARKER_HIGHLIGHTED_COLOR,

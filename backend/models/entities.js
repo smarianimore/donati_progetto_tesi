@@ -1,3 +1,4 @@
+
 const gendata = require("../models/generate-data")
 const constants = require("../models/constants")
 const turf = require('@turf/turf')
@@ -124,7 +125,7 @@ module.exports.createMarkers = function(dataArray) {
 function changeCoordinatesEveryTotSeconds(){
     setInterval(function(){
         changeCoordinates();
-    }, 1500);
+    }, 500);
 }
 
 function changeCoordinates(){
@@ -539,3 +540,35 @@ module.exports.deselectAllMarkers = function (){
             markers[j].highlighted = false
     }
 }
+
+module.exports.highlightMarkers = function(data){
+    console.log(data)
+    if(data.length == 0){
+        module.exports.deselectAllMarkers()
+    }
+    for(let z = 0; z < markers.length; z++){
+        markers[z].highlighted = false
+    }
+    for(let i = 0; i < data.length; i++) {
+        for (let j = 0; j < markers.length; j++) {
+            if(markers[j].id == data[i].id) {
+                markers[j].color = constants.MARKER_HIGHLIGHTED_COLOR,
+                    markers[j].strokeColor = constants.MARKER_HIGHLIGHTED_STROKE_COLOR,
+                    markers[j].circleColor = constants.MARKER_HIGHLIGHTED_CIRCLE_COLOR,
+                    markers[j].highlighted = true
+            }
+        }
+    }
+    for(let i = 0; i < data.length; i++) {
+        for (let j = 0; j < markers.length; j++) {
+            if(markers[j].id != data[i].id && markers[j].highlighted == false){
+                markers[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+                markers[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+                markers[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR
+                markers[j].highlighted = false
+            }
+        }
+    }
+}, error => {
+    console.log("Error SERVER "+error)
+};

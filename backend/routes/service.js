@@ -1,4 +1,6 @@
 const func = require("../models/entities");
+// eslint-disable-next-line no-unused-vars
+const bodyParser = require("body-parser");
 
 module.exports = function(app) {
     let peopleArray =  func.generateData("patients");
@@ -10,13 +12,24 @@ module.exports = function(app) {
         res.send(vehicleArray);
     });
 
+
     app.get('/entities/markers/updated', (req, res) => {
         res.send(func.getUpdatedMarkers());
     });
 
-    app.put('/entities/markers/deselect', () => {
+
+    app.put('/entities/markers/deselect', (req, res) => {
         func.deselectAllMarkers()
+        res.send('Done')
     });
+    app.put('/entities/markers/highlight', (req, res) => {
+        let dataArray = req.body.data
+        func.highlightMarkers(dataArray)
+        res.send('Done')
+    }), error => {
+        console.log("Error SERVER "+error)
+    };
+
 
     app.get('/entities/patients/markers', (req, res) => {
         res.send(func.createMarkers(peopleArray));

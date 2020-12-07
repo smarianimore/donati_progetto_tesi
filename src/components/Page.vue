@@ -123,7 +123,7 @@ import IndexButton from "@/components/IndexButton";
 
 setInterval(function(){
   bus.$emit('changeCoordinates')
-}, 2000);
+}, 750);
 
 export default {
 name: "Page",
