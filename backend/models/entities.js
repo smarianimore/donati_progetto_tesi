@@ -1,13 +1,18 @@
-
 const gendata = require("../models/generate-data")
 const constants = require("../models/constants")
-const turf = require('@turf/turf')
+const fs = require('fs')
 
 const mozjexl = require('mozjexl');
 
 let faker = require('faker');
 faker.locale = "it";
 faker.seed(123);
+
+let array_traces = [...constants.ARRAY_FILE_TRACES]
+
+let markers = []
+
+var context;
 
 class Person {
     constructor() {
@@ -35,7 +40,7 @@ class Person {
 }
 
 class Vehicle {
-    constructor() {
+     constructor() {
         this.id = gendata.generateRandomIntegerNumber(constants.MINIMUM_ID, constants.MAXIMUM_ID)
         this.vehicle = faker.vehicle.vehicle();
         this.manufacturer = faker.vehicle.manufacturer();
@@ -48,16 +53,42 @@ class Vehicle {
         this.vibrations = gendata.generateRandomDecimalNumber(0.30, 0.55);
         this.fuel = gendata.generateRandomDecimalNumber(0.0, 100.0);
         this.ergonomics = gendata.generateRandomDecimalNumber(0.0, 100.0);
-        this.location = gendata.generateRandomPoint(constants.CENTER_POINT, constants.RADIUS);
+     //   this.location = gendata.generateRandomPoint(constants.CENTER_POINT, constants.RADIUS);
+        this.coordinates = readTraceFile();
+        this.location = this.coordinates[0];
+        this.index = 1;
     }
 }
 
-var context;
+function readTraceFile() {
+    try {
+        let coordinates = [];
+        let trace = array_traces.pop();
+        const data = fs.readFileSync(trace, 'UTF-8');
+
+        const lines = data.split(/\r?\n/);
+
+        coordinates.unshift(lines.length);
+
+        lines.forEach((line) => {
+            let splitting = line.split(',');
+            if(parseFloat(splitting[0]) != undefined || parseFloat(splitting[1]) != undefined){
+                let latitude = parseFloat(splitting[0]);
+                let longitude = parseFloat(splitting[1]);
+                let location = {'lat': latitude, 'lng': longitude};
+                coordinates.unshift(location);
+            }
+        });
+        return coordinates;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 module.exports.generateData = function(entity) {
     if(entity === "patients"){
         let peopleArray = [];
-        for(let i = 0; i < constants.NUMBER_OF_ITEMS_IN_TABLE; i++){
+        for(let i = 0; i < constants.ARRAY_FILE_TRACES.length; i++){
             let person = new Person();
             peopleArray.unshift(person);
         }
@@ -68,7 +99,7 @@ module.exports.generateData = function(entity) {
     }
     if(entity === "vehicles") {
         let vehicleArray = [];
-        for (let i = 0; i < constants.NUMBER_OF_ITEMS_IN_TABLE; i++) {
+        for (let i = 0; i < constants.ARRAY_FILE_TRACES.length; i++) {
             let vehicle = new Vehicle();
             vehicleArray.unshift(vehicle);
         }
@@ -79,8 +110,6 @@ module.exports.generateData = function(entity) {
     }
 }
 
-let markers = []
-
 module.exports.createMarkers = function(dataArray) {
     let markers_created = [];
     for(let i = 0; i < dataArray.length; i++) {
@@ -88,6 +117,8 @@ module.exports.createMarkers = function(dataArray) {
             markers_created.push({
                 id: dataArray[i].id,
                 location: dataArray[i].location,
+                coordinates: dataArray[i].coordinates,
+                index: dataArray[i].index,
                 informations: dataArray[i].firstName + ' ' + dataArray[i].lastName + '<br> Phone: ' + dataArray[i].phone +
                     '<br> Email: ' + dataArray[i].email,
                 lace: dataArray[i].lace,
@@ -104,6 +135,8 @@ module.exports.createMarkers = function(dataArray) {
             markers_created.push({
                 id: dataArray[i].id,
                 location: dataArray[i].location,
+                coordinates: dataArray[i].coordinates,
+                index: dataArray[i].index,
                 informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
                     + dataArray[i].color,
                 noise: dataArray[i].noise,
@@ -130,11 +163,12 @@ function changeCoordinatesEveryTotSeconds(){
 
 function changeCoordinates(){
     for (let i = 0; i < markers.length; i++){
-        let point = turf.point([markers[i].location.lat, markers[i].location.lng]);
-        let distance = gendata.generateRandomDecimalNumber(0.0, 0.5);
-        let bearing = gendata.generateRandomIntegerNumber(0, 360);
-        markers[i].location.lat = turf.destination(point, distance, bearing).geometry.coordinates[0];
-        markers[i].location.lng = turf.destination(point, distance, bearing).geometry.coordinates[1];
+        console.log(markers[i].index);
+        if(markers[i].index < markers[i].coordinates.length -1){
+            markers[i].location.lat = markers[i].coordinates[markers[i].index].lat;
+            markers[i].location.lng = markers[i].coordinates[markers[i].index].lng;
+            markers[i].index += 1;
+        }
     }
 }
 

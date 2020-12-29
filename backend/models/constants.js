@@ -1,6 +1,9 @@
 module.exports.MINIMUM_ID = 1;
 module.exports.MAXIMUM_ID = 10000;
 
+module.exports.ARRAY_FILE_TRACES = ['./traces/trace1.txt', './traces/trace2.txt', './traces/trace3.txt',
+    './traces/trace4.txt', './traces/trace5.txt']
+
 module.exports.MIN_LACE = 10;
 module.exports.MAX_LACE = 80;
 module.exports.MIN_CHARLSON = 1.0;
@@ -52,7 +55,7 @@ module.exports.QUARTILE_BARTHEL_LOWER_THRESHOLD_30 = 30;
 module.exports.CENTER_POINT = { 'lat':44.694773, 'lng':10.769152} //Between Reggio Emilia and Modena
 module.exports.RADIUS = 20000; //Meters
 
-module.exports.NUMBER_OF_ITEMS_IN_TABLE = 40;
+module.exports.NUMBER_OF_ITEMS_IN_TABLE = 5;
 
 module.exports.MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 

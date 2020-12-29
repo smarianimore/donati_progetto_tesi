@@ -55,11 +55,13 @@ export default {
     createMarkersPatients() {
       axios.get('http://localhost:8000/entities/patients/markers').then(response => {
         this.markers = response.data
+        this.center = response.data.location
       });
     },
     createMarkersVehicles() {
       axios.get('http://localhost:8000/entities/vehicles/markers').then(response => {
         this.markers = response.data
+        this.center = response.data[0].location
       });
     },
     highlightMarkers(dataArray) {
