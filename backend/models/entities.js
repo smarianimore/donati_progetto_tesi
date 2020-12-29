@@ -35,7 +35,10 @@ class Person {
         this.phone = faker.phone.phoneNumber();
         this.email = faker.internet.email();
         //For the map recognition
-        this.person = true
+        this.person = true;
+        this.coordinates = readTraceFile();
+        this.location = this.coordinates[0];
+        this.index = 1;
     }
 }
 
@@ -53,7 +56,7 @@ class Vehicle {
         this.vibrations = gendata.generateRandomDecimalNumber(0.30, 0.55);
         this.fuel = gendata.generateRandomDecimalNumber(0.0, 100.0);
         this.ergonomics = gendata.generateRandomDecimalNumber(0.0, 100.0);
-     //   this.location = gendata.generateRandomPoint(constants.CENTER_POINT, constants.RADIUS);
+     // this.location = gendata.generateRandomPoint(constants.CENTER_POINT, constants.RADIUS);
         this.coordinates = readTraceFile();
         this.location = this.coordinates[0];
         this.index = 1;
@@ -72,13 +75,13 @@ function readTraceFile() {
 
         lines.forEach((line) => {
             let splitting = line.split(',');
-            if(parseFloat(splitting[0]) != undefined || parseFloat(splitting[1]) != undefined){
-                let latitude = parseFloat(splitting[0]);
-                let longitude = parseFloat(splitting[1]);
-                let location = {'lat': latitude, 'lng': longitude};
-                coordinates.unshift(location);
-            }
+            let latitude = parseFloat(splitting[0]);
+            let longitude = parseFloat(splitting[1]);
+            let location = {'lat': latitude, 'lng': longitude};
+            coordinates.unshift(location);
+
         });
+        array_traces.unshift(trace);
         return coordinates;
     } catch (err) {
         console.error(err);
