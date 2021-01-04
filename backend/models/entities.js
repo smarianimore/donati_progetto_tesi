@@ -12,7 +12,8 @@ let array_traces = [...constants.ARRAY_FILE_TRACES]
 
 let markers = []
 
-var context;
+var contextVehicles;
+var contextPatients;
 
 class Person {
     constructor() {
@@ -95,7 +96,7 @@ module.exports.generateData = function(entity) {
             let person = new Person();
             peopleArray.unshift(person);
         }
-        context = {
+        contextPatients = {
             patients: peopleArray
         };
         return peopleArray
@@ -106,8 +107,8 @@ module.exports.generateData = function(entity) {
             let vehicle = new Vehicle();
             vehicleArray.unshift(vehicle);
         }
-            context = {
-            vehicles: vehicleArray
+            contextVehicles = {
+                vehicles: vehicleArray
         };
         return vehicleArray
     }
@@ -166,7 +167,7 @@ function changeCoordinatesEveryTotSeconds(){
 
 function changeCoordinates(){
     for (let i = 0; i < markers.length; i++){
-        console.log(markers[i].index);
+       // console.log(markers[i].index);
         if(markers[i].index < markers[i].coordinates.length -1){
             markers[i].location.lat = markers[i].coordinates[markers[i].index].lat;
             markers[i].location.lng = markers[i].coordinates[markers[i].index].lng;
@@ -553,20 +554,37 @@ module.exports.createIndexColorQuartileBarthel = function() {
     return markers
 }
 
-module.exports.resolveExpression = async function (criterion) {
-    return await mozjexl.eval(criterion, context).then(function (res) {
-        module.exports.deselectAllMarkers()
-        for (let j = 0; j < res.length; j++) {
-            for (let i = 0; i < markers.length; i++) {
-                if (markers[i].id == res[j].id) {
-                    markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-                    markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-                    markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+module.exports.resolveExpression = async function (criterion, entity) {
+    if(entity == 'patients'){
+        return await mozjexl.eval(criterion, contextPatients).then(function (res) {
+            module.exports.deselectAllMarkers()
+            for (let j = 0; j < res.length; j++) {
+                for (let i = 0; i < markers.length; i++) {
+                    if (markers[i].id == res[j].id) {
+                        markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
+                        markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+                        markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+                    }
                 }
             }
-        }
-        return markers;
-    });
+            return markers;
+        });
+    }
+    if(entity == 'vehicles'){
+        return await mozjexl.eval(criterion, contextVehicles).then(function (res) {
+            module.exports.deselectAllMarkers()
+            for (let j = 0; j < res.length; j++) {
+                for (let i = 0; i < markers.length; i++) {
+                    if (markers[i].id == res[j].id) {
+                        markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
+                        markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+                        markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+                    }
+                }
+            }
+            return markers;
+        });
+    }
 }
 
 module.exports.deselectAllMarkers = function (){
@@ -579,7 +597,6 @@ module.exports.deselectAllMarkers = function (){
 }
 
 module.exports.highlightMarkers = function(data){
-    console.log(data)
     if(data.length == 0){
         module.exports.deselectAllMarkers()
     }

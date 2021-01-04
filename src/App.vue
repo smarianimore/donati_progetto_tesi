@@ -53,6 +53,7 @@ export default {
           router.push('home_page')
         });
       }
+      bus.$emit('changedEntity');
     }
   },
   created() {

@@ -20,6 +20,7 @@ import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
 import L from 'leaflet';
 import { bus } from '../main';
 import axios from "axios";
+import  myJson from '../main';
 
 export default {
   name: "Map",
@@ -41,6 +42,7 @@ export default {
       center: constant.CENTER_OF_MAP,
       bounds: null,
       markers: [],
+      entity: ''
     };
   },
   methods: {
@@ -251,13 +253,14 @@ export default {
         }
       } else {
         this.deselectAllMarkers()
-        axios.get('http://localhost:8000/entities/expression', {params: {criterion: data.criterion}}).then(response => {
+        axios.get('http://localhost:8000/entities/expression', {params: {criterion: data.criterion, entity: this.entity}}).then(response => {
           this.markers = response.data
         });
       }
     }
   },
   created() {
+    this.entity = myJson.data().myJson.entity;
     bus.$on('createMarkersPatients', () => {
       this.createMarkersPatients()
     });
@@ -276,6 +279,9 @@ export default {
     });
     bus.$on('changeCoordinates',() => {
       this.changeCoordinates()
+    });
+    bus.$on('changedEntity', () => {
+      this.entity = myJson.data().myJson.entity;
     });
   },
 }

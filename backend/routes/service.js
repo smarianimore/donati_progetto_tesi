@@ -96,7 +96,7 @@ module.exports = function(app) {
     });
 
     app.get('/entities/expression', (req, res) => {
-        let result = func.resolveExpression(req.query.criterion);
+        let result = func.resolveExpression(req.query.criterion, req.query.entity);
         result.then( function (result){
             res.send(result)
         })
