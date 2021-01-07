@@ -4,12 +4,19 @@ const bodyParser = require("body-parser");
 
 module.exports = function(app) {
     let peopleArray =  func.generateData("patients");
-    let vehicleArray = func.generateData("vehicles");
+//    let vehicleArray = func.generateData("vehicles");
+    app.put('/receive/entities/vehicles', (req, res)=> {
+        let vehicleArray = req.body.data
+        func.setVehiclesArray(vehicleArray);
+        res.send('Done');
+    });
+
     app.get('/entities/patients', (req, res) => {
         res.send(peopleArray);
     });
     app.get('/entities/vehicles', (req, res) => {
-        res.send(vehicleArray);
+ //       res.send(vehicleArray);
+        res.send(func.getVehiclesArray())
     });
 
 
@@ -35,7 +42,8 @@ module.exports = function(app) {
         res.send(func.createMarkers(peopleArray));
     });
     app.get('/entities/vehicles/markers', (req, res) => {
-        res.send(func.createMarkers(vehicleArray));
+      //  res.send(func.createMarkers(vehicleArray));
+        res.send(func.createMarkersVehicles());
     });
 
     app.get('/entities/tertile/ergonomics', (req, res) => {

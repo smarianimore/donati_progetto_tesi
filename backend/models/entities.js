@@ -10,6 +10,8 @@ faker.seed(123);
 
 let array_traces = [...constants.ARRAY_FILE_TRACES]
 
+let vehicleArray = [];
+
 let markers = []
 
 var contextVehicles;
@@ -112,6 +114,39 @@ module.exports.generateData = function(entity) {
         };
         return vehicleArray
     }
+}
+
+module.exports.setVehiclesArray = function (vehicles){
+    vehicleArray = vehicles;
+}
+
+module.exports.getVehiclesArray = function (){
+    return vehicleArray;
+}
+
+module.exports.createMarkersVehicles = function() {
+    let markers_created = [];
+    for(let i = 0; i < vehicleArray.length; i++) {
+        markers_created.push({
+            id: vehicleArray[i].id,
+            location: vehicleArray[i].location,
+            coordinates: vehicleArray[i].coordinates,
+            index: vehicleArray[i].index,
+            informations: 'Model: ' + vehicleArray[i].model + '<br> Type: ' + vehicleArray[i].type + '<br> Color: '
+                + vehicleArray[i].color,
+            noise: vehicleArray[i].noise,
+            vibrations: vehicleArray[i].vibrations,
+            fuel: vehicleArray[i].fuel,
+            ergonomics: vehicleArray[i].ergonomics,
+            color: constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+            strokeColor: constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+            circleColor: constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
+            highlighted: false
+        });
+    }
+    markers = [...markers_created];
+    changeCoordinatesEveryTotSeconds()
+    return markers_created
 }
 
 module.exports.createMarkers = function(dataArray) {

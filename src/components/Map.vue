@@ -68,7 +68,7 @@ export default {
     },
     highlightMarkers(dataArray) {
       axios.put('http://localhost:8000/entities/markers/highlight',  { data: dataArray}).catch(error => {
-        console.log("Error in highlightMarkers "+error)
+        console.log("Error in highlightMarkers: "+error)
       });
      if(dataArray.length == 0){
         this.deselectAllMarkers();
