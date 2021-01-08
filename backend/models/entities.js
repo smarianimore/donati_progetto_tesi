@@ -116,8 +116,8 @@ module.exports.generateData = function(entity) {
     }
 }
 
-module.exports.setVehiclesArray = function (vehicles){
-    vehicleArray = vehicles;
+module.exports.setVehiclesArray = function (vehicle){
+    vehicleArray.unshift(vehicle);
 }
 
 module.exports.getVehiclesArray = function (){

@@ -2,9 +2,9 @@
   "entity": "vehicles",
   "indexes": [
     { "component": "IndexButton","text": "Noise", "criterion": "tertile" },
-    { "component": "IndexButton", "text": "Vibrations", "criterion": "tertile" },
+    { "component": "IndexButton", "text": "Vibrations", "criterion": "quartile" },
     { "component": "IndexButton", "text": "Fuel", "criterion": "vehicles[.fuel < 30]" },
-    { "component": "IndexButton", "text": "Ergonomics", "criterion": "tertile" }
+    { "component": "IndexButton", "text": "Ergonomics", "criterion": "vehicles[.ergonomics < 30]" }
   ],
   "values": [
     { "text": "Vehicle", "value": "vehicle" },

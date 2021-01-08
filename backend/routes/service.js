@@ -6,6 +6,7 @@ module.exports = function(app) {
     let peopleArray =  func.generateData("patients");
 //    let vehicleArray = func.generateData("vehicles");
     app.put('/receive/entities/vehicles', (req, res)=> {
+    //    console.log("/upload: Received data: body length: ", req.headers['content-length']);
         let vehicleArray = req.body.data
         func.setVehiclesArray(vehicleArray);
         res.send('Done');
