@@ -3,7 +3,7 @@ const func = require("../models/entities");
 const bodyParser = require("body-parser");
 
 module.exports = function(app) {
-    let peopleArray =  func.generateData("patients");
+//    let peopleArray =  func.generateData("patients");
 //    let vehicleArray = func.generateData("vehicles");
     app.put('/receive/entities/vehicles', (req, res)=> {
     //    console.log("/upload: Received data: body length: ", req.headers['content-length']);
@@ -11,9 +11,30 @@ module.exports = function(app) {
         func.setVehiclesArray(vehicleArray);
         res.send('Done');
     });
+    app.put('/vehicles/location', (req, res)=> {
+        // console.log("/upload: Received data: body length: ", req.headers['content-length']);
+        let vehicle = req.body.data
+        func.setVehiclesLocation(vehicle);
+        res.send('Done');
+    });
+
+    app.put('/receive/entities/patients', (req, res)=> {
+        //    console.log("/upload: Received data: body length: ", req.headers['content-length']);
+        let patientsArray = req.body.data
+        func.setPatientsArray(patientsArray);
+        res.send('Done');
+    });
+    app.put('/patients/location', (req, res)=> {
+        // console.log("/upload: Received data: body length: ", req.headers['content-length']);
+        let patient = req.body.data
+        func.setPatientsLocation(patient);
+        res.send('Done');
+    });
+
 
     app.get('/entities/patients', (req, res) => {
-        res.send(peopleArray);
+ //       res.send(peopleArray);
+        res.send(func.getPatientsArray())
     });
     app.get('/entities/vehicles', (req, res) => {
  //       res.send(vehicleArray);
@@ -22,17 +43,17 @@ module.exports = function(app) {
 
 
     app.get('/entities/markers/updated', (req, res) => {
-        res.send(func.getUpdatedMarkers());
+        res.send(func.getUpdatedMarkers(req.query.entity));
     });
 
 
     app.put('/entities/markers/deselect', (req, res) => {
-        func.deselectAllMarkers()
+        func.deselectAllMarkers(req.body.entity)
         res.send('Done')
     });
     app.put('/entities/markers/highlight', (req, res) => {
         let dataArray = req.body.data
-        func.highlightMarkers(dataArray)
+        func.highlightMarkers(dataArray, req.body.entity)
         res.send('Done')
     }), error => {
         console.log("Error SERVER "+error)
@@ -40,7 +61,8 @@ module.exports = function(app) {
 
 
     app.get('/entities/patients/markers', (req, res) => {
-        res.send(func.createMarkers(peopleArray));
+    //    res.send(func.createMarkers(peopleArray));
+        res.send(func.createMarkersPatients());
     });
     app.get('/entities/vehicles/markers', (req, res) => {
       //  res.send(func.createMarkers(vehicleArray));

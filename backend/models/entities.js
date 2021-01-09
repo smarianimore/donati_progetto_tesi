@@ -1,6 +1,6 @@
-const gendata = require("../models/generate-data")
+//const gendata = require("../models/generate-data")
 const constants = require("../models/constants")
-const fs = require('fs')
+//const fs = require('fs')
 
 const mozjexl = require('mozjexl');
 
@@ -8,16 +8,18 @@ let faker = require('faker');
 faker.locale = "it";
 faker.seed(123);
 
-let array_traces = [...constants.ARRAY_FILE_TRACES]
+//let array_traces = [...constants.ARRAY_FILE_TRACES]
 
-let vehicleArray = [];
+let vehiclesArray = [];
+let patientsArray = [];
 
-let markers = []
+let markersVehicles = []
+let markersPatients = []
 
 var contextVehicles;
 var contextPatients;
 
-class Person {
+/*class Person {
     constructor() {
         this.id = gendata.generateRandomIntegerNumber(constants.MINIMUM_ID, constants.MAXIMUM_ID)
         this.firstName = faker.name.firstName();
@@ -114,42 +116,74 @@ module.exports.generateData = function(entity) {
         };
         return vehicleArray
     }
-}
+}*/
 
 module.exports.setVehiclesArray = function (vehicle){
-    vehicleArray.unshift(vehicle);
+    vehiclesArray.unshift(vehicle);
+}
+module.exports.getVehiclesArray = function (){
+    return vehiclesArray;
 }
 
-module.exports.getVehiclesArray = function (){
-    return vehicleArray;
+module.exports.setPatientsArray = function (patient){
+    patientsArray.unshift(patient);
+}
+module.exports.getPatientsArray = function (){
+    return patientsArray;
 }
 
 module.exports.createMarkersVehicles = function() {
-    let markers_created = [];
-    for(let i = 0; i < vehicleArray.length; i++) {
-        markers_created.push({
-            id: vehicleArray[i].id,
-            location: vehicleArray[i].location,
-            coordinates: vehicleArray[i].coordinates,
-            index: vehicleArray[i].index,
-            informations: 'Model: ' + vehicleArray[i].model + '<br> Type: ' + vehicleArray[i].type + '<br> Color: '
-                + vehicleArray[i].color,
-            noise: vehicleArray[i].noise,
-            vibrations: vehicleArray[i].vibrations,
-            fuel: vehicleArray[i].fuel,
-            ergonomics: vehicleArray[i].ergonomics,
+    let markers_vehicles_created = [];
+    for(let i = 0; i < vehiclesArray.length; i++) {
+        markers_vehicles_created.push({
+            id: vehiclesArray[i].id,
+            location: vehiclesArray[i].location,
+            coordinates: vehiclesArray[i].coordinates,
+            index: vehiclesArray[i].index,
+            informations: 'Model: ' + vehiclesArray[i].model + '<br> Type: ' + vehiclesArray[i].type + '<br> Color: '
+                + vehiclesArray[i].color,
+            noise: vehiclesArray[i].noise,
+            vibrations: vehiclesArray[i].vibrations,
+            fuel: vehiclesArray[i].fuel,
+            ergonomics: vehiclesArray[i].ergonomics,
             color: constants.MARKER_NOT_HIGHLIGHTED_COLOR,
             strokeColor: constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
             circleColor: constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
             highlighted: false
         });
     }
-    markers = [...markers_created];
-    changeCoordinatesEveryTotSeconds()
-    return markers_created
+    markersVehicles = [...markers_vehicles_created];
+//    changeCoordinatesEveryTotSeconds()
+    return markers_vehicles_created
 }
 
-module.exports.createMarkers = function(dataArray) {
+module.exports.createMarkersPatients = function() {
+    let markers_patients_created = [];
+    for(let i = 0; i < patientsArray.length; i++) {
+        markers_patients_created.push({
+            id: patientsArray[i].id,
+            location: patientsArray[i].location,
+            coordinates: patientsArray[i].coordinates,
+            index: patientsArray[i].index,
+            informations: patientsArray[i].firstName + ' ' + patientsArray[i].lastName + '<br> Phone: ' + patientsArray[i].phone +
+                '<br> Email: ' + patientsArray[i].email,
+            lace: patientsArray[i].lace,
+            charlson: patientsArray[i].charlson,
+            gma: patientsArray[i].gma,
+            barthel: patientsArray[i].barthel,
+            asa: patientsArray[i].asa,
+            color: constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+            strokeColor: constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+            circleColor: constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
+            highlighted: false
+        });
+    }
+    markersPatients = [...markers_patients_created];
+ //   changeCoordinatesEveryTotSeconds()
+    return markers_patients_created
+}
+
+/*module.exports.createMarkers = function(dataArray) {
     let markers_created = [];
     for(let i = 0; i < dataArray.length; i++) {
         if(dataArray[i].person){
@@ -190,11 +224,27 @@ module.exports.createMarkers = function(dataArray) {
         }
     }
     markers = [...markers_created];
-    changeCoordinatesEveryTotSeconds()
+  //  changeCoordinatesEveryTotSeconds()
     return markers_created
+}*/
+
+module.exports.setVehiclesLocation = function(vehicle) {
+    for(let i = 0; i < markersVehicles.length; i++){
+        if(markersVehicles[i].id == vehicle.id){
+            markersVehicles[i].location = vehicle.location
+        }
+    }
 }
 
-function changeCoordinatesEveryTotSeconds(){
+module.exports.setPatientsLocation = function(patient) {
+    for(let i = 0; i < markersPatients.length; i++){
+        if(markersPatients[i].id == patient.id){
+            markersPatients[i].location = patient.location
+        }
+    }
+}
+
+/*function changeCoordinatesEveryTotSeconds(){
     setInterval(function(){
         changeCoordinates();
     }, 500);
@@ -209,452 +259,497 @@ function changeCoordinates(){
             markers[i].index += 1;
         }
     }
-}
+}*/
 
-module.exports.getUpdatedMarkers = function () {
-    return markers
+module.exports.getUpdatedMarkers = function (entity) {
+    if(entity == 'vehicles'){
+        return markersVehicles
+    }
+    if(entity == 'patients'){
+        return markersPatients
+    }
 }
 
 module.exports.createIndexColorTertileErgonomics = function() {
-    for(let i = 0; i < markers.length; i++) {
-        if(markers[i].ergonomics <= constants.TERTILE_LOWER_THRESHOLD){
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
-        } else if (markers[i].ergonomics > constants.TERTILE_LOWER_THRESHOLD && markers[i].ergonomics <= constants.TERTILE_MEDIUM_THRESHOLD){
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+    for(let i = 0; i < markersVehicles.length; i++) {
+        if(markersVehicles[i].ergonomics <= constants.TERTILE_LOWER_THRESHOLD){
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].ergonomics > constants.TERTILE_LOWER_THRESHOLD && markersVehicles[i].ergonomics <= constants.TERTILE_MEDIUM_THRESHOLD){
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorTertileVibrations = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].vibrations < constants.VIBRATIONS_LOWER_THRESHOLD) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].vibrations >= constants.VIBRATIONS_LOWER_THRESHOLD && markers[i].vibrations <= constants.VIBRATIONS_HIGHER_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].vibrations < constants.VIBRATIONS_LOWER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].vibrations >= constants.VIBRATIONS_LOWER_THRESHOLD && markersVehicles[i].vibrations <= constants.VIBRATIONS_HIGHER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorTertileFuel = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].fuel <= constants.TERTILE_LOWER_THRESHOLD) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
-        } else if (markers[i].fuel > constants.TERTILE_LOWER_THRESHOLD && markers[i].fuel <= constants.TERTILE_MEDIUM_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].fuel <= constants.TERTILE_LOWER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].fuel > constants.TERTILE_LOWER_THRESHOLD && markersVehicles[i].fuel <= constants.TERTILE_MEDIUM_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorTertileNoise = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].noise < constants.NOISE_BOTHER_THRESHOLD) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].noise >= constants.NOISE_BOTHER_THRESHOLD && markers[i].noise < constants.NOISE_DAMAGE_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].noise < constants.NOISE_BOTHER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].noise >= constants.NOISE_BOTHER_THRESHOLD && markersVehicles[i].noise < constants.NOISE_DAMAGE_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorTertileLace = function() {
-    for(let i = 0; i < markers.length; i++) {
-        if(markers[i].lace <= (constants.MAX_LACE / 3)){
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].lace > (constants.MAX_LACE / 3) && markers[i].lace <= 2 * (constants.MAX_LACE / 3)) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].lace > 2 * (constants.MAX_LACE / 3) && markers[i].lace <= constants.MAX_LACE) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for(let i = 0; i < markersPatients.length; i++) {
+        if(markersPatients[i].lace <= (constants.MAX_LACE / 3)){
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].lace > (constants.MAX_LACE / 3) && markersPatients[i].lace <= 2 * (constants.MAX_LACE / 3)) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].lace > 2 * (constants.MAX_LACE / 3) && markersPatients[i].lace <= constants.MAX_LACE) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorTertileCharlston = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].charlson <= (constants.MAX_CHARLSON / 3)) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].charlson > (constants.MAX_CHARLSON / 3) && markers[i].charlson <= 2 * (constants.MAX_CHARLSON / 3)) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].charlson > 2 * (constants.MAX_CHARLSON / 3) && markers[i].charlson <= constants.MAX_CHARLSON) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].charlson <= (constants.MAX_CHARLSON / 3)) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].charlson > (constants.MAX_CHARLSON / 3) && markersPatients[i].charlson <= 2 * (constants.MAX_CHARLSON / 3)) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].charlson > 2 * (constants.MAX_CHARLSON / 3) && markersPatients[i].charlson <= constants.MAX_CHARLSON) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorTertileASA = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].asa === constants.ASA_II) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].asa === constants.ASA_III) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].asa === constants.ASA_II) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].asa === constants.ASA_III) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR;
-            markers[i].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
+            markersPatients[i].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorTertileGMA = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].gma >= constants.MIN_GMA && markers[i].gma < constants.MEDIUM_GMA) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].gma == constants.MEDIUM_GMA) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].gma == constants.MAX_GMA) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].gma >= constants.MIN_GMA && markersPatients[i].gma < constants.MEDIUM_GMA) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].gma == constants.MEDIUM_GMA) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].gma == constants.MAX_GMA) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorTertileBarthel = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].barthel >= constants.MEDIUM_BARTHEL_91 && markers[i].barthel <= constants.MAX_BARTHEL) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].barthel >= constants.MEDIUM_BARTHEL_61 && markers[i].barthel <= constants.MEDIUM_BARTHEL_90) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].barthel <= constants.MEDIUM_BARTHEL_60) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].barthel >= constants.MEDIUM_BARTHEL_91 && markersPatients[i].barthel <= constants.MAX_BARTHEL) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].barthel >= constants.MEDIUM_BARTHEL_61 && markersPatients[i].barthel <= constants.MEDIUM_BARTHEL_90) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].barthel <= constants.MEDIUM_BARTHEL_60) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorQuartileErgonomics = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].ergonomics <= constants.ERGONOMICS_LOWER_THRESHOLD) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
-        } else if (markers[i].ergonomics > constants.ERGONOMICS_LOWER_THRESHOLD && markers[i].ergonomics <= constants.ERGONOMICS_MEDIUM_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].ergonomics > constants.ERGONOMICS_MEDIUM_THRESHOLD && markers[i].ergonomics <= constants.ERGONOMICS_HIGHER_THRESHOLD) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].ergonomics <= constants.ERGONOMICS_LOWER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].ergonomics > constants.ERGONOMICS_LOWER_THRESHOLD && markersVehicles[i].ergonomics <= constants.ERGONOMICS_MEDIUM_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].ergonomics > constants.ERGONOMICS_MEDIUM_THRESHOLD && markersVehicles[i].ergonomics <= constants.ERGONOMICS_HIGHER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorQuartileVibrations = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].vibrations < constants.QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].vibrations >= constants.QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD && markers[i].vibrations <= constants.VIBRATIONS_LOWER_THRESHOLD) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else if (markers[i].vibrations >= constants.VIBRATIONS_LOWER_THRESHOLD && markers[i].vibrations <= constants.VIBRATIONS_HIGHER_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].vibrations < constants.QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].vibrations >= constants.QUARTILE_VIBRATIONS_MIDDLE_THRESHOLD && markersVehicles[i].vibrations <= constants.VIBRATIONS_LOWER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].vibrations >= constants.VIBRATIONS_LOWER_THRESHOLD && markersVehicles[i].vibrations <= constants.VIBRATIONS_HIGHER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorQuartileFuel = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].fuel <= constants.FUEL_LOWER_THRESHOLD) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
-        } else if (markers[i].fuel > constants.FUEL_LOWER_THRESHOLD && markers[i].fuel <= constants.FUEL_MEDIUM_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].fuel > constants.FUEL_MEDIUM_THRESHOLD && markers[i].fuel <= constants.FUEL_HIGHER_THRESHOLD) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].fuel <= constants.FUEL_LOWER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].fuel > constants.FUEL_LOWER_THRESHOLD && markersVehicles[i].fuel <= constants.FUEL_MEDIUM_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].fuel > constants.FUEL_MEDIUM_THRESHOLD && markersVehicles[i].fuel <= constants.FUEL_HIGHER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorQuartileNoise = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].noise < constants.NOISE_BOTHER_THRESHOLD) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].noise >= constants.NOISE_BOTHER_THRESHOLD && markers[i].noise < constants.NOISE_DISTURBANCE_THRESHOLD) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else if (markers[i].noise >= constants.NOISE_DISTURBANCE_THRESHOLD && markers[i].noise < constants.NOISE_DAMAGE_THRESHOLD) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].noise < constants.NOISE_BOTHER_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].noise >= constants.NOISE_BOTHER_THRESHOLD && markersVehicles[i].noise < constants.NOISE_DISTURBANCE_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (markersVehicles[i].noise >= constants.NOISE_DISTURBANCE_THRESHOLD && markersVehicles[i].noise < constants.NOISE_DAMAGE_THRESHOLD) {
+            markersVehicles[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+            markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersVehicles
 }
 
 module.exports.createIndexColorQuartileLace = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].lace <= (constants.MAX_LACE / 4)) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].lace > (constants.MAX_LACE / 4) && markers[i].lace <= 2 * (constants.MAX_LACE / 4)) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else if (markers[i].lace > 2 * (constants.MAX_LACE / 4) && markers[i].lace <= 3 * (constants.MAX_LACE / 4)) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].lace > 3 * (constants.MAX_LACE / 4) && markers[i].lace <= constants.MAX_LACE) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].lace <= (constants.MAX_LACE / 4)) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].lace > (constants.MAX_LACE / 4) && markersPatients[i].lace <= 2 * (constants.MAX_LACE / 4)) {
+            markersPatients[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].lace > 2 * (constants.MAX_LACE / 4) && markersPatients[i].lace <= 3 * (constants.MAX_LACE / 4)) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].lace > 3 * (constants.MAX_LACE / 4) && markersPatients[i].lace <= constants.MAX_LACE) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorQuartileCharlston = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].charlson <= (constants.MAX_CHARLSON / 4)) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].charlson > (constants.MAX_CHARLSON / 4) && markers[i].charlson <= 2 * (constants.MAX_CHARLSON / 4)) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else if (markers[i].charlson > 2 * (constants.MAX_CHARLSON / 4) && markers[i].charlson <= 3 * (constants.MAX_CHARLSON / 4)) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].charlson > 3 * (constants.MAX_CHARLSON / 4) && markers[i].charlson <= constants.MAX_CHARLSON) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].charlson <= (constants.MAX_CHARLSON / 4)) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].charlson > (constants.MAX_CHARLSON / 4) && markersPatients[i].charlson <= 2 * (constants.MAX_CHARLSON / 4)) {
+            markersPatients[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].charlson > 2 * (constants.MAX_CHARLSON / 4) && markersPatients[i].charlson <= 3 * (constants.MAX_CHARLSON / 4)) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].charlson > 3 * (constants.MAX_CHARLSON / 4) && markersPatients[i].charlson <= constants.MAX_CHARLSON) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorQuartileASA = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].asa === constants.ASA_II) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].asa === constants.ASA_III) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].asa === constants.ASA_II) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].asa === constants.ASA_III) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         } else {
-            markers[i].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR;
-            markers[i].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
+            markersPatients[i].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorQuartileGMA = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].gma >= constants.MIN_GMA && markers[i].gma < constants.QUARTILE_GMA_MIDDLE_THRESHOLD) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].gma == constants.QUARTILE_GMA_MIDDLE_THRESHOLD) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else if (markers[i].gma == constants.MEDIUM_GMA) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].gma == constants.MAX_GMA) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].gma >= constants.MIN_GMA && markersPatients[i].gma < constants.QUARTILE_GMA_MIDDLE_THRESHOLD) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].gma == constants.QUARTILE_GMA_MIDDLE_THRESHOLD) {
+            markersPatients[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].gma == constants.MEDIUM_GMA) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].gma == constants.MAX_GMA) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.createIndexColorQuartileBarthel = function() {
-    for (let i = 0; i < markers.length; i++) {
-        if (markers[i].barthel >= constants.MEDIUM_BARTHEL_91 && markers[i].barthel <= constants.MAX_BARTHEL) {
-            markers[i].color = constants.MARKER_NO_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markers[i].barthel >= constants.MEDIUM_BARTHEL_61 && markers[i].barthel <= constants.MEDIUM_BARTHEL_90) {
-            markers[i].color = constants.MARKER_LITTLE_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
-        } else if (markers[i].barthel <= constants.MEDIUM_BARTHEL_60 && markers[i].barthel > constants.QUARTILE_BARTHEL_LOWER_THRESHOLD_30) {
-            markers[i].color = constants.MARKER_SOME_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markers[i].barthel <= constants.QUARTILE_BARTHEL_LOWER_THRESHOLD_30) {
-            markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-            markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-            markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+    for (let i = 0; i < markersPatients.length; i++) {
+        if (markersPatients[i].barthel >= constants.MEDIUM_BARTHEL_91 && markersPatients[i].barthel <= constants.MAX_BARTHEL) {
+            markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].barthel >= constants.MEDIUM_BARTHEL_61 && markersPatients[i].barthel <= constants.MEDIUM_BARTHEL_90) {
+            markersPatients[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].barthel <= constants.MEDIUM_BARTHEL_60 && markersPatients[i].barthel > constants.QUARTILE_BARTHEL_LOWER_THRESHOLD_30) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].barthel <= constants.QUARTILE_BARTHEL_LOWER_THRESHOLD_30) {
+            markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         }
     }
-    return markers
+    return markersPatients
 }
 
 module.exports.resolveExpression = async function (criterion, entity) {
     if(entity == 'patients'){
         return await mozjexl.eval(criterion, contextPatients).then(function (res) {
-            module.exports.deselectAllMarkers()
+            module.exports.deselectAllMarkers('patients')
             for (let j = 0; j < res.length; j++) {
-                for (let i = 0; i < markers.length; i++) {
-                    if (markers[i].id == res[j].id) {
-                        markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-                        markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-                        markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+                for (let i = 0; i < markersPatients.length; i++) {
+                    if (markersPatients[i].id == res[j].id) {
+                        markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
+                        markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+                        markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
                     }
                 }
             }
-            return markers;
+            return markersPatients;
         });
     }
     if(entity == 'vehicles'){
         return await mozjexl.eval(criterion, contextVehicles).then(function (res) {
-            module.exports.deselectAllMarkers()
+            module.exports.deselectAllMarkers('vehicles')
             for (let j = 0; j < res.length; j++) {
-                for (let i = 0; i < markers.length; i++) {
-                    if (markers[i].id == res[j].id) {
-                        markers[i].color = constants.MARKER_HIGH_RISK_COLOR;
-                        markers[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
-                        markers[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
+                for (let i = 0; i < markersVehicles.length; i++) {
+                    if (markersVehicles[i].id == res[j].id) {
+                        markersVehicles[i].color = constants.MARKER_HIGH_RISK_COLOR;
+                        markersVehicles[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
+                        markersVehicles[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
                     }
                 }
             }
-            return markers;
+            return markersVehicles;
         });
     }
 }
 
-module.exports.deselectAllMarkers = function (){
-    for(let j = 0; j < markers.length; j++){
-        markers[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
-            markers[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
-            markers[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
-            markers[j].highlighted = false
+module.exports.deselectAllMarkers = function (entity){
+    if(entity == 'vehicles') {
+        for (let j = 0; j < markersVehicles.length; j++) {
+            markersVehicles[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+                markersVehicles[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+                markersVehicles[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
+                markersVehicles[j].highlighted = false
+        }
+    }
+    if(entity == 'patients') {
+        for (let j = 0; j < markersPatients.length; j++) {
+            markersPatients[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+                markersPatients[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+                markersPatients[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
+                markersPatients[j].highlighted = false
+        }
     }
 }
 
-module.exports.highlightMarkers = function(data){
-    if(data.length == 0){
-        module.exports.deselectAllMarkers()
-    }
-    for(let z = 0; z < markers.length; z++){
-        markers[z].highlighted = false
-    }
-    for(let i = 0; i < data.length; i++) {
-        for (let j = 0; j < markers.length; j++) {
-            if(markers[j].id == data[i].id) {
-                markers[j].color = constants.MARKER_HIGHLIGHTED_COLOR,
-                    markers[j].strokeColor = constants.MARKER_HIGHLIGHTED_STROKE_COLOR,
-                    markers[j].circleColor = constants.MARKER_HIGHLIGHTED_CIRCLE_COLOR,
-                    markers[j].highlighted = true
+module.exports.highlightMarkers = function(data, entity){
+    if(entity == 'vehicles'){
+        if(data.length == 0){
+            module.exports.deselectAllMarkers(entity)
+        }
+        for(let z = 0; z < markersVehicles.length; z++){
+            markersVehicles[z].highlighted = false
+        }
+        for(let i = 0; i < data.length; i++) {
+            for (let j = 0; j < markersVehicles.length; j++) {
+                if(markersVehicles[j].id == data[i].id) {
+                    markersVehicles[j].color = constants.MARKER_HIGHLIGHTED_COLOR,
+                        markersVehicles[j].strokeColor = constants.MARKER_HIGHLIGHTED_STROKE_COLOR,
+                        markersVehicles[j].circleColor = constants.MARKER_HIGHLIGHTED_CIRCLE_COLOR,
+                        markersVehicles[j].highlighted = true
+                }
+            }
+        }
+        for(let i = 0; i < data.length; i++) {
+            for (let j = 0; j < markersVehicles.length; j++) {
+                if(markersVehicles[j].id != data[i].id && markersVehicles[j].highlighted == false){
+                    markersVehicles[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+                        markersVehicles[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+                        markersVehicles[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR
+                    markersVehicles[j].highlighted = false
+                }
             }
         }
     }
-    for(let i = 0; i < data.length; i++) {
-        for (let j = 0; j < markers.length; j++) {
-            if(markers[j].id != data[i].id && markers[j].highlighted == false){
-                markers[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
-                markers[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
-                markers[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR
-                markers[j].highlighted = false
+    if(entity == 'patients'){
+        if(data.length == 0){
+            module.exports.deselectAllMarkers(entity)
+        }
+        for(let z = 0; z < markersPatients.length; z++){
+            markersPatients[z].highlighted = false
+        }
+        for(let i = 0; i < data.length; i++) {
+            for (let j = 0; j < markersPatients.length; j++) {
+                if(markersPatients[j].id == data[i].id) {
+                    markersPatients[j].color = constants.MARKER_HIGHLIGHTED_COLOR,
+                        markersPatients[j].strokeColor = constants.MARKER_HIGHLIGHTED_STROKE_COLOR,
+                        markersPatients[j].circleColor = constants.MARKER_HIGHLIGHTED_CIRCLE_COLOR,
+                        markersPatients[j].highlighted = true
+                }
+            }
+        }
+        for(let i = 0; i < data.length; i++) {
+            for (let j = 0; j < markersPatients.length; j++) {
+                if(markersPatients[j].id != data[i].id && markersPatients[j].highlighted == false){
+                    markersPatients[j].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR,
+                        markersPatients[j].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
+                        markersPatients[j].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR
+                    markersPatients[j].highlighted = false
+                }
             }
         }
     }

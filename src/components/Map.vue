@@ -50,7 +50,7 @@ export default {
       this.zoom = zoom;
     },
     changeCoordinates() {
-      axios.get('http://localhost:8000/entities/markers/updated').then(response => {
+      axios.get('http://localhost:8000/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
         this.markers = response.data
       });
     },
@@ -67,7 +67,7 @@ export default {
       });
     },
     highlightMarkers(dataArray) {
-      axios.put('http://localhost:8000/entities/markers/highlight',  { data: dataArray}).catch(error => {
+      axios.put('http://localhost:8000/entities/markers/highlight',  { data: dataArray, entity: this.entity}).catch(error => {
         console.log("Error in highlightMarkers: "+error)
       });
      if(dataArray.length == 0){
@@ -272,7 +272,10 @@ export default {
     });
     bus.$on('uncheckRadio',() => {
       this.deselectAllMarkers()
-      axios.put('http://localhost:8000/entities/markers/deselect');
+      console.log(this.entity)
+      axios.put('http://localhost:8000/entities/markers/deselect', {entity: this.entity}).catch(error => {
+        console.log("Error in deselectMarkers: "+error)
+      });
     });
     bus.$on('selectCriterion',(data) => {
       this.selectCriterion(data[0])
