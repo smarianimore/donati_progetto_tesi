@@ -10,7 +10,6 @@ let array_traces = [...constants.ARRAY_FILE_TRACES];
 
 // eslint-disable-next-line no-unused-vars
 var contextVehicles;
-//var contextPatients;
 
 class Vehicle {
     constructor() {
@@ -59,17 +58,6 @@ function readTraceFile() {
 }
 
 module.exports.generateData = function(entity) {
-  /*  if(entity === "patients"){
-        let peopleArray = [];
-        for(let i = 0; i < constants.ARRAY_FILE_TRACES.length; i++){
-            let person = new Person();
-            peopleArray.unshift(person);
-        }
-        contextPatients = {
-            patients: peopleArray
-        };
-        return peopleArray
-    }*/
     if(entity === "vehicles") {
         let vehicleArray = [];
         for (let i = 0; i < constants.ARRAY_FILE_TRACES.length; i++) {
@@ -81,4 +69,8 @@ module.exports.generateData = function(entity) {
         };
         return vehicleArray
     }
+}
+
+module.exports.getContext = function() {
+    return contextVehicles
 }

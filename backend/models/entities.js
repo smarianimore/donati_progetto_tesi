@@ -1,14 +1,10 @@
-//const gendata = require("../models/generate-data")
 const constants = require("../models/constants")
-//const fs = require('fs')
 
 const mozjexl = require('mozjexl');
 
 let faker = require('faker');
 faker.locale = "it";
 faker.seed(123);
-
-//let array_traces = [...constants.ARRAY_FILE_TRACES]
 
 let vehiclesArray = [];
 let patientsArray = [];
@@ -18,105 +14,6 @@ let markersPatients = []
 
 var contextVehicles;
 var contextPatients;
-
-/*class Person {
-    constructor() {
-        this.id = gendata.generateRandomIntegerNumber(constants.MINIMUM_ID, constants.MAXIMUM_ID)
-        this.firstName = faker.name.firstName();
-        this.lastName = faker.name.lastName();
-        //Range of data chosen based on the previous thesis work
-        this.lace = gendata.generateRandomIntegerNumber(constants.MIN_LACE, constants.MAX_LACE);
-        this.charlson = gendata.generateRandomDecimalNumber(constants.MIN_CHARLSON, constants.MAX_CHARLSON);
-        this.gma = gendata.generateRandomIntegerNumber(constants.MIN_GMA, constants.MAX_GMA);
-        this.barthel = gendata.generateRandomIntegerNumber(constants.MIN_BARTHEL, constants.MAX_BARTHEL);
-        this.asa = gendata.generateRandomStringFromArray(constants.ARRAY_ASA);
-        this.skills = gendata.generateRandomIntegerNumber(constants.MIN_SKILLS, constants.MAX_SKILLS);
-        this.retrieval = gendata.generateRandomStringFromArray(constants.ARRAY_RETRIEVAL);
-        this.selfcare = gendata.generateRandomIntegerNumber(constants.MIN_SELFCARE, constants.MAX_SELFCARE);
-        this.dwelling = gendata.generateRandomIntegerNumber(constants.MIN_DWELLING, constants.MAX_DWELLING);
-        this.career = gendata.generateRandomIntegerNumber(constants.MIN_CAREER, constants.MAX_CAREER);
-        //Center in Reggio Emilia, Radius 10km
-        this.location = gendata.generateRandomPoint(constants.CENTER_POINT, constants.RADIUS);
-        this.phone = faker.phone.phoneNumber();
-        this.email = faker.internet.email();
-        //For the map recognition
-        this.person = true;
-        this.coordinates = readTraceFile();
-        this.location = this.coordinates[0];
-        this.index = 1;
-    }
-}
-
-class Vehicle {
-     constructor() {
-        this.id = gendata.generateRandomIntegerNumber(constants.MINIMUM_ID, constants.MAXIMUM_ID)
-        this.vehicle = faker.vehicle.vehicle();
-        this.manufacturer = faker.vehicle.manufacturer();
-        this.model = faker.vehicle.model();
-        this.type = faker.vehicle.type();
-        this.fuel = faker.vehicle.fuel();
-        this.vin = faker.vehicle.vin();
-        this.color = faker.vehicle.color();
-        this.noise = gendata.generateRandomDecimalNumber(10.0, 100.0);
-        this.vibrations = gendata.generateRandomDecimalNumber(0.30, 0.55);
-        this.fuel = gendata.generateRandomDecimalNumber(0.0, 100.0);
-        this.ergonomics = gendata.generateRandomDecimalNumber(0.0, 100.0);
-     // this.location = gendata.generateRandomPoint(constants.CENTER_POINT, constants.RADIUS);
-        this.coordinates = readTraceFile();
-        this.location = this.coordinates[0];
-        this.index = 1;
-    }
-}
-
-function readTraceFile() {
-    try {
-        let coordinates = [];
-        let trace = array_traces.pop();
-        const data = fs.readFileSync(trace, 'UTF-8');
-
-        const lines = data.split(/\r?\n/);
-
-        coordinates.unshift(lines.length);
-
-        lines.forEach((line) => {
-            let splitting = line.split(',');
-            let latitude = parseFloat(splitting[0]);
-            let longitude = parseFloat(splitting[1]);
-            let location = {'lat': latitude, 'lng': longitude};
-            coordinates.unshift(location);
-
-        });
-        array_traces.unshift(trace);
-        return coordinates;
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-module.exports.generateData = function(entity) {
-    if(entity === "patients"){
-        let peopleArray = [];
-        for(let i = 0; i < constants.ARRAY_FILE_TRACES.length; i++){
-            let person = new Person();
-            peopleArray.unshift(person);
-        }
-        contextPatients = {
-            patients: peopleArray
-        };
-        return peopleArray
-    }
-    if(entity === "vehicles") {
-        let vehicleArray = [];
-        for (let i = 0; i < constants.ARRAY_FILE_TRACES.length; i++) {
-            let vehicle = new Vehicle();
-            vehicleArray.unshift(vehicle);
-        }
-            contextVehicles = {
-                vehicles: vehicleArray
-        };
-        return vehicleArray
-    }
-}*/
 
 module.exports.setVehiclesArray = function (vehicle){
     vehiclesArray.unshift(vehicle);
@@ -153,7 +50,6 @@ module.exports.createMarkersVehicles = function() {
         });
     }
     markersVehicles = [...markers_vehicles_created];
-//    changeCoordinatesEveryTotSeconds()
     return markers_vehicles_created
 }
 
@@ -179,54 +75,8 @@ module.exports.createMarkersPatients = function() {
         });
     }
     markersPatients = [...markers_patients_created];
- //   changeCoordinatesEveryTotSeconds()
     return markers_patients_created
 }
-
-/*module.exports.createMarkers = function(dataArray) {
-    let markers_created = [];
-    for(let i = 0; i < dataArray.length; i++) {
-        if(dataArray[i].person){
-            markers_created.push({
-                id: dataArray[i].id,
-                location: dataArray[i].location,
-                coordinates: dataArray[i].coordinates,
-                index: dataArray[i].index,
-                informations: dataArray[i].firstName + ' ' + dataArray[i].lastName + '<br> Phone: ' + dataArray[i].phone +
-                    '<br> Email: ' + dataArray[i].email,
-                lace: dataArray[i].lace,
-                charlson: dataArray[i].charlson,
-                gma: dataArray[i].gma,
-                barthel: dataArray[i].barthel,
-                asa: dataArray[i].asa,
-                color: constants.MARKER_NOT_HIGHLIGHTED_COLOR,
-                strokeColor: constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
-                circleColor: constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
-                highlighted: false
-            });
-        }else if(dataArray[i].vehicle){
-            markers_created.push({
-                id: dataArray[i].id,
-                location: dataArray[i].location,
-                coordinates: dataArray[i].coordinates,
-                index: dataArray[i].index,
-                informations: 'Model: ' + dataArray[i].model + '<br> Type: ' + dataArray[i].type + '<br> Color: '
-                    + dataArray[i].color,
-                noise: dataArray[i].noise,
-                vibrations: dataArray[i].vibrations,
-                fuel: dataArray[i].fuel,
-                ergonomics: dataArray[i].ergonomics,
-                color: constants.MARKER_NOT_HIGHLIGHTED_COLOR,
-                strokeColor: constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR,
-                circleColor: constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR,
-                highlighted: false
-            });
-        }
-    }
-    markers = [...markers_created];
-  //  changeCoordinatesEveryTotSeconds()
-    return markers_created
-}*/
 
 module.exports.setVehiclesLocation = function(vehicle) {
     for(let i = 0; i < markersVehicles.length; i++){
@@ -243,23 +93,6 @@ module.exports.setPatientsLocation = function(patient) {
         }
     }
 }
-
-/*function changeCoordinatesEveryTotSeconds(){
-    setInterval(function(){
-        changeCoordinates();
-    }, 500);
-}
-
-function changeCoordinates(){
-    for (let i = 0; i < markers.length; i++){
-       // console.log(markers[i].index);
-        if(markers[i].index < markers[i].coordinates.length -1){
-            markers[i].location.lat = markers[i].coordinates[markers[i].index].lat;
-            markers[i].location.lng = markers[i].coordinates[markers[i].index].lng;
-            markers[i].index += 1;
-        }
-    }
-}*/
 
 module.exports.getUpdatedMarkers = function (entity) {
     if(entity == 'vehicles'){
@@ -642,6 +475,15 @@ module.exports.createIndexColorQuartileBarthel = function() {
         }
     }
     return markersPatients
+}
+
+module.exports.setContext = function(context, entity){
+    if(entity == 'vehicles') {
+        contextVehicles = context;
+    }
+    if(entity == 'patients') {
+        contextPatients = context;
+    }
 }
 
 module.exports.resolveExpression = async function (criterion, entity) {

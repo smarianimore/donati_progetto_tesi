@@ -77,3 +77,7 @@ module.exports.generateData = function(entity) {
         return peopleArray
     }
 }
+
+module.exports.getContext = function() {
+    return contextPatients
+}
