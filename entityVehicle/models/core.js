@@ -8,9 +8,6 @@ faker.seed(123);
 
 let array_traces = [...constants.ARRAY_FILE_TRACES];
 
-// eslint-disable-next-line no-unused-vars
-var contextVehicles;
-
 class Vehicle {
     constructor() {
         this.id = gendata.generateRandomIntegerNumber(constants.MINIMUM_ID, constants.MAXIMUM_ID)
@@ -64,13 +61,6 @@ module.exports.generateData = function(entity) {
             let vehicle = new Vehicle();
             vehicleArray.unshift(vehicle);
         }
-        contextVehicles = {
-            vehicles: vehicleArray
-        };
         return vehicleArray
     }
-}
-
-module.exports.getContext = function() {
-    return contextVehicles
 }

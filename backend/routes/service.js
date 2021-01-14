@@ -6,6 +6,7 @@ module.exports = function(app) {
     app.put('/receive/entities/vehicles', (req, res)=> {
         let vehicleArray = req.body.data
         func.setVehiclesArray(vehicleArray);
+        func.setContexts('vehicles');
         res.send('Done');
     });
     app.put('/vehicles/location', (req, res)=> {
@@ -17,6 +18,7 @@ module.exports = function(app) {
     app.put('/receive/entities/patients', (req, res)=> {
         let patientsArray = req.body.data
         func.setPatientsArray(patientsArray);
+        func.setContexts('patients');
         res.send('Done');
     });
     app.put('/patients/location', (req, res)=> {
@@ -31,11 +33,6 @@ module.exports = function(app) {
     });
     app.get('/entities/vehicles', (req, res) => {
         res.send(func.getVehiclesArray())
-    });
-
-    app.put('/entities/context', (req, res) => {
-        func.setContext(req.body.contextdata, req.body.entity);
-        res.send('Done')
     });
 
     app.get('/entities/markers/updated', (req, res) => {

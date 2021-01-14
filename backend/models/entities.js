@@ -29,6 +29,19 @@ module.exports.getPatientsArray = function (){
     return patientsArray;
 }
 
+module.exports.setContexts = function(entity){
+    if(entity == 'vehicles'){
+        contextVehicles = {
+            vehicles: vehiclesArray
+        };
+    }
+    if(entity == 'patients'){
+        contextPatients = {
+            patients: patientsArray
+        };
+    }
+}
+
 module.exports.createMarkersVehicles = function() {
     let markers_vehicles_created = [];
     for(let i = 0; i < vehiclesArray.length; i++) {
@@ -475,15 +488,6 @@ module.exports.createIndexColorQuartileBarthel = function() {
         }
     }
     return markersPatients
-}
-
-module.exports.setContext = function(context, entity){
-    if(entity == 'vehicles') {
-        contextVehicles = context;
-    }
-    if(entity == 'patients') {
-        contextPatients = context;
-    }
 }
 
 module.exports.resolveExpression = async function (criterion, entity) {

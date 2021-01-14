@@ -7,17 +7,12 @@ let vehicleArray = [];
 // eslint-disable-next-line no-unused-vars
 module.exports = function(app) {
     vehicleArray = func.generateData("vehicles");
-    let contextVehicle = func.getContext()
     for(let i = 0; i < vehicleArray.length; i++){
         axios.put('http://localhost:8000/receive/entities/vehicles', { data: vehicleArray[i]}, {maxContentLength: Infinity,
             maxBodyLength: Infinity}).catch(error => {
             console.log("Error in sending vehicle array to server - " + error)
         });
     }
-    axios.put('http://localhost:8000/entities/context', { contextdata: contextVehicle, entity: 'vehicles'}, {maxContentLength: Infinity,
-        maxBodyLength: Infinity}).catch(error => {
-        console.log("Error in sending vehicles context to server - " + error)
-    });
     changeCoordinatesEveryTotSeconds();
 }
 

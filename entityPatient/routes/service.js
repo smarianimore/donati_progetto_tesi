@@ -7,17 +7,12 @@ let patientsArray = [];
 // eslint-disable-next-line no-unused-vars
 module.exports = function(app) {
     patientsArray = func.generateData("patients");
-    let contextPatients = func.getContext()
     for(let i = 0; i < patientsArray.length; i++){
         axios.put('http://localhost:8000/receive/entities/patients', { data: patientsArray[i]}, {maxContentLength: Infinity,
             maxBodyLength: Infinity}).catch(error => {
             console.log("Error in sending patient array to server - " + error)
         });
     }
-    axios.put('http://localhost:8000/entities/context', { contextdata: contextPatients, entity: 'patients'}, {maxContentLength: Infinity,
-        maxBodyLength: Infinity}).catch(error => {
-        console.log("Error in sending patients context to server - " + error)
-    });
     changeCoordinatesEveryTotSeconds();
 }
 
