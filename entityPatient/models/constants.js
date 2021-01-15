@@ -2,8 +2,11 @@ module.exports.MINIMUM_ID = 1;
 module.exports.MAXIMUM_ID = 10000;
 
 module.exports.ARRAY_FILE_TRACES = ['./traces/trace12.txt', './traces/trace13.txt', './traces/trace14.txt',
-    './traces/trace15.txt', './traces/trace16.txt', './traces/trace17.txt', './traces/trace18.txt', './traces/trace19.txt',
-    './traces/trace20.txt', './traces/trace21.txt', './traces/trace22.txt']
+    './traces/trace15.txt', './traces/trace16.txt', './traces/trace17.txt', './traces/trace18.txt',
+    './traces/trace19.txt', './traces/trace20.txt', './traces/trace21.txt', './traces/trace22.txt',
+    './traces/trace31.txt', './traces/trace32.txt', './traces/trace33.txt', './traces/trace34.txt',
+    './traces/trace35.txt', './traces/trace36.txt', './traces/trace37.txt', './traces/trace38.txt',
+    './traces/trace39.txt', './traces/trace40.txt']
 
 module.exports.MIN_LACE = 10;
 module.exports.MAX_LACE = 80;

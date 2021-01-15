@@ -4,7 +4,8 @@ module.exports.MAXIMUM_ID = 10000;
 module.exports.ARRAY_FILE_TRACES = ['./traces/trace1.txt', './traces/trace2.txt', './traces/trace3.txt',
     './traces/trace4.txt', './traces/trace5.txt', './traces/trace6.txt', './traces/trace7.txt', './traces/trace8.txt',
     './traces/trace9.txt', './traces/trace10.txt', './traces/trace11.txt', './traces/trace23.txt',
-    './traces/trace24.txt']
+    './traces/trace24.txt', './traces/trace25.txt', './traces/trace26.txt', './traces/trace27.txt',
+    './traces/trace28.txt', './traces/trace29.txt', './traces/trace30.txt']
 
 module.exports.MIN_LACE = 10;
 module.exports.MAX_LACE = 80;
