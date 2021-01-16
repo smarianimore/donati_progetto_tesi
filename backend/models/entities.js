@@ -1,6 +1,7 @@
 const constants = require("../models/constants")
-
 const mozjexl = require('mozjexl');
+const Tile38 = require('tile38');
+const client = new Tile38();
 
 let faker = require('faker');
 faker.locale = "it";
@@ -15,14 +16,60 @@ let markersPatients = []
 var contextVehicles;
 var contextPatients;
 
+let resultsVehiclesFence1;
+
 module.exports.setVehiclesArray = function (vehicle){
     vehiclesArray.unshift(vehicle);
+    client.set('fleet', vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+        console.log(err) // id not found
+    );
+    let query1Vehicles = client.intersectsQuery('fleet').detect('enter').circle(39.994, 116.326, 500);
+ //   let query1Vehicles = client.withinQuery('fleet').detect('inside').circle(39.981, 116.300, 500);
+ //   let query2Vehicles = client.withinQuery('fleet').detect('inside').circle(39.999, 116.314, 500);
+ //   let query3Vehicles = client.withinQuery('fleet').detect('inside').circle(39.983, 116.328, 500);
+    // eslint-disable-next-line no-unused-vars
+    let fence1Vehicles = query1Vehicles.executeFence((err, results) => {
+        if (err) {
+            console.error("Query1 Vehicles: something went wrong! " + err);
+        } else {
+            console.log('Query1 Vehicles - Results');
+            console.dir(results);
+        }
+    });
+    // eslint-disable-next-line no-unused-vars
+ /*   let fence2Vehicles = query2Vehicles.executeFence((err, results) => {
+        // this callback will be called multiple times
+        if (err) {
+            console.error("Query2 Vehicles: something went wrong! " + err);
+        } else {
+            console.log('Query2 Vehicles - Results');
+            console.dir(results);
+        }
+    });
+    // eslint-disable-next-line no-unused-vars
+    let fence3Vehicles = query3Vehicles.executeFence((err, results) => {
+        // this callback will be called multiple times
+        if (err) {
+            console.error("Query3 Vehicles: something went wrong! " + err);
+        } else {
+            console.log('Query3 Vehicles - Results');
+            console.dir(results);
+        }
+    });*/
 }
-module.exports.getVehiclesArray = function (){
+
+module.exports.getVehicleFencesResults = function(){
+    let vehicleFencesResults = {
+        resultsFence1: resultsVehiclesFence1
+    }
+    return vehicleFencesResults
+}
+
+module.exports.getVehiclesArray = function(){
     return vehiclesArray;
 }
 
-module.exports.setPatientsArray = function (patient){
+module.exports.setPatientsArray = function(patient){
     patientsArray.unshift(patient);
 }
 module.exports.getPatientsArray = function (){
@@ -92,9 +139,12 @@ module.exports.createMarkersPatients = function() {
 }
 
 module.exports.setVehiclesLocation = function(vehicle) {
-    for(let i = 0; i < markersVehicles.length; i++){
-        if(markersVehicles[i].id == vehicle.id){
-            markersVehicles[i].location = vehicle.location
+    for (let i = 0; i < markersVehicles.length; i++) {
+        if (markersVehicles[i].id == vehicle.id) {
+            markersVehicles[i].location = vehicle.location;
+            client.set('fleet', vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+                console.log(err) // id not found
+            );
         }
     }
 }

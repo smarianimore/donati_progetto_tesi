@@ -36,9 +36,10 @@ module.exports = function(app) {
     });
 
     app.get('/entities/markers/updated', (req, res) => {
-        res.send(func.getUpdatedMarkers(req.query.entity));
+        if(req.query.entity == 'vehicles'){
+            res.send({markers: func.getUpdatedMarkers(req.query.entity), fences: func.getVehicleFencesResults()});
+        }
     });
-
 
     app.put('/entities/markers/deselect', (req, res) => {
         func.deselectAllMarkers(req.body.entity)

@@ -4,6 +4,7 @@
     <l-map
         style="height: 80%; width: 100%"
         :zoom="zoom"
+        @click="addMarker"
         :center="center"
     >
       <l-tile-layer :url="url"></l-tile-layer>
@@ -42,17 +43,26 @@ export default {
       center: constant.CENTER_OF_MAP,
       bounds: null,
       markers: [],
-      entity: ''
+      entity: '',
+      fencesResults: '',
     };
   },
   methods: {
-    zoomUpdated (zoom) {
-      this.zoom = zoom;
+    addMarker(event) {
+      console.log(event.latlng)
+      //this.markers.push(event.latlng);
     },
     changeCoordinates() {
       axios.get('http://localhost:8000/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
-        this.markers = response.data
+        this.markers = response.data.markers
+        this.fencesResults = response.data.fences
+        this.checkFences(this.fencesResults);
       });
+    },
+    checkFences(results){
+      if(results.resultsFence1.detect == 'inside'){
+        console.log('inside')
+      }
     },
     createMarkersPatients() {
       axios.get('http://localhost:8000/entities/patients/markers').then(response => {
