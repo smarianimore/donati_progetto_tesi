@@ -60,8 +60,8 @@ export default {
       });
     },
     checkFences(results){
-      if(results.resultsFence1.detect == 'inside'){
-        console.log('inside')
+      for(let i = 0; i < results.length; i++){
+        console.log(results[i]);
       }
     },
     createMarkersPatients() {

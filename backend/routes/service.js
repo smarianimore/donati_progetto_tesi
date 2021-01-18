@@ -37,7 +37,7 @@ module.exports = function(app) {
 
     app.get('/entities/markers/updated', (req, res) => {
         if(req.query.entity == 'vehicles'){
-            res.send({markers: func.getUpdatedMarkers(req.query.entity), fences: func.getVehicleFencesResults()});
+            res.send({markers: func.getUpdatedMarkers(req.query.entity), fences: func.getVehicleFencesResults()}); // fences: is an array of results (id)
         }
     });
 

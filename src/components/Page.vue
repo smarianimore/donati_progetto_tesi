@@ -76,6 +76,9 @@
             </div>
             <br>
             <br>
+            <Dialog></Dialog>
+            <br>
+            <br>
             <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
             <div>
               <li class="list-group-item" style="height: 40px; font-size: 13px; opacity: 0.9;">
@@ -120,6 +123,16 @@ import Patients_table from "@/components/Patients_table";
 import { bus } from '../main'
 import  myJson from '../main';
 import IndexButton from "@/components/IndexButton";
+import Dialog from "@/components/Dialog";
+
+this.$modal.show({
+  template: `
+    <div>
+      <p>Close using this button:</p>
+      <button @click="$emit('close')">Close</button>
+    </div>
+  `
+})
 
 setInterval(function(){
   bus.$emit('changeCoordinates')
@@ -127,7 +140,7 @@ setInterval(function(){
 
 export default {
 name: "Page",
-  components: {Vehicles_table, Map, Patients_table, IndexButton},
+  components: {Vehicles_table, Map, Patients_table, IndexButton, Dialog},
   data () {
     return {
       myjson: '',

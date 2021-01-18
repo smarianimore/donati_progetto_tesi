@@ -10,59 +10,73 @@ faker.seed(123);
 let vehiclesArray = [];
 let patientsArray = [];
 
-let markersVehicles = []
-let markersPatients = []
+let markersVehicles = [];
+let markersPatients = [];
 
-var contextVehicles;
-var contextPatients;
+let contextVehicles;
+let contextPatients;
 
-let resultsVehiclesFence1;
+let fencesResults = [];
+
 
 module.exports.setVehiclesArray = function (vehicle){
     vehiclesArray.unshift(vehicle);
     client.set('fleet', vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
         console.log(err) // id not found
     );
-    let query1Vehicles = client.intersectsQuery('fleet').detect('enter').circle(39.994, 116.326, 500);
- //   let query1Vehicles = client.withinQuery('fleet').detect('inside').circle(39.981, 116.300, 500);
- //   let query2Vehicles = client.withinQuery('fleet').detect('inside').circle(39.999, 116.314, 500);
- //   let query3Vehicles = client.withinQuery('fleet').detect('inside').circle(39.983, 116.328, 500);
+    let query1Vehicles = client.intersectsQuery('fleet').detect('enter', 'exit').circle(39.994, 116.326, 500);
+ //   query2Vehicles = client.intersectsQuery('fleet').detect('enter').circle(39.981, 116.300, 500);
+ //   query3Vehicles = client.intersectsQuery('fleet').detect('enter').circle(39.999, 116.314, 500);
+ //   query4Vehicles = client.intersectsQuery('fleet').detect('enter').circle(39.983, 116.328, 500);
     // eslint-disable-next-line no-unused-vars
-    let fence1Vehicles = query1Vehicles.executeFence((err, results) => {
-        if (err) {
-            console.error("Query1 Vehicles: something went wrong! " + err);
-        } else {
-            console.log('Query1 Vehicles - Results');
-            console.dir(results);
-        }
-    });
-    // eslint-disable-next-line no-unused-vars
- /*   let fence2Vehicles = query2Vehicles.executeFence((err, results) => {
-        // this callback will be called multiple times
-        if (err) {
-            console.error("Query2 Vehicles: something went wrong! " + err);
-        } else {
-            console.log('Query2 Vehicles - Results');
-            console.dir(results);
-        }
-    });
-    // eslint-disable-next-line no-unused-vars
-    let fence3Vehicles = query3Vehicles.executeFence((err, results) => {
-        // this callback will be called multiple times
-        if (err) {
-            console.error("Query3 Vehicles: something went wrong! " + err);
-        } else {
-            console.log('Query3 Vehicles - Results');
-            console.dir(results);
-        }
-    });*/
+       let fence1Vehicles = query1Vehicles.executeFence((err, results) => {
+           if (err) {
+               console.error("Query1 Vehicles: something went wrong! " + err);
+           } else {
+               if(results.detect == 'enter'){
+                 //  console.dir(results)
+                   if(!(fencesResults.includes(results.id))){
+                       console.log('Vehicle entered the Fence 1: ' + results.id);
+                       fencesResults.unshift(results.id)
+                   }
+               }
+               if(results.detect == 'exit'){
+                   console.log('Vehicle left the Fence 1: ' + results.id)
+                   if(fencesResults.includes(results.id)){
+                       for(let i = 0; i < fencesResults.length; i++){
+                           if ( fencesResults[i] === results.id) {
+                               fencesResults.splice(i, 1);
+                               console.log('Ho rimosso un veicolo dai risultati')
+                           }
+                       }
+                   }
+               }
+           }
+       });
+       // eslint-disable-next-line no-unused-vars
+    /*   let fence2Vehicles = query2Vehicles.executeFence((err, results) => {
+           // this callback will be called multiple times
+           if (err) {
+               console.error("Query2 Vehicles: something went wrong! " + err);
+           } else {
+               console.log('Query2 Vehicles - Results');
+               console.dir(results);
+           }
+       });
+       // eslint-disable-next-line no-unused-vars
+       let fence3Vehicles = query3Vehicles.executeFence((err, results) => {
+           // this callback will be called multiple times
+           if (err) {
+               console.error("Query3 Vehicles: something went wrong! " + err);
+           } else {
+               console.log('Query3 Vehicles - Results');
+               console.dir(results);
+           }
+       });*/
 }
 
-module.exports.getVehicleFencesResults = function(){
-    let vehicleFencesResults = {
-        resultsFence1: resultsVehiclesFence1
-    }
-    return vehicleFencesResults
+module.exports.getVehicleFencesResults = function () {
+    return fencesResults;
 }
 
 module.exports.getVehiclesArray = function(){
