@@ -16,136 +16,88 @@ let markersPatients = [];
 let contextVehicles;
 let contextPatients;
 
-let fence1ResultsVehicles = [];
-let fence2ResultsVehicles = [];
-let fence3ResultsVehicles = [];
-let fence4ResultsVehicles = [];
+let fencesResults = [];
 
-let fence1ResultsPatients = [];
-let fence2ResultsPatients = [];
-let fence3ResultsPatients = [];
-let fence4ResultsPatients = [];
+module.exports.setFences = function (fencesArray, entity) {
+    for(let i = 0; i < fencesArray.length; i++){
+        module.exports.editFencesQueries(fencesArray[i], entity);
+    }
+}
+
+module.exports.editFencesQueries = function (fenceToDo, entity){
+    if(entity == 'vehicles'){
+        let fenceResult = [];
+        let query = client.intersectsQuery('fleet').detect('enter', 'exit').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
+        // eslint-disable-next-line no-unused-vars
+        let fence = query.executeFence((err, results) => {
+            if (err) {
+                console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
+            } else {
+                if(results.detect == 'enter'){
+                    if(!(fenceResult.includes(results.id))){
+                        console.log('Vehicle entered the Fence ' + fenceToDo.id + ': '+ results.id);
+                        fenceResult.unshift(results.id);
+                        let result = {
+                            id: fenceToDo.id,
+                            results: fenceResult
+                        }
+                        fencesResults.unshift(result)
+                    }
+                }
+                if(results.detect == 'exit'){
+                    //  console.log('Vehicle left the Fence 1: ' + results.id)
+                    if(fenceResult.includes(results.id)){
+                        for(let i = 0; i < fenceResult.length; i++){
+                            if ( fenceResult[i] === results.id) {
+                                fenceResult.splice(i, 1);
+                                console.log('Fence ' + fenceToDo.id + ' - Ho rimosso un veicolo dai risultati: ' + results.id)
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    if(entity == 'patients'){
+        let fenceResult = [];
+        let query = client.intersectsQuery('people').detect('enter', 'exit').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
+        // eslint-disable-next-line no-unused-vars
+        let fence = query.executeFence((err, results) => {
+            if (err) {
+                console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
+            } else {
+                if(results.detect == 'enter'){
+                    if(!(fenceResult.includes(results.id))){
+                        console.log('Patient entered the Fence ' + fenceToDo.id + ': '+ results.id);
+                        fenceResult.unshift(results.id);
+                        let result = {
+                            id: fenceToDo.id,
+                            results: fenceResult
+                        }
+                        fencesResults.unshift(result)
+                    }
+                }
+                if(results.detect == 'exit'){
+                    //  console.log('Patient left the Fence 1: ' + results.id)
+                    if(fenceResult.includes(results.id)){
+                        for(let i = 0; i < fenceResult.length; i++){
+                            if ( fenceResult[i] === results.id) {
+                                fenceResult.splice(i, 1);
+                                console.log('Fence ' + fenceToDo.id + ' - Ho rimosso un paziente dai risultati: ' + results.id)
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
 
 module.exports.setVehiclesArray = function (vehicle){
     vehiclesArray.unshift(vehicle);
     client.set('fleet', vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
         console.log(err) // id not found
     );
-    let query1Vehicles = client.intersectsQuery('fleet').detect('enter', 'exit').circle(39.994, 116.326, 500);
-    let query2Vehicles = client.intersectsQuery('fleet').detect('enter', 'exit').circle(39.981, 116.300, 500);
-    let query3Vehicles = client.intersectsQuery('fleet').detect('enter', 'exit').circle(39.999, 116.314, 500);
-    let query4Vehicles = client.intersectsQuery('fleet').detect('enter', 'exit').circle(39.983, 116.328, 500);
-
-    // eslint-disable-next-line no-unused-vars
-       let fence1Vehicles = query1Vehicles.executeFence((err, results) => {
-           if (err) {
-               console.error("Query1 Vehicles: something went wrong! " + err);
-           } else {
-               if(results.detect == 'enter'){
-                 //  console.dir(results)
-                   if(!(fence1ResultsVehicles.includes(results.id))){
-                       console.log('Vehicle entered the Fence 1: ' + results.id);
-                       fence1ResultsVehicles.unshift(results.id)
-                   }
-               }
-               if(results.detect == 'exit'){
-                 //  console.log('Vehicle left the Fence 1: ' + results.id)
-                   if(fence1ResultsVehicles.includes(results.id)){
-                       for(let i = 0; i < fence1ResultsVehicles.length; i++){
-                           if ( fence1ResultsVehicles[i] === results.id) {
-                               fence1ResultsVehicles.splice(i, 1);
-                               console.log('Fence1: Ho rimosso un veicolo dai risultati: ' + results.id)
-                           }
-                       }
-                   }
-               }
-           }
-       });
-       // eslint-disable-next-line no-unused-vars
-       let fence2Vehicles = query2Vehicles.executeFence((err, results) => {
-           if (err) {
-               console.error("Query2 Vehicles: something went wrong! " + err);
-           } else {
-               if(results.detect == 'enter'){
-                   //  console.dir(results)
-                   if(!(fence2ResultsVehicles.includes(results.id))){
-                       console.log('Vehicle entered the Fence 2: ' + results.id);
-                       fence2ResultsVehicles.unshift(results.id)
-                   }
-               }
-               if(results.detect == 'exit'){
-                   //  console.log('Vehicle left the Fence 2: ' + results.id)
-                   if(fence2ResultsVehicles.includes(results.id)){
-                       for(let i = 0; i < fence2ResultsVehicles.length; i++){
-                           if ( fence2ResultsVehicles[i] === results.id) {
-                               fence2ResultsVehicles.splice(i, 1);
-                               console.log('Fence2: Ho rimosso un veicolo dai risultati: ' + results.id)
-                           }
-                       }
-                   }
-               }
-           }
-       });
-       // eslint-disable-next-line no-unused-vars
-       let fence3Vehicles = query3Vehicles.executeFence((err, results) => {
-           if (err) {
-               console.error("Query3 Vehicles: something went wrong! " + err);
-           } else {
-               if(results.detect == 'enter'){
-                   //  console.dir(results)
-                   if(!(fence3ResultsVehicles.includes(results.id))){
-                       console.log('Vehicle entered the Fence 3: ' + results.id);
-                       fence3ResultsVehicles.unshift(results.id)
-                   }
-               }
-               if(results.detect == 'exit'){
-                   //  console.log('Vehicle left the Fence 3: ' + results.id)
-                   if(fence3ResultsVehicles.includes(results.id)){
-                       for(let i = 0; i < fence3ResultsVehicles.length; i++){
-                           if ( fence3ResultsVehicles[i] === results.id) {
-                               fence3ResultsVehicles.splice(i, 1);
-                               console.log('Fence3: Ho rimosso un veicolo dai risultati: ' + results.id)
-                           }
-                       }
-                   }
-               }
-           }
-       });
-    // eslint-disable-next-line no-unused-vars
-    let fence4Vehicles = query4Vehicles.executeFence((err, results) => {
-        if (err) {
-            console.error("Query4 Vehicles: something went wrong! " + err);
-        } else {
-            if(results.detect == 'enter'){
-                //  console.dir(results)
-                if(!(fence4ResultsVehicles.includes(results.id))){
-                    console.log('Vehicle entered the Fence 4: ' + results.id);
-                    fence4ResultsVehicles.unshift(results.id)
-                }
-            }
-            if(results.detect == 'exit'){
-                //  console.log('Vehicle left the Fence 4: ' + results.id)
-                if(fence4ResultsVehicles.includes(results.id)){
-                    for(let i = 0; i < fence4ResultsVehicles.length; i++){
-                        if ( fence4ResultsVehicles[i] === results.id) {
-                            fence4ResultsVehicles.splice(i, 1);
-                            console.log('Fence4: Ho rimosso un veicolo dai risultati: ' + results.id)
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-module.exports.getVehiclesFencesResults = function () {
-    let fencesResults = {
-        fence1: fence1ResultsVehicles,
-        fence2: fence2ResultsVehicles,
-        fence3: fence3ResultsVehicles,
-        fence4: fence4ResultsVehicles,
-    }
-    return fencesResults;
 }
 
 module.exports.getVehiclesArray = function(){
@@ -157,121 +109,9 @@ module.exports.setPatientsArray = function(patient){
     client.set('people', patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
         console.log(err) // id not found
     );
-    let query1Patients = client.intersectsQuery('people').detect('enter', 'exit').circle(39.997, 116.322, 500);
-    let query2Patients = client.intersectsQuery('people').detect('enter', 'exit').circle(40.006, 116.325, 500);
-    let query3Patients = client.intersectsQuery('people').detect('enter', 'exit').circle(40.002, 116.322, 500);
-    let query4Patients = client.intersectsQuery('people').detect('enter', 'exit').circle(40.007, 116.319, 500);
-
-    // eslint-disable-next-line no-unused-vars
-    let fence1Patients = query1Patients.executeFence((err, results) => {
-        if (err) {
-            console.error("Query1 Patients: something went wrong! " + err);
-        } else {
-
-            if(results.detect == 'enter'){
-                //console.dir(results)
-                if(!(fence1ResultsPatients.includes(results.id))){
-                    console.log('Patient entered the Fence 1: ' + results.id);
-                    fence1ResultsPatients.unshift(results.id)
-                }
-            }
-            if(results.detect == 'exit'){
-                //  console.log('Patient left the Fence 1: ' + results.id)
-                if(fence1ResultsPatients.includes(results.id)){
-                    for(let i = 0; i < fence1ResultsPatients.length; i++){
-                        if ( fence1ResultsPatients[i] === results.id) {
-                            fence1ResultsPatients.splice(i, 1);
-                            console.log('Fence1: Ho rimosso un paziente dai risultati: ' + results.id)
-                        }
-                    }
-                }
-            }
-        }
-    });
-    // eslint-disable-next-line no-unused-vars
-    let fence2Patients = query2Patients.executeFence((err, results) => {
-        if (err) {
-            console.error("Query2 Patients: something went wrong! " + err);
-        } else {
-            if(results.detect == 'enter'){
-                //  console.dir(results)
-                if(!(fence2ResultsPatients.includes(results.id))){
-                    console.log('Patient entered the Fence 2: ' + results.id);
-                    fence2ResultsPatients.unshift(results.id)
-                }
-            }
-            if(results.detect == 'exit'){
-                //  console.log('Patient left the Fence 2: ' + results.id)
-                if(fence2ResultsPatients.includes(results.id)){
-                    for(let i = 0; i < fence2ResultsPatients.length; i++){
-                        if ( fence2ResultsPatients[i] === results.id) {
-                            fence2ResultsPatients.splice(i, 1);
-                            console.log('Fence2: Ho rimosso un paziente dai risultati: ' + results.id)
-                        }
-                    }
-                }
-            }
-        }
-    });
-    // eslint-disable-next-line no-unused-vars
-    let fence3Patients = query3Patients.executeFence((err, results) => {
-        if (err) {
-            console.error("Query3 Patients: something went wrong! " + err);
-        } else {
-            if(results.detect == 'enter'){
-                //  console.dir(results)
-                if(!(fence3ResultsPatients.includes(results.id))){
-                    console.log('Patient entered the Fence 3: ' + results.id);
-                    fence3ResultsPatients.unshift(results.id)
-                }
-            }
-            if(results.detect == 'exit'){
-                //  console.log('Vehicle left the Fence 3: ' + results.id)
-                if(fence3ResultsPatients.includes(results.id)){
-                    for(let i = 0; i < fence3ResultsPatients.length; i++){
-                        if ( fence3ResultsPatients[i] === results.id) {
-                            fence3ResultsPatients.splice(i, 1);
-                            console.log('Fence3: Ho rimosso un paziente dai risultati: ' + results.id)
-                        }
-                    }
-                }
-            }
-        }
-    });
-    // eslint-disable-next-line no-unused-vars
-    let fence4Patients = query4Patients.executeFence((err, results) => {
-        if (err) {
-            console.error("Query4 Patients: something went wrong! " + err);
-        } else {
-            if(results.detect == 'enter'){
-                //  console.dir(results)
-                if(!(fence4ResultsPatients.includes(results.id))){
-                    console.log('Patient entered the Fence 4: ' + results.id);
-                    fence4ResultsPatients.unshift(results.id)
-                }
-            }
-            if(results.detect == 'exit'){
-                //  console.log('Patient left the Fence 4: ' + results.id)
-                if(fence4ResultsPatients.includes(results.id)){
-                    for(let i = 0; i < fence4ResultsPatients.length; i++){
-                        if ( fence4ResultsPatients[i] === results.id) {
-                            fence4ResultsPatients.splice(i, 1);
-                            console.log('Fence4: Ho rimosso un paziente dai risultati: ' + results.id)
-                        }
-                    }
-                }
-            }
-        }
-    });
 }
 
-module.exports.getPatientsFencesResults = function () {
-    let fencesResults = {
-        fence1: fence1ResultsPatients,
-        fence2: fence2ResultsPatients,
-        fence3: fence3ResultsPatients,
-        fence4: fence4ResultsPatients,
-    }
+module.exports.getFencesResults = function () {
     return fencesResults;
 }
 

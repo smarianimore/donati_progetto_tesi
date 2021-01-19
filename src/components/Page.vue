@@ -185,13 +185,47 @@ name: "Page",
     this.myjson_indexes = myJson.data().myJson.indexes;
 
     bus.$on('fencesResults', (data) => {
-      for(let i = 0; i < data.fence1.length; i++) {
+      for(let i = 0; i < data.length; i++){
+        if(data[i].id == 1){
+          for(let j = 0; j < data[i].results.length; j++) {
+            if (!(this.fence1Results.includes(data[i].results[j]))){
+              this.fence1Results.unshift(data[i].results[j])
+              this.textResults1 += '' + data[i].results[j] + ', '
+            }
+          }
+        }
+        if(data[i].id == 2){
+          for(let j = 0; j < data[i].results.length; j++) {
+            if (!(this.fence2Results.includes(data[i].results[j]))){
+              this.fence2Results.unshift(data[i].results[j])
+              this.textResults2 += '' + data[i].results[j] + ', '
+            }
+          }
+        }
+        if(data[i].id == 3){
+          for(let j = 0; j < data[i].results.length; j++) {
+            if (!(this.fence3Results.includes(data[i].results[j]))){
+              this.fence3Results.unshift(data[i].results[j])
+              this.textResults3 += '' + data[i].results[j] + ', '
+            }
+          }
+        }
+        if(data[i].id == 4){
+          for(let j = 0; j < data[i].results.length; j++) {
+            if (!(this.fence4Results.includes(data[i].results[j]))){
+              this.fence4Results.unshift(data[i].results[j])
+              this.textResults4 += '' + data[i].results[j] + ', '
+            }
+          }
+        }
+      }
+  /*    for(let i = 0; i < data.fence1.length; i++) {
         if (!(this.fence1Results.includes(data.fence1[i]))) {
           this.fence1Results.unshift(data.fence1[i])
           this.textResults1 += '' + data.fence1[i] + ', '
         }
-      }
-      for(let i = 0; i < data.fence2.length; i++) {
+      }*/
+  /*    for(let i = 0; i < data.fence2.length; i++) {
         if (!(this.fence2Results.includes(data.fence2[i]))) {
           this.fence2Results.unshift(data.fence2[i])
           this.textResults2 += '' + data.fence2[i] + ', '
@@ -208,7 +242,7 @@ name: "Page",
           this.fence4Results.unshift(data.fence4[i])
           this.textResults4 += '' + data.fence4[i] + ', '
         }
-      }
+      }*/
     });
   },
   methods: {

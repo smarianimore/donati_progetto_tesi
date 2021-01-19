@@ -35,9 +35,13 @@ module.exports = function(app) {
         res.send(func.getVehiclesArray())
     });
 
+    app.put('/entities/fences', (req, res) => {
+        func.setFences(req.body.data, req.body.entity)
+        res.send('Done')
+    });
+
     app.get('/entities/markers/updated', (req, res) => {
-        res.send({markers: func.getUpdatedMarkers(req.query.entity), fencesVehicles: func.getVehiclesFencesResults(),
-            fencesPatients: func.getPatientsFencesResults()}); // fences: is an object with arrays of results (id)
+        res.send({markers: func.getUpdatedMarkers(req.query.entity), fences: func.getFencesResults()}); // fences: is an object with arrays of results (idFence, ids)
     });
 
     app.put('/entities/markers/deselect', (req, res) => {

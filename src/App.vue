@@ -37,11 +37,13 @@ export default {
       vehicleArray: [],
       myjson: '',
       mydata: '',
+      myfences: ''
     };
   },
   methods: {
     selectCategory() {
       this.mydata = myJson.data().myJson.entity;
+      this.myfences = myJson.data().myJson.fences;
       if(this.mydata === "patients") {
         axios.get('http://localhost:8000/entities/patients').then(response => {
           this.peopleArray = response.data
@@ -53,6 +55,9 @@ export default {
           router.push('home_page')
         });
       }
+      axios.put('http://localhost:8000/entities/fences', {data: this.myfences, entity: this.mydata}).catch(error => {
+        console.log("Error in sending fences to server: "+error)
+      });
       bus.$emit('changedEntity');
     }
   },

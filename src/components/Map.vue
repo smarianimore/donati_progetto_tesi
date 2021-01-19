@@ -55,12 +55,7 @@ export default {
     changeCoordinates() {
       axios.get('http://localhost:8000/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
         this.markers = response.data.markers
-        if(this.entity == 'vehicles'){
-          this.fencesResults = response.data.fencesVehicles
-        }
-        if(this.entity == 'patients'){
-          this.fencesResults = response.data.fencesPatients
-        }
+        this.fencesResults = response.data.fences
         this.checkFences(this.fencesResults);
       });
     },
