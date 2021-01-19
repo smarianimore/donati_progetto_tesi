@@ -174,10 +174,10 @@ name: "Page",
       fence2Results: [],
       fence3Results: [],
       fence4Results: [],
-      textResults1: 'Fence 1 - Vehicles detected: ',
-      textResults2: 'Fence 2 - Vehicles detected: ',
-      textResults3: 'Fence 3 - Vehicles detected: ',
-      textResults4: 'Fence 4 - Vehicles detected: '
+      textResults1: 'Fence 1 - Entities detected: ',
+      textResults2: 'Fence 2 - Entities detected: ',
+      textResults3: 'Fence 3 - Entities detected: ',
+      textResults4: 'Fence 4 - Entities detected: ',
     }
   },
   created() {

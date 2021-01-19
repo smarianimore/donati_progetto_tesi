@@ -36,9 +36,8 @@ module.exports = function(app) {
     });
 
     app.get('/entities/markers/updated', (req, res) => {
-        if(req.query.entity == 'vehicles'){
-            res.send({markers: func.getUpdatedMarkers(req.query.entity), fences: func.getVehicleFencesResults()}); // fences: is an object with arrays of results (id)
-        }
+        res.send({markers: func.getUpdatedMarkers(req.query.entity), fencesVehicles: func.getVehiclesFencesResults(),
+            fencesPatients: func.getPatientsFencesResults()}); // fences: is an object with arrays of results (id)
     });
 
     app.put('/entities/markers/deselect', (req, res) => {
