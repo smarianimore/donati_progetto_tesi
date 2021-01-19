@@ -76,7 +76,41 @@
             </div>
             <br>
             <br>
-            <Dialog></Dialog>
+              <v-card>
+                <v-card-title class="headline grey lighten-2">
+                  Fence 1 - Results
+                </v-card-title>
+                <v-card-text>
+                  {{textResults1}}
+                </v-card-text>
+              </v-card>
+            <br>
+            <v-card>
+              <v-card-title class="headline grey lighten-2">
+                Fence 2 - Results
+              </v-card-title>
+              <v-card-text>
+                {{textResults2}}
+              </v-card-text>
+            </v-card>
+            <br>
+            <v-card>
+              <v-card-title class="headline grey lighten-2">
+                Fence 3 - Results
+              </v-card-title>
+              <v-card-text>
+                {{textResults3}}
+              </v-card-text>
+            </v-card>
+            <br>
+            <v-card>
+              <v-card-title class="headline grey lighten-2">
+                Fence 4 - Results
+              </v-card-title>
+              <v-card-text>
+                {{textResults4}}
+              </v-card-text>
+            </v-card>
             <br>
             <br>
             <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
@@ -123,16 +157,6 @@ import Patients_table from "@/components/Patients_table";
 import { bus } from '../main'
 import  myJson from '../main';
 import IndexButton from "@/components/IndexButton";
-import Dialog from "@/components/Dialog";
-
-this.$modal.show({
-  template: `
-    <div>
-      <p>Close using this button:</p>
-      <button @click="$emit('close')">Close</button>
-    </div>
-  `
-})
 
 setInterval(function(){
   bus.$emit('changeCoordinates')
@@ -140,16 +164,52 @@ setInterval(function(){
 
 export default {
 name: "Page",
-  components: {Vehicles_table, Map, Patients_table, IndexButton, Dialog},
+  components: {Vehicles_table, Map, Patients_table, IndexButton},
   data () {
     return {
       myjson: '',
       myjson_indexes: [],
+      dialog: false,
+      fence1Results: [],
+      fence2Results: [],
+      fence3Results: [],
+      fence4Results: [],
+      textResults1: 'Fence 1 - Vehicles detected: ',
+      textResults2: 'Fence 2 - Vehicles detected: ',
+      textResults3: 'Fence 3 - Vehicles detected: ',
+      textResults4: 'Fence 4 - Vehicles detected: '
     }
   },
   created() {
     this.myjson = myJson.data().myJson;
     this.myjson_indexes = myJson.data().myJson.indexes;
+
+    bus.$on('fencesResults', (data) => {
+      for(let i = 0; i < data.fence1.length; i++) {
+        if (!(this.fence1Results.includes(data.fence1[i]))) {
+          this.fence1Results.unshift(data.fence1[i])
+          this.textResults1 += '' + data.fence1[i] + ', '
+        }
+      }
+      for(let i = 0; i < data.fence2.length; i++) {
+        if (!(this.fence2Results.includes(data.fence2[i]))) {
+          this.fence2Results.unshift(data.fence2[i])
+          this.textResults2 += '' + data.fence2[i] + ', '
+        }
+      }
+      for(let i = 0; i < data.fence3.length; i++) {
+        if (!(this.fence3Results.includes(data.fence3[i]))) {
+          this.fence3Results.unshift(data.fence3[i])
+          this.textResults3 += '' + data.fence3[i] + ', '
+        }
+      }
+      for(let i = 0; i < data.fence4.length; i++) {
+        if (!(this.fence4Results.includes(data.fence4[i]))) {
+          this.fence4Results.unshift(data.fence4[i])
+          this.textResults4 += '' + data.fence4[i] + ', '
+        }
+      }
+    });
   },
   methods: {
     deselectRiskScore: function () {

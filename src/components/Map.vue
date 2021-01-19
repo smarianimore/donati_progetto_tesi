@@ -60,9 +60,7 @@ export default {
       });
     },
     checkFences(results){
-      for(let i = 0; i < results.length; i++){
-        console.log(results[i]);
-      }
+      bus.$emit('fencesResults', results)
     },
     createMarkersPatients() {
       axios.get('http://localhost:8000/entities/patients/markers').then(response => {
