@@ -86,6 +86,13 @@ module.exports.editFencesQueries = function (fenceToDo, entity){
                                 console.log('Fence ' + fenceToDo.id + ' - Ho rimosso un paziente dai risultati: ' + results.id)
                             }
                         }
+                        for(let i = 0; i < fencesResults.length; i++){
+                            for(let j = 0; j < fencesResults[i].results.length; j++){
+                                if(fencesResults[i].results[j].id === results.id) {
+                                    fencesResults[i].results.splice(j, 1);
+                                }
+                            }
+                        }
                     }
                 }
             }

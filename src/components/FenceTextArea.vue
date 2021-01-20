@@ -21,21 +21,30 @@ export default {
   name: "FenceTextArea",
   data: () => ({
     fenceResults: [],
+    bench: [],
     textResults: ''
   }),
   created() {
     bus.$on('fencesResults', (data) => {
       for (let i = 0; i < data.length; i++) {
         if(this.block.id == data[i].id){
+          this.checkBench(data[i].results);
           for (let j = 0; j < data[i].results.length; j++) {
             if (!(this.fenceResults.includes(data[i].results[j]))) {
-              this.fenceResults.unshift(data[i].results[j])
-              this.textResults += '' + data[i].results[j] + ', '
+              this.bench.unshift(data[i].results[j]);
+              this.fenceResults.unshift(data[i].results[j]);
+              this.textResults += '' + data[i].results[j] + ', ';
             }
           }
         }
       }
     });
+  },
+  methods: {
+    // eslint-disable-next-line no-unused-vars
+    checkBench(data){
+     // let difference = this.bench.filter(x => !data.includes(x));
+    }
   }
 }
 </script>
