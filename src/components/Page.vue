@@ -76,41 +76,9 @@
             </div>
             <br>
             <br>
-              <v-card>
-                <v-card-title class="headline grey lighten-2">
-                  Fence 1 - Results
-                </v-card-title>
-                <v-card-text>
-                  {{textResults1}}
-                </v-card-text>
-              </v-card>
-            <br>
-            <v-card>
-              <v-card-title class="headline grey lighten-2">
-                Fence 2 - Results
-              </v-card-title>
-              <v-card-text>
-                {{textResults2}}
-              </v-card-text>
-            </v-card>
-            <br>
-            <v-card>
-              <v-card-title class="headline grey lighten-2">
-                Fence 3 - Results
-              </v-card-title>
-              <v-card-text>
-                {{textResults3}}
-              </v-card-text>
-            </v-card>
-            <br>
-            <v-card>
-              <v-card-title class="headline grey lighten-2">
-                Fence 4 - Results
-              </v-card-title>
-              <v-card-text>
-                {{textResults4}}
-              </v-card-text>
-            </v-card>
+            <template v-for="block in myjson_fences">
+              <component :is="block.component" :block="block" :key="block.id"></component>
+            </template>
             <br>
             <br>
             <!-- Keep map and table synchronised: <input id="myCheck" onclick="syncMapTable()" type="checkbox"> -->
@@ -157,6 +125,7 @@ import Patients_table from "@/components/Patients_table";
 import { bus } from '../main'
 import  myJson from '../main';
 import IndexButton from "@/components/IndexButton";
+import FenceTextArea from "@/components/FenceTextArea";
 
 setInterval(function(){
   bus.$emit('changeCoordinates')
@@ -164,86 +133,18 @@ setInterval(function(){
 
 export default {
 name: "Page",
-  components: {Vehicles_table, Map, Patients_table, IndexButton},
+  components: {Vehicles_table, Map, Patients_table, IndexButton, FenceTextArea},
   data () {
     return {
       myjson: '',
       myjson_indexes: [],
-      dialog: false,
-      fence1Results: [],
-      fence2Results: [],
-      fence3Results: [],
-      fence4Results: [],
-      textResults1: 'Fence 1 - Entities detected: ',
-      textResults2: 'Fence 2 - Entities detected: ',
-      textResults3: 'Fence 3 - Entities detected: ',
-      textResults4: 'Fence 4 - Entities detected: ',
+      myjson_fences: []
     }
   },
   created() {
     this.myjson = myJson.data().myJson;
     this.myjson_indexes = myJson.data().myJson.indexes;
-
-    bus.$on('fencesResults', (data) => {
-      for(let i = 0; i < data.length; i++){
-        if(data[i].id == 1){
-          for(let j = 0; j < data[i].results.length; j++) {
-            if (!(this.fence1Results.includes(data[i].results[j]))){
-              this.fence1Results.unshift(data[i].results[j])
-              this.textResults1 += '' + data[i].results[j] + ', '
-            }
-          }
-        }
-        if(data[i].id == 2){
-          for(let j = 0; j < data[i].results.length; j++) {
-            if (!(this.fence2Results.includes(data[i].results[j]))){
-              this.fence2Results.unshift(data[i].results[j])
-              this.textResults2 += '' + data[i].results[j] + ', '
-            }
-          }
-        }
-        if(data[i].id == 3){
-          for(let j = 0; j < data[i].results.length; j++) {
-            if (!(this.fence3Results.includes(data[i].results[j]))){
-              this.fence3Results.unshift(data[i].results[j])
-              this.textResults3 += '' + data[i].results[j] + ', '
-            }
-          }
-        }
-        if(data[i].id == 4){
-          for(let j = 0; j < data[i].results.length; j++) {
-            if (!(this.fence4Results.includes(data[i].results[j]))){
-              this.fence4Results.unshift(data[i].results[j])
-              this.textResults4 += '' + data[i].results[j] + ', '
-            }
-          }
-        }
-      }
-  /*    for(let i = 0; i < data.fence1.length; i++) {
-        if (!(this.fence1Results.includes(data.fence1[i]))) {
-          this.fence1Results.unshift(data.fence1[i])
-          this.textResults1 += '' + data.fence1[i] + ', '
-        }
-      }*/
-  /*    for(let i = 0; i < data.fence2.length; i++) {
-        if (!(this.fence2Results.includes(data.fence2[i]))) {
-          this.fence2Results.unshift(data.fence2[i])
-          this.textResults2 += '' + data.fence2[i] + ', '
-        }
-      }
-      for(let i = 0; i < data.fence3.length; i++) {
-        if (!(this.fence3Results.includes(data.fence3[i]))) {
-          this.fence3Results.unshift(data.fence3[i])
-          this.textResults3 += '' + data.fence3[i] + ', '
-        }
-      }
-      for(let i = 0; i < data.fence4.length; i++) {
-        if (!(this.fence4Results.includes(data.fence4[i]))) {
-          this.fence4Results.unshift(data.fence4[i])
-          this.textResults4 += '' + data.fence4[i] + ', '
-        }
-      }*/
-    });
+    this.myjson_fences = myJson.data().myJson.fences;
   },
   methods: {
     deselectRiskScore: function () {

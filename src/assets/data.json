@@ -18,9 +18,9 @@
     { "text": "Ergonomics %", "value": "ergonomics" }
   ],
   "fences": [
-    { "id": 1, "lat": "39.994", "lng": "116.326", "radius": "500"},
-    { "id": 2, "lat": "39.981", "lng": "116.300", "radius": "500" },
-    { "id": 3, "lat": "39.999", "lng": "116.314", "radius": "500" },
-    { "id": 4, "lat": "39.983", "lng": "116.328", "radius": "500" }
+    { "component":"FenceTextArea", "id": "Fence 1", "lat": "39.994", "lng": "116.326", "radius": "500" },
+    { "component":"FenceTextArea", "id": "Fence 2", "lat": "39.981", "lng": "116.300", "radius": "500" },
+    { "component":"FenceTextArea", "id": "Fence 3", "lat": "39.999", "lng": "116.314", "radius": "500" },
+    { "component":"FenceTextArea", "id": "Fence 4", "lat": "39.983", "lng": "116.328", "radius": "500" }
   ]
 }
