@@ -9,7 +9,7 @@
     >
       <l-tile-layer :url="url"></l-tile-layer>
       <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.location" :icon="getIcon(item)">
-        <l-popup :content="item.informations"></l-popup>
+        <l-popup :content="item.totalinfo"></l-popup>
       </l-marker>
     </l-map>
   </div>
@@ -22,6 +22,8 @@ import L from 'leaflet';
 import { bus } from '../main';
 import axios from "axios";
 import  myJson from '../main';
+import H from '@here/maps-api-for-javascript';
+import fs from 'fs';
 
 export default {
   name: "Map",
@@ -45,6 +47,7 @@ export default {
       markers: [],
       entity: '',
       fencesResults: '',
+      apiKey: constant.APIKEY
     };
   },
   methods: {
@@ -54,8 +57,9 @@ export default {
     },
     changeCoordinates() {
       axios.get('http://localhost:8000/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
-        this.markers = response.data.markers
-        this.fencesResults = response.data.fences
+        this.markers = response.data.markers;
+        this.reverseGeocoding();
+        this.fencesResults = response.data.fences;
         this.checkFences(this.fencesResults);
       });
     },
@@ -66,13 +70,30 @@ export default {
       axios.get('http://localhost:8000/entities/patients/markers').then(response => {
         this.markers = response.data
         this.center = response.data[0].location
+        this.reverseGeocoding();
       });
     },
     createMarkersVehicles() {
       axios.get('http://localhost:8000/entities/vehicles/markers').then(response => {
         this.markers = response.data
         this.center = response.data[0].location
+        this.reverseGeocoding();
       });
+    },
+    reverseGeocoding() {
+      var platform = new H.service.Platform({
+        apikey: [this.apiKey]
+      });
+      var service = platform.getSearchService();
+      for (let i = 0; i < this.markers.length; i++) {
+        service.reverseGeocode({
+          at: '' + this.markers[i].location.lat + ',' + this.markers[i].location.lng + ',150'
+        }, (result) => {
+          result.items.forEach((item) => {
+            axios.put('http://localhost:8000/entities/markers/address', {id: this.markers[i].id, address: item.address.label, entity: this.entity});
+          });
+        });
+      }
     },
     highlightMarkers(dataArray) {
       axios.put('http://localhost:8000/entities/markers/highlight',  { data: dataArray, entity: this.entity}).catch(error => {

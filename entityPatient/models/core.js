@@ -3,7 +3,7 @@ const constants = require("../models/constants")
 const fs = require('fs')
 
 let faker = require('faker');
-faker.locale = "it";
+faker.locale = "ja";
 faker.seed(123);
 
 let array_traces = [...constants.ARRAY_FILE_TRACES];

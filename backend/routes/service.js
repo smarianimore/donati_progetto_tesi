@@ -44,6 +44,11 @@ module.exports = function(app) {
         res.send({markers: func.getUpdatedMarkers(req.query.entity), fences: func.getFencesResults()}); // fences: is an object with arrays of results (idFence, ids)
     });
 
+    app.put('/entities/markers/address', (req, res) => {
+        func.updateAddress(req.body.id, req.body.address, req.body.entity)
+        res.send('Done')
+    });
+
     app.put('/entities/markers/deselect', (req, res) => {
         func.deselectAllMarkers(req.body.entity)
         res.send('Done')

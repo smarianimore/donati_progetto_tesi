@@ -1,4 +1,5 @@
 export const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+export const APIKEY = 'dy-XKfkXqnkviVHW9ERl1FDLNTXJ_HG4UOC-WwAK2qA';
 
 export const CENTER_OF_MAP = [44.694773,10.769152];
 export const MARKER_NOT_HIGHLIGHTED_COLOR = '#00BFFF';

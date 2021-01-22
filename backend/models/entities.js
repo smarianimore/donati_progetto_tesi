@@ -144,11 +144,13 @@ module.exports.createMarkersVehicles = function() {
     for(let i = 0; i < vehiclesArray.length; i++) {
         markers_vehicles_created.push({
             id: vehiclesArray[i].id,
+            address: '',
             location: vehiclesArray[i].location,
             coordinates: vehiclesArray[i].coordinates,
             index: vehiclesArray[i].index,
             informations: 'Model: ' + vehiclesArray[i].model + '<br> Type: ' + vehiclesArray[i].type + '<br> Color: '
                 + vehiclesArray[i].color,
+            totalinfo: '',
             noise: vehiclesArray[i].noise,
             vibrations: vehiclesArray[i].vibrations,
             fuel: vehiclesArray[i].fuel,
@@ -168,11 +170,13 @@ module.exports.createMarkersPatients = function() {
     for(let i = 0; i < patientsArray.length; i++) {
         markers_patients_created.push({
             id: patientsArray[i].id,
+            address: '',
             location: patientsArray[i].location,
             coordinates: patientsArray[i].coordinates,
             index: patientsArray[i].index,
             informations: patientsArray[i].firstName + ' ' + patientsArray[i].lastName + '<br> Phone: ' + patientsArray[i].phone +
                 '<br> Email: ' + patientsArray[i].email,
+            totalinfo: '',
             lace: patientsArray[i].lace,
             charlson: patientsArray[i].charlson,
             gma: patientsArray[i].gma,
@@ -186,6 +190,25 @@ module.exports.createMarkersPatients = function() {
     }
     markersPatients = [...markers_patients_created];
     return markers_patients_created
+}
+
+module.exports.updateAddress = function(id, address, entity){
+    if(entity == 'vehicles'){
+        for(let i = 0; i < markersVehicles.length; i++){
+            if(markersVehicles[i].id == id){
+                markersVehicles[i].address = address;
+                markersVehicles[i].totalinfo = markersVehicles[i].informations + '<br> Address: ' + markersVehicles[i].address;
+            }
+        }
+    }
+    if(entity == 'patients'){
+        for(let i = 0; i < markersPatients.length; i++){
+            if(markersPatients[i].id == id){
+                markersPatients[i].address = address;
+                markersPatients[i].totalinfo = markersPatients[i].informations + '<br> Address: ' + markersPatients[i].address;
+            }
+        }
+    }
 }
 
 module.exports.setVehiclesLocation = function(vehicle) {
