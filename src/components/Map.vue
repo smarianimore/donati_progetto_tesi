@@ -8,6 +8,9 @@
         :center="center"
     >
       <l-tile-layer :url="url"></l-tile-layer>
+      <template v-for="block in myjson_fences">
+        <component :is="block.circle" :block="block" :key="block.id"></component>
+      </template>
       <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.location" :icon="getIcon(item)">
         <l-popup :content="item.totalinfo"></l-popup>
       </l-marker>
@@ -23,6 +26,7 @@ import { bus } from '../main';
 import axios from "axios";
 import  myJson from '../main';
 import H from '@here/maps-api-for-javascript';
+import CircleFence from "@/components/CircleFence";
 
 export default {
   name: "Map",
@@ -36,6 +40,7 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
+    CircleFence
   },
   data: function () {
     return {
@@ -46,6 +51,7 @@ export default {
       markers: [],
       entity: '',
       fencesResults: '',
+      myjson_fences: [],
       apiKey: constant.APIKEY
     };
   },
@@ -293,6 +299,7 @@ export default {
   },
   created() {
     this.entity = myJson.data().myJson.entity;
+    this.myjson_fences = myJson.data().myJson.fences;
     bus.$on('createMarkersPatients', () => {
       this.createMarkersPatients()
     });
