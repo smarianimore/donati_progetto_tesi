@@ -5,7 +5,27 @@ module.exports.ARRAY_FILE_TRACES = ['./traces/trace1.txt', './traces/trace2.txt'
     './traces/trace4.txt', './traces/trace5.txt', './traces/trace6.txt', './traces/trace7.txt', './traces/trace8.txt',
     './traces/trace9.txt', './traces/trace10.txt', './traces/trace11.txt', './traces/trace23.txt',
     './traces/trace24.txt', './traces/trace25.txt', './traces/trace26.txt', './traces/trace27.txt',
-    './traces/trace28.txt', './traces/trace29.txt', './traces/trace30.txt']
+    './traces/trace28.txt', './traces/trace29.txt', './traces/trace30.txt', './traces/trace41.txt',
+    './traces/trace42.txt', './traces/trace43.txt', './traces/trace44.txt', './traces/trace45.txt',
+    './traces/trace46.txt', './traces/trace47.txt', './traces/trace50.txt', './traces/trace51.txt',
+    './traces/trace52.txt', './traces/trace53.txt', './traces/trace54.txt', './traces/trace55.txt',
+    './traces/trace56.txt', './traces/trace57.txt', './traces/trace59.txt', './traces/trace60.txt',
+    './traces/trace61.txt', './traces/trace62.txt', './traces/trace63.txt', './traces/trace64.txt',
+    './traces/trace65.txt', './traces/trace66.txt', './traces/trace67.txt', './traces/trace68.txt',
+    './traces/trace69.txt', './traces/trace70.txt', './traces/trace71.txt', './traces/trace72.txt',
+    './traces/trace73.txt', './traces/trace75.txt', './traces/trace76.txt', './traces/trace77.txt',
+    './traces/trace78.txt', './traces/trace79.txt', './traces/trace82.txt', './traces/trace83.txt',
+    './traces/trace84.txt', './traces/trace85.txt', './traces/trace86.txt', './traces/trace87.txt',
+    './traces/trace88.txt', './traces/trace89.txt', './traces/trace90.txt', './traces/trace91.txt',
+    './traces/trace92.txt', './traces/trace93.txt', './traces/trace94.txt', './traces/trace95.txt',
+    './traces/trace96.txt', './traces/trace97.txt', './traces/trace98.txt', './traces/trace99.txt',
+    './traces/trace100.txt', './traces/trace101.txt', './traces/trace102.txt', './traces/trace103.txt',
+    './traces/trace104.txt', './traces/trace105.txt', './traces/trace106.txt', './traces/trace107.txt',
+    './traces/trace108.txt', './traces/trace109.txt', './traces/trace110.txt', './traces/trace111.txt',
+    './traces/trace112.txt', './traces/trace113.txt', './traces/trace114.txt', './traces/trace115.txt',
+    './traces/trace116.txt', './traces/trace118.txt', './traces/trace119.txt', './traces/trace120.txt',
+    './traces/trace121.txt', './traces/trace122.txt', './traces/trace123.txt', './traces/trace125.txt',
+    './traces/trace126.txt', './traces/trace127.txt', './traces/trace128.txt', './traces/trace129.txt']
 
 module.exports.MIN_LACE = 10;
 module.exports.MAX_LACE = 80;

@@ -55,8 +55,9 @@ module.exports = function(app) {
     });
     app.put('/entities/markers/highlight', (req, res) => {
         let dataArray = req.body.data
-        func.highlightMarkers(dataArray, req.body.entity)
-        res.send('Done')
+        func.highlightMarkers(dataArray, req.body.entity).then( function (){
+            res.send('Done')
+        })
     }), error => {
         console.log("Error SERVER "+error)
     };

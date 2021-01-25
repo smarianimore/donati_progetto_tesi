@@ -668,7 +668,7 @@ module.exports.deselectAllMarkers = function (entity){
     }
 }
 
-module.exports.highlightMarkers = function(data, entity){
+module.exports.highlightMarkers = async function(data, entity){
     if(entity == 'vehicles'){
         if(data.length == 0){
             module.exports.deselectAllMarkers(entity)

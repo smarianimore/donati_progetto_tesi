@@ -23,7 +23,6 @@ import { bus } from '../main';
 import axios from "axios";
 import  myJson from '../main';
 import H from '@here/maps-api-for-javascript';
-import fs from 'fs';
 
 export default {
   name: "Map",
@@ -51,12 +50,18 @@ export default {
     };
   },
   methods: {
+    testLoadBand(start){
+      let millis = Date.now() - start;
+      console.log('milliseconds elapsed ' + millis)
+    },
     addMarker(event) {
       console.log(event.latlng)
       //this.markers.push(event.latlng);
     },
     changeCoordinates() {
+      let start = Date.now();
       axios.get('http://localhost:8000/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
+        this.testLoadBand(start);  //method for testing band load;
         this.markers = response.data.markers;
         this.reverseGeocoding();
         this.fencesResults = response.data.fences;
@@ -69,14 +74,12 @@ export default {
     createMarkersPatients() {
       axios.get('http://localhost:8000/entities/patients/markers').then(response => {
         this.markers = response.data
-        this.center = response.data[0].location
         this.reverseGeocoding();
       });
     },
     createMarkersVehicles() {
       axios.get('http://localhost:8000/entities/vehicles/markers').then(response => {
         this.markers = response.data
-        this.center = response.data[0].location
         this.reverseGeocoding();
       });
     },
@@ -107,7 +110,7 @@ export default {
       }
       for(let i = 0; i < dataArray.length; i++) {
         for (let j = 0; j < this.markers.length; j++) {
-          this.center = dataArray[i].location;
+          //this.center = dataArray[i].location;
           if(this.markers[j].id == dataArray[i].id) {
                 this.markers[j].color = constant.MARKER_HIGHLIGHTED_COLOR,
                 this.markers[j].strokeColor = constant.MARKER_HIGHLIGHTED_STROKE_COLOR,
