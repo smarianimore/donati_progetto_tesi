@@ -46,7 +46,7 @@ export default {
     return {
       url: constant.MAP_URL,
       zoom: 12,
-      center: constant.CENTER_OF_MAP,
+      center: [],
       bounds: null,
       markers: [],
       entity: '',
@@ -298,6 +298,7 @@ export default {
     }
   },
   created() {
+    this.center = myJson.data().myJson.center;
     this.entity = myJson.data().myJson.entity;
     this.myjson_fences = myJson.data().myJson.fences;
     bus.$on('createMarkersPatients', () => {

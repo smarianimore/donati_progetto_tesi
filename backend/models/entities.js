@@ -27,13 +27,13 @@ module.exports.setFences = function (fencesArray, entity) {
 module.exports.editFencesQueries = function (fenceToDo, entity){
     if(entity == 'vehicles'){
         let fenceResult = [];
-        let query = client.intersectsQuery('fleet').detect('enter', 'exit').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
+        let query = client.withinQuery('fleet').detect('inside', 'outside').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
         // eslint-disable-next-line no-unused-vars
         let fence = query.executeFence((err, results) => {
             if (err) {
                 console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
             } else {
-                if(results.detect == 'enter'){
+                if(results.detect == 'inside'){
                     if(!(fenceResult.includes(results.id))){
                         console.log('Vehicle entered the Fence ' + fenceToDo.id + ': '+ results.id);
                         fenceResult.unshift(results.id);
@@ -44,7 +44,7 @@ module.exports.editFencesQueries = function (fenceToDo, entity){
                         fencesResults.unshift(result)
                     }
                 }
-                if(results.detect == 'exit'){
+                if(results.detect == 'outside'){
                     //  console.log('Vehicle left the Fence 1: ' + results.id)
                     if(fenceResult.includes(results.id)){
                         for(let i = 0; i < fenceResult.length; i++){
@@ -60,13 +60,13 @@ module.exports.editFencesQueries = function (fenceToDo, entity){
     }
     if(entity == 'patients'){
         let fenceResult = [];
-        let query = client.intersectsQuery('people').detect('enter', 'exit').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
+        let query = client.withinQuery('people').detect('inside', 'outside').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
         // eslint-disable-next-line no-unused-vars
         let fence = query.executeFence((err, results) => {
             if (err) {
                 console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
             } else {
-                if(results.detect == 'enter'){
+                if(results.detect == 'inside'){
                     if(!(fenceResult.includes(results.id))){
                         console.log('Patient entered the Fence ' + fenceToDo.id + ': '+ results.id);
                         fenceResult.unshift(results.id);
@@ -77,7 +77,7 @@ module.exports.editFencesQueries = function (fenceToDo, entity){
                         fencesResults.unshift(result)
                     }
                 }
-                if(results.detect == 'exit'){
+                if(results.detect == 'outside'){
                     //  console.log('Patient left the Fence 1: ' + results.id)
                     if(fenceResult.includes(results.id)){
                         for(let i = 0; i < fenceResult.length; i++){

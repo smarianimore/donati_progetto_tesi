@@ -1,4 +1,5 @@
 {
+  "center": [39.984702,116.318417],
   "entity": "vehicles",
   "indexes": [
     { "component": "IndexButton","text": "Noise", "criterion": "tertile" },
