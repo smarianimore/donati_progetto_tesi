@@ -65,9 +65,9 @@ export default {
       //this.markers.push(event.latlng);
     },
     changeCoordinates() {
-      let start = Date.now();
-      axios.get('http://localhost:8000/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
-        this.testLoadBand(start);  //method for testing band load;
+     // let start = Date.now();
+      axios.get(constant.URL_BACKEND + '/entities/markers/updated', {params: {entity: this.entity}}).then(response => {
+      //  this.testLoadBand(start);  //method for testing band load;
         this.markers = response.data.markers;
         this.reverseGeocoding();
         this.fencesResults = response.data.fences;
@@ -78,13 +78,13 @@ export default {
       bus.$emit('fencesResults', results)
     },
     createMarkersPatients() {
-      axios.get('http://localhost:8000/entities/patients/markers').then(response => {
+      axios.get(constant.URL_BACKEND + '/entities/patients/markers').then(response => {
         this.markers = response.data
         this.reverseGeocoding();
       });
     },
     createMarkersVehicles() {
-      axios.get('http://localhost:8000/entities/vehicles/markers').then(response => {
+      axios.get(constant.URL_BACKEND + '/entities/vehicles/markers').then(response => {
         this.markers = response.data
         this.reverseGeocoding();
       });
@@ -99,13 +99,13 @@ export default {
           at: '' + this.markers[i].location.lat + ',' + this.markers[i].location.lng + ',150'
         }, (result) => {
           result.items.forEach((item) => {
-            axios.put('http://localhost:8000/entities/markers/address', {id: this.markers[i].id, address: item.address.label, entity: this.entity});
+            axios.put(constant.URL_BACKEND + '/entities/markers/address', {id: this.markers[i].id, address: item.address.label, entity: this.entity});
           });
         });
       }
     },
     highlightMarkers(dataArray) {
-      axios.put('http://localhost:8000/entities/markers/highlight',  { data: dataArray, entity: this.entity}).catch(error => {
+      axios.put( constant.URL_BACKEND + '/entities/markers/highlight',  { data: dataArray, entity: this.entity}).catch(error => {
         console.log("Error in highlightMarkers: "+error)
       });
      if(dataArray.length == 0){
@@ -171,57 +171,57 @@ export default {
           case 'Ergonomics':
             alert('The best criterion for this index is quartile!');
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/ergonomics').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/ergonomics').then(response => {
               this.markers = response.data
             });
             break
           case 'Vibrations':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/vibrations').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/vibrations').then(response => {
               this.markers = response.data
             });
             break
           case 'Fuel':
             this.deselectAllMarkers()
             alert('The best criterion for this index is quartile!')
-            axios.get('http://localhost:8000/entities/tertile/fuel').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/fuel').then(response => {
               this.markers = response.data
             });
             break
           case 'Noise':
             this.deselectAllMarkers()
             alert('The best criterion for this index is quartile!')
-            axios.get('http://localhost:8000/entities/tertile/noise').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/noise').then(response => {
               this.markers = response.data
             });
             break
           case 'Lace':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/lace').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/lace').then(response => {
               this.markers = response.data
             });
             break
           case 'Charlston':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/charlston').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/charlston').then(response => {
               this.markers = response.data
             });
             break
           case 'ASA':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/asa').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/asa').then(response => {
               this.markers = response.data
             });
             break
           case 'GMA':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/gma').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/gma').then(response => {
               this.markers = response.data
             });
             break
           case 'Barthel':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/tertile/barthel').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/tertile/barthel').then(response => {
               this.markers = response.data
             });
             break
@@ -230,68 +230,68 @@ export default {
         switch (data.text) {
           case 'Ergonomics':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/quartile/ergonomics').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/ergonomics').then(response => {
               this.markers = response.data
             });
             break
           case 'Vibrations':
             this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
-            axios.get('http://localhost:8000/entities/quartile/vibrations').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/vibrations').then(response => {
               this.markers = response.data
             });
             break
           case 'Fuel':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/quartile/fuel').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/fuel').then(response => {
               this.markers = response.data
             });
             break
           case 'Noise':
             this.deselectAllMarkers()
-            axios.get('http://localhost:8000/entities/quartile/noise').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/noise').then(response => {
               this.markers = response.data
             });
             break
           case 'Lace':
             this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
-            axios.get('http://localhost:8000/entities/quartile/lace').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/lace').then(response => {
               this.markers = response.data
             });
             break
           case 'Charlston':
             this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
-            axios.get('http://localhost:8000/entities/quartile/charlston').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/charlston').then(response => {
               this.markers = response.data
             });
             break
           case 'ASA':
             this.deselectAllMarkers()
             alert('It is NOT POSSBILE to show this index in quartiles!')
-            axios.get('http://localhost:8000/entities/quartile/asa').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/asa').then(response => {
               this.markers = response.data
             });
             break
           case 'GMA':
             this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
-            axios.get('http://localhost:8000/entities/quartile/gma').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/gma').then(response => {
               this.markers = response.data
             });
             break
           case 'Barthel':
             this.deselectAllMarkers()
             alert('The best criterion for this index is tertile!')
-            axios.get('http://localhost:8000/entities/quartile/barthel').then(response => {
+            axios.get(constant.URL_BACKEND + '/entities/quartile/barthel').then(response => {
               this.markers = response.data
             });
             break
         }
       } else {
         this.deselectAllMarkers()
-        axios.get('http://localhost:8000/entities/expression', {params: {criterion: data.criterion, entity: this.entity}}).then(response => {
+        axios.get(constant.URL_BACKEND + '/entities/expression', {params: {criterion: data.criterion, entity: this.entity}}).then(response => {
           this.markers = response.data
         });
       }
@@ -313,7 +313,7 @@ export default {
     bus.$on('uncheckRadio',() => {
       this.deselectAllMarkers()
       console.log(this.entity)
-      axios.put('http://localhost:8000/entities/markers/deselect', {entity: this.entity}).catch(error => {
+      axios.put(constant.URL_BACKEND + '/entities/markers/deselect', {entity: this.entity}).catch(error => {
         console.log("Error in deselectMarkers: "+error)
       });
     });

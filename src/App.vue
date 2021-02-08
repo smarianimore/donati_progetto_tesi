@@ -22,6 +22,7 @@ import myJson from './main';
 import router from "@/router";
 import axios from "axios";
 import { bus } from './main'
+import * as constants from "@/assets/js/constants"
 
 export default {
   name: 'App',
@@ -33,29 +34,21 @@ export default {
   },
   data: function () {
     return {
-      peopleArray: [],
-      vehicleArray: [],
+      array: [],
       myjson: '',
-      mydata: '',
+      myEntity: '',
       myfences: ''
     };
   },
   methods: {
     selectCategory() {
-      this.mydata = myJson.data().myJson.entity;
+      this.myEntity = myJson.data().myJson.entity;
       this.myfences = myJson.data().myJson.fences;
-      if(this.mydata === "patients") {
-        axios.get('http://localhost:8000/entities/patients').then(response => {
-          this.peopleArray = response.data
-          router.push('home_page')
-        });
-      } else if (this.mydata === "vehicles") {
-        axios.get('http://localhost:8000/entities/vehicles').then(response => {
-          this.vehicleArray = response.data
-          router.push('home_page')
-        });
-      }
-      axios.put('http://localhost:8000/entities/fences', {data: this.myfences, entity: this.mydata}).catch(error => {
+      axios.get(constants.URL_BACKEND + '/entities', {params: {entity: this.myEntity}}).then(response => {
+        this.array = response.data
+        router.push('home_page')
+      });
+      axios.put(constants.URL_BACKEND + '/entities/fences', {data: this.myfences, entity: this.myEntity}).catch(error => {
         console.log("Error in sending fences to server: "+error)
       });
       bus.$emit('changedEntity');
@@ -65,10 +58,10 @@ export default {
     this.myjson = myJson.data().myJson
     this.selectCategory()
     bus.$on('pageCreatedPatients', () => {
-      bus.$emit('receivedData', this.peopleArray)
+      bus.$emit('receivedData', this.array)
     });
     bus.$on('pageCreatedVehicles', () => {
-      bus.$emit('receivedData', this.vehicleArray)
+      bus.$emit('receivedData', this.array)
     });
   }
 }

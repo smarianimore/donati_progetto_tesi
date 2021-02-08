@@ -8,7 +8,7 @@ let vehicleArray = [];
 module.exports = function(app) {
     vehicleArray = func.generateData("vehicles");
     for(let i = 0; i < vehicleArray.length; i++){
-        axios.put('http://localhost:8000/receive/entities/vehicles', { data: vehicleArray[i]}, {maxContentLength: Infinity,
+        axios.put('http://localhost:8000/receive/entities', { data: vehicleArray[i], entity: 'vehicles'}, {maxContentLength: Infinity,
             maxBodyLength: Infinity}).catch(error => {
             console.log("Error in sending vehicle array to server - " + error)
         });
@@ -29,7 +29,7 @@ function changeCoordinates(){
             vehicleArray[i].location.lng = vehicleArray[i].coordinates[vehicleArray[i].index].lng;
             vehicleArray[i].index += 1;
         }
-        axios.put('http://localhost:8000/vehicles/location', { data: vehicleArray[i]}, {maxContentLength: Infinity,
+        axios.put('http://localhost:8000/location', { data: vehicleArray[i], entity: 'vehicles'}, {maxContentLength: Infinity,
             maxBodyLength: Infinity}).catch(error => {
             console.log("Error in sending vehicle location to server - " + error)
         });

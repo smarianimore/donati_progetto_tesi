@@ -25,84 +25,64 @@ module.exports.setFences = function (fencesArray, entity) {
 }
 
 module.exports.editFencesQueries = function (fenceToDo, entity){
-    if(entity == 'vehicles'){
-        let fenceResult = [];
-        let query = client.withinQuery('fleet').detect('inside', 'outside').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
+
+    let fenceResult = [];
+    let fenceKey = entity;
+    /*    let geojson = {
+            "type":"Point",
+            "coordinates": [parseFloat(fenceToDo.lat), parseFloat(fenceToDo.lng)]
+        }
+
+        let opts = {
+            detect: 'inside',
+          //  bounds: [fenceToDo.lat, fenceToDo.lng, fenceToDo.lat, fenceToDo.lng],
+            object: geojson
+        }
         // eslint-disable-next-line no-unused-vars
-        let fence = query.executeFence((err, results) => {
-            if (err) {
-                console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
-            } else {
-                if(results.detect == 'inside'){
-                    if(!(fenceResult.includes(results.id))){
-                        console.log('Vehicle entered the Fence ' + fenceToDo.id + ': '+ results.id);
-                        fenceResult.unshift(results.id);
-                        let result = {
-                            id: fenceToDo.id,
-                            results: fenceResult
-                        }
-                        fencesResults.unshift(result)
+        let hook = client.setHook(fenceToDo.id, 'http://localhost:8080/', 'meta', 'within', 'fleet', opts, fenceToDo.radius).then(res => {
+            console.log('RISULTATO DELL HOOK');
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        });*/
+
+    // eslint-disable-next-line no-unused-vars
+    let query = client.withinQuery(fenceKey).detect('inside', 'outside').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
+
+    // eslint-disable-next-line no-unused-vars
+    let fence = query.executeFence((err, results) => {
+        if (err) {
+            console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
+        } else {
+            if(results.detect == 'inside'){
+                if(!(fenceResult.includes(results.id))){
+                    console.log(fenceKey+' entered the Fence ' + fenceToDo.id + ': '+ results.id);
+                    fenceResult.unshift(results.id);
+                    let result = {
+                        id: fenceToDo.id,
+                        results: fenceResult
                     }
+                    fencesResults.unshift(result)
                 }
-                if(results.detect == 'outside'){
-                    //  console.log('Vehicle left the Fence 1: ' + results.id)
-                    if(fenceResult.includes(results.id)){
-                        for(let i = 0; i < fenceResult.length; i++){
-                            if ( fenceResult[i] === results.id) {
-                                fenceResult.splice(i, 1);
-                                console.log('Fence ' + fenceToDo.id + ' - Ho rimosso un veicolo dai risultati: ' + results.id)
-                            }
+            }
+            if(results.detect == 'outside'){
+                //  console.log('Vehicle left the Fence 1: ' + results.id)
+                if(fenceResult.includes(results.id)){
+                    for(let i = 0; i < fenceResult.length; i++){
+                        if ( fenceResult[i] === results.id) {
+                            fenceResult.splice(i, 1);
+                            console.log('Fence ' + fenceToDo.id + ' - Ho rimosso un' + fenceKey + ' dai risultati: ' + results.id)
                         }
                     }
                 }
             }
-        });
-    }
-    if(entity == 'patients'){
-        let fenceResult = [];
-        let query = client.withinQuery('people').detect('inside', 'outside').circle(fenceToDo.lat, fenceToDo.lng, fenceToDo.radius);
-        // eslint-disable-next-line no-unused-vars
-        let fence = query.executeFence((err, results) => {
-            if (err) {
-                console.error('Query ' + fenceToDo.id +': something went wrong! ' + err);
-            } else {
-                if(results.detect == 'inside'){
-                    if(!(fenceResult.includes(results.id))){
-                        console.log('Patient entered the Fence ' + fenceToDo.id + ': '+ results.id);
-                        fenceResult.unshift(results.id);
-                        let result = {
-                            id: fenceToDo.id,
-                            results: fenceResult
-                        }
-                        fencesResults.unshift(result)
-                    }
-                }
-                if(results.detect == 'outside'){
-                    //  console.log('Patient left the Fence 1: ' + results.id)
-                    if(fenceResult.includes(results.id)){
-                        for(let i = 0; i < fenceResult.length; i++){
-                            if ( fenceResult[i] === results.id) {
-                                fenceResult.splice(i, 1);
-                                console.log('Fence ' + fenceToDo.id + ' - Ho rimosso un paziente dai risultati: ' + results.id)
-                            }
-                        }
-                        for(let i = 0; i < fencesResults.length; i++){
-                            for(let j = 0; j < fencesResults[i].results.length; j++){
-                                if(fencesResults[i].results[j].id === results.id) {
-                                    fencesResults[i].results.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
+        }
+    });
 }
 
-module.exports.setVehiclesArray = function (vehicle){
+module.exports.setVehiclesArray = function (vehicle, entity){
     vehiclesArray.unshift(vehicle);
-    client.set('fleet', vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+    client.set(entity, vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
         console.log(err) // id not found
     );
 }
@@ -111,9 +91,9 @@ module.exports.getVehiclesArray = function(){
     return vehiclesArray;
 }
 
-module.exports.setPatientsArray = function(patient){
+module.exports.setPatientsArray = function(patient, entity){
     patientsArray.unshift(patient);
-    client.set('people', patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
+    client.set(entity, patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
         console.log(err) // id not found
     );
 }
@@ -211,22 +191,22 @@ module.exports.updateAddress = function(id, address, entity){
     }
 }
 
-module.exports.setVehiclesLocation = function(vehicle) {
+module.exports.setVehiclesLocation = function(vehicle, entity) {
     for (let i = 0; i < markersVehicles.length; i++) {
         if (markersVehicles[i].id == vehicle.id) {
             markersVehicles[i].location = vehicle.location;
-            client.set('fleet', vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+            client.set(entity, vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
                 console.log(err) // id not found
             );
         }
     }
 }
 
-module.exports.setPatientsLocation = function(patient) {
+module.exports.setPatientsLocation = function(patient, entity) {
     for(let i = 0; i < markersPatients.length; i++){
         if(markersPatients[i].id == patient.id){
             markersPatients[i].location = patient.location;
-            client.set('people', patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
+            client.set(entity, patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
                 console.log(err) // id not found
             );
         }

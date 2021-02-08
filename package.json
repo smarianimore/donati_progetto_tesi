@@ -26,6 +26,7 @@
     "request": "^2.79.0",
     "reverse-geocoding": "^3.0.2",
     "socket.io": "^3.0.3",
+    "tile38": "^0.7.0",
     "vue": "^2.6.11",
     "vue-a11y-dialog": "^0.5.2",
     "vue-axios": "^2.1.5",

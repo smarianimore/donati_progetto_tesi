@@ -3,36 +3,40 @@ const func = require("../models/entities");
 const bodyParser = require("body-parser");
 
 module.exports = function(app) {
-    app.put('/receive/entities/vehicles', (req, res)=> {
-        let vehicleArray = req.body.data
-        func.setVehiclesArray(vehicleArray);
-        func.setContexts('vehicles');
-        res.send('Done');
+    app.put('/receive/entities', (req, res)=> {
+        if(req.body.entity == 'vehicles'){
+            let vehicleArray = req.body.data;
+            func.setVehiclesArray(vehicleArray, req.body.entity);
+            func.setContexts(req.body.entity);
+            res.send('Done');
+        }
+        if(req.body.entity == 'patients'){
+            let patientsArray = req.body.data
+            func.setPatientsArray(patientsArray, req.body.entity);
+            func.setContexts(req.body.entity);
+            res.send('Done');
+        }
     });
-    app.put('/vehicles/location', (req, res)=> {
-        let vehicle = req.body.data
-        func.setVehiclesLocation(vehicle);
-        res.send('Done');
+    app.put('/location', (req, res)=> {
+        if(req.body.entity == 'vehicles'){
+            let vehicle = req.body.data
+            func.setVehiclesLocation(vehicle, req.body.entity);
+            res.send('Done');
+        }
+        if(req.body.entity == 'patients'){
+            let patient = req.body.data
+            func.setPatientsLocation(patient, req.body.entity);
+            res.send('Done');
+        }
     });
 
-    app.put('/receive/entities/patients', (req, res)=> {
-        let patientsArray = req.body.data
-        func.setPatientsArray(patientsArray);
-        func.setContexts('patients');
-        res.send('Done');
-    });
-    app.put('/patients/location', (req, res)=> {
-        let patient = req.body.data
-        func.setPatientsLocation(patient);
-        res.send('Done');
-    });
-
-
-    app.get('/entities/patients', (req, res) => {
-        res.send(func.getPatientsArray())
-    });
-    app.get('/entities/vehicles', (req, res) => {
-        res.send(func.getVehiclesArray())
+    app.get('/entities', (req, res) => {
+        if(req.query.entity == 'patients'){
+            res.send(func.getPatientsArray())
+        }
+        if(req.query.entity == 'vehicles'){
+            res.send(func.getVehiclesArray())
+        }
     });
 
     app.put('/entities/fences', (req, res) => {
