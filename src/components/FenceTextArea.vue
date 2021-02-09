@@ -32,7 +32,11 @@ export default {
             if (!(this.fenceResults.includes(data[i].results[j]))) {
               this.bench.unshift(data[i].results[j]);
               this.fenceResults.unshift(data[i].results[j]);
-              this.textResults += '' + data[i].results[j] + ', ';
+              let splitting = data[i].results[j].split(':');
+              let id = splitting[0];
+              let firstField = splitting[1];
+              let secondField = splitting[2];
+              this.textResults += '' + id + ', ' + firstField + ', ' + secondField + '  |  ';
             }
           }
         }

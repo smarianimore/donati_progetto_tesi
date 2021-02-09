@@ -82,7 +82,7 @@ module.exports.editFencesQueries = function (fenceToDo, entity){
 
 module.exports.setVehiclesArray = function (vehicle, entity){
     vehiclesArray.unshift(vehicle);
-    client.set(entity, vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+    client.set(entity, vehicle.id + ':' + vehicle.vehicle + ':' + vehicle.manufacturer, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
         console.log(err) // id not found
     );
 }
@@ -93,7 +93,7 @@ module.exports.getVehiclesArray = function(){
 
 module.exports.setPatientsArray = function(patient, entity){
     patientsArray.unshift(patient);
-    client.set(entity, patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
+    client.set(entity, patient.id + ":" + patient.firstName + ":" + patient.lastName, [patient.location.lat, patient.location.lng]).catch(err =>
         console.log(err) // id not found
     );
 }
@@ -195,7 +195,7 @@ module.exports.setVehiclesLocation = function(vehicle, entity) {
     for (let i = 0; i < markersVehicles.length; i++) {
         if (markersVehicles[i].id == vehicle.id) {
             markersVehicles[i].location = vehicle.location;
-            client.set(entity, vehicle.id, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+            client.set(entity, vehicle.id + ':' + vehicle.vehicle + ':' + vehicle.manufacturer, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
                 console.log(err) // id not found
             );
         }
@@ -206,7 +206,7 @@ module.exports.setPatientsLocation = function(patient, entity) {
     for(let i = 0; i < markersPatients.length; i++){
         if(markersPatients[i].id == patient.id){
             markersPatients[i].location = patient.location;
-            client.set(entity, patient.id, [patient.location.lat, patient.location.lng]).catch(err =>
+            client.set(entity, patient.id + ":" + patient.firstName + ":" + patient.lastName, [patient.location.lat, patient.location.lng]).catch(err =>
                 console.log(err) // id not found
             );
         }
