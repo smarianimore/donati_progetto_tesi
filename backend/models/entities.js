@@ -300,15 +300,15 @@ module.exports.createIndexColorTertileNoise = function() {
 
 module.exports.createIndexColorTertileLace = function() {
     for(let i = 0; i < markersPatients.length; i++) {
-        if(markersPatients[i].lace <= (constants.MAX_LACE / 3)){
+        if(markersPatients[i].lace <= constants.MEDIUM_LACE){
             markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markersPatients[i].lace > (constants.MAX_LACE / 3) && markersPatients[i].lace <= 2 * (constants.MAX_LACE / 3)) {
+        } else if (markersPatients[i].lace > constants.MEDIUM_LACE && markersPatients[i].lace <= constants.HIGH_LACE) {
             markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
-        } else if (markersPatients[i].lace > 2 * (constants.MAX_LACE / 3) && markersPatients[i].lace <= constants.MAX_LACE) {
+        } else if (markersPatients[i].lace > constants.HIGH_LACE) {
             markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
@@ -338,18 +338,18 @@ module.exports.createIndexColorTertileCharlston = function() {
 
 module.exports.createIndexColorTertileASA = function() {
     for (let i = 0; i < markersPatients.length; i++) {
-        if (markersPatients[i].asa === constants.ASA_II) {
+        if (markersPatients[i].asa === constants.ASA_I) {
             markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
-        } else if (markersPatients[i].asa === constants.ASA_III) {
+        } else if (markersPatients[i].asa === constants.ASA_IV || markersPatients[i].asa === constants.ASA_III) {
             markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
         } else {
-            markersPatients[i].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR;
-            markersPatients[i].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
-            markersPatients[i].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
         }
     }
     return markersPatients
@@ -533,18 +533,22 @@ module.exports.createIndexColorQuartileCharlston = function() {
 
 module.exports.createIndexColorQuartileASA = function() {
     for (let i = 0; i < markersPatients.length; i++) {
-        if (markersPatients[i].asa === constants.ASA_II) {
+        if (markersPatients[i].asa === constants.ASA_I) {
             markersPatients[i].color = constants.MARKER_NO_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_NO_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_NO_RISK_CIRCLE_COLOR;
+        } else if (markersPatients[i].asa === constants.ASA_II) {
+            markersPatients[i].color = constants.MARKER_LITTLE_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_LITTLE_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_LITTLE_RISK_CIRCLE_COLOR;
         } else if (markersPatients[i].asa === constants.ASA_III) {
+            markersPatients[i].color = constants.MARKER_SOME_RISK_COLOR;
+            markersPatients[i].strokeColor = constants.MARKER_SOME_RISK_STROKE_COLOR;
+            markersPatients[i].circleColor = constants.MARKER_SOME_RISK_CIRCLE_COLOR;
+        } else {
             markersPatients[i].color = constants.MARKER_HIGH_RISK_COLOR;
             markersPatients[i].strokeColor = constants.MARKER_HIGH_RISK_STROKE_COLOR;
             markersPatients[i].circleColor = constants.MARKER_HIGH_RISK_CIRCLE_COLOR;
-        } else {
-            markersPatients[i].color = constants.MARKER_NOT_HIGHLIGHTED_COLOR;
-            markersPatients[i].strokeColor = constants.MARKER_NOT_HIGHLIGHTED_STROKE_COLOR;
-            markersPatients[i].circleColor = constants.MARKER_NOT_HIGHLIGHTED_CIRCLE_COLOR;
         }
     }
     return markersPatients

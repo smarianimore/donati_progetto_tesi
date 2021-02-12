@@ -28,8 +28,8 @@ module.exports.ARRAY_FILE_TRACES = ['./traces/trace12.txt', './traces/trace13.tx
     './traces/trace217.txt', './traces/trace218.txt', './traces/trace219.txt', './traces/trace220.txt',
     './traces/trace221.txt']
 
-module.exports.MIN_LACE = 10;
-module.exports.MAX_LACE = 80;
+module.exports.MIN_LACE = 0;
+module.exports.MAX_LACE = 19;
 module.exports.MIN_CHARLSON = 1.0;
 module.exports.MAX_CHARLSON = 5.0;
 module.exports.MIN_GMA = 0;
@@ -41,10 +41,11 @@ module.exports.MEDIUM_BARTHEL_90 = 90;
 module.exports.MEDIUM_BARTHEL_61 = 61;
 module.exports.MEDIUM_BARTHEL_60 = 60;
 module.exports.MAX_BARTHEL = 99;
-module.exports.ARRAY_ASA = ['I','II','III'];
+module.exports.ARRAY_ASA = ['I','II','III','IV'];
 module.exports.ASA_I = 'I';
 module.exports.ASA_II = 'II';
 module.exports.ASA_III = 'III';
+module.exports.ASA_IV = 'IV';
 module.exports.MIN_SKILLS = 0;
 module.exports.MAX_SKILLS = 2;
 module.exports.ARRAY_RETRIEVAL = ['YES', 'NO'];

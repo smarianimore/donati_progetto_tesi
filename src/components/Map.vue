@@ -208,6 +208,7 @@ export default {
             });
             break
           case 'ASA':
+            alert('The best criterion for this index is quartile!')
             this.deselectAllMarkers()
             axios.get(constant.URL_BACKEND + '/entities/tertile/asa').then(response => {
               this.markers = response.data
@@ -269,7 +270,6 @@ export default {
             break
           case 'ASA':
             this.deselectAllMarkers()
-            alert('It is NOT POSSBILE to show this index in quartiles!')
             axios.get(constant.URL_BACKEND + '/entities/quartile/asa').then(response => {
               this.markers = response.data
             });
