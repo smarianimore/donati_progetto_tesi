@@ -20,11 +20,14 @@ export default {
   },
   name: "FenceTextArea",
   data: () => ({
+    textResults: '',
     fenceResults: [],
     bench: [],
-    textResults: ''
+    map: {}
   }),
   created() {
+    let flag = false;
+    this.map[this.block.id] = 0;
     bus.$on('fencesResults', (data) => {
       for (let i = 0; i < data.length; i++) {
         if(this.block.id == data[i].id){
@@ -37,6 +40,12 @@ export default {
               let firstField = splitting[1];
               let secondField = splitting[2];
               this.textResults += '' + id + ', ' + firstField + ', ' + secondField + '  |  ';
+              this.map[this.block.id] += 1;
+              if(this.map[this.block.id] >= 10 && flag == false){
+                alert("EPIDEMIC RISK AREA IN: " + data[i].id + ", TAKE ANOTHER WAY!")
+                flag = true;
+              }
+              console.log(this.map[data[i].id])
             }
           }
         }

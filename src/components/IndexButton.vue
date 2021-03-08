@@ -37,7 +37,6 @@ import {bus} from "@/main";
 export default {
   props: {
     block: Object,
-
   },
   name: "IndexButton",
   data: () => ({

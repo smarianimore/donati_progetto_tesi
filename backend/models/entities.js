@@ -82,7 +82,8 @@ module.exports.editFencesQueries = function (fenceToDo, entity){
 
 module.exports.setVehiclesArray = function (vehicle, entity){
     vehiclesArray.unshift(vehicle);
-    client.set(entity, vehicle.id + ':' + vehicle.vehicle + ':' + vehicle.manufacturer, [vehicle.location.lat, vehicle.location.lng]).catch(err =>
+    client.set(entity, vehicle.id + ':' + vehicle.vehicle + ':' + vehicle.manufacturer,
+        [vehicle.location.lat, vehicle.location.lng]).catch(err =>
         console.log(err) // id not found
     );
 }
