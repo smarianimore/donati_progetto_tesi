@@ -2,13 +2,14 @@ const func = require("../models/core");
 const axios = require('axios');
 // eslint-disable-next-line no-unused-vars
 const bodyParser = require("body-parser");
+const constants = require("../models/constants");
 
 let patientsArray = [];
 // eslint-disable-next-line no-unused-vars
 module.exports = function(app) {
     patientsArray = func.generateData("patients");
     for(let i = 0; i < patientsArray.length; i++){
-        axios.put('http://localhost:8000/receive/entities', { data: patientsArray[i], entity: 'patients'}, {maxContentLength: Infinity,
+        axios.put(constants.URL_HEROKU + '/receive/entities', { data: patientsArray[i], entity: 'patients'}, {maxContentLength: Infinity,
             maxBodyLength: Infinity}).catch(error => {
             console.log("Error in sending patient array to server - " + error)
         });
@@ -29,7 +30,7 @@ function changeCoordinates(){
             patientsArray[i].location.lng = patientsArray[i].coordinates[patientsArray[i].index].lng;
             patientsArray[i].index += 1;
         }
-        axios.put('http://localhost:8000/location', { data: patientsArray[i], entity: 'patients'}, {maxContentLength: Infinity,
+        axios.put(constants.URL_HEROKU + '/location', { data: patientsArray[i], entity: 'patients'}, {maxContentLength: Infinity,
             maxBodyLength: Infinity}).catch(error => {
             console.log("Error in sending patient location to server - " + error)
         });
