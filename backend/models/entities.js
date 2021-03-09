@@ -3,10 +3,6 @@ const mozjexl = require('mozjexl');
 const Tile38 = require('tile38');
 const client = new Tile38();
 
-let faker = require('faker');
-faker.locale = "it";
-faker.seed(123);
-
 let vehiclesArray = [];
 let patientsArray = [];
 
