@@ -1,4 +1,5 @@
-export const URL_BACKEND = 'http://localhost:8000';
+export const URL_BACKEND_LOCAL = 'http://localhost:8000';
+export const URL_BACKEND_HEROKU = 'http://localhost:8000'//'https://secure-brushlands-64092.herokuapp.com';
 
 export const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 export const APIKEY = 'dy-XKfkXqnkviVHW9ERl1FDLNTXJ_HG4UOC-WwAK2qA';

@@ -44,11 +44,11 @@ export default {
     selectCategory() {
       this.myEntity = myJson.data().myJson.entity;
       this.myfences = myJson.data().myJson.fences;
-      axios.get(constants.URL_BACKEND + '/entities', {params: {entity: this.myEntity}}).then(response => {
+      axios.get(constants.URL_BACKEND_HEROKU + '/entities', {params: {entity: this.myEntity}}).then(response => {
         this.array = response.data
         router.push('home_page')
       });
-      axios.put(constants.URL_BACKEND + '/entities/fences', {data: this.myfences, entity: this.myEntity}).catch(error => {
+      axios.put(constants.URL_BACKEND_HEROKU + '/entities/fences', {data: this.myfences, entity: this.myEntity}).catch(error => {
         console.log("Error in sending fences to server: "+error)
       });
       bus.$emit('changedEntity');

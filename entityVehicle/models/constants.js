@@ -2,7 +2,7 @@ module.exports.MINIMUM_ID = 1;
 module.exports.MAXIMUM_ID = 10000;
 
 module.exports.URL_LOCAL = 'http://localhost:8000';
-module.exports.URL_HEROKU = 'https://secure-brushlands-64092.herokuapp.com';
+module.exports.URL_HEROKU = 'http://localhost:8000'//'https://secure-brushlands-64092.herokuapp.com';
 
 module.exports.ARRAY_FILE_TRACES = ['./traces/trace1.txt', './traces/trace2.txt', './traces/trace3.txt',
     './traces/trace4.txt', './traces/trace5.txt', './traces/trace6.txt', './traces/trace7.txt', './traces/trace8.txt',

@@ -1,32 +1,28 @@
 {
   "center": [39.984702,116.318417],
-  "entity": "vehicles",
+  "entity": "patients",
   "indexes": [
-    { "component": "IndexButton","text": "Noise", "criterion": "tertile" },
-    { "component": "IndexButton", "text": "Vibrations", "criterion": "quartile" },
-    { "component": "IndexButton", "text": "Fuel", "criterion": "vehicles[.fuel < 30]" },
-    { "component": "IndexButton", "text": "Ergonomics", "criterion": "vehicles[.ergonomics < 30]" }
+    { "component": "IndexButton","text": "Lace", "criterion": "patients[.lace >= 10]" },
+    { "component": "IndexButton", "text": "Charlston", "criterion": "quartile" },
+    { "component": "IndexButton", "text": "ASA", "criterion": "patients[.asa == 'I']" },
+    { "component": "IndexButton", "text": "GMA", "criterion": "patients[.gma > 0]" },
+    { "component": "IndexButton", "text": "Barthel", "criterion": "tertile" }
   ],
   "values": [
-    { "text": "Vehicle", "value": "vehicle" },
-    { "text": "Manufacturer", "value": "manufacturer" },
-    { "text": "Model", "value": "model" },
-    { "text": "Type", "value": "type" },
-    { "text": "Vin", "value": "vin" },
-    { "text": "Noise (db/A)", "value": "noise" },
-    { "text": "Vibrations (m/s^2)", "value": "vibrations" },
-    { "text": "Fuel %", "value": "fuel" },
-    { "text": "Ergonomics %", "value": "ergonomics" }
+    { "text": "Name", "value": "firstName" },
+    { "text": "Surname", "value": "lastName" },
+    { "text": "Retrieval", "value": "retrieval" },
+    { "text": "Selfcare", "value": "selfcare" },
+    { "text": "Dwelling", "value": "dwelling" },
+    { "text": "Career", "value": "career" },
+    { "text": "LACE", "value": "lace" },
+    { "text": "Charlson", "value": "charlson" },
+    { "text": "Barthel", "value": "barthel" },
+    { "text": "ASA", "value": "asa" },
+    { "text": "GMA", "value": "gma" }
   ],
   "fences": [
-    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Tsinghua Science and Technology Park",
-      "lat": "39.994", "lng": "116.326", "radius": "500" },
-    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Southern Daoxiangyuan Community",
-      "lat": "39.981", "lng": "116.300", "radius": "500" },
-    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Qinghua Road",
-      "lat": "39.999", "lng": "116.314", "radius": "500" },
-    { "component":"FenceTextArea", "circle":"CircleFence", "id": "East Zhongguancun Road",
-      "lat": "39.983", "lng": "116.328", "radius": "500" }
+    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Wudaokou", "lat": "39.99933924950308", "lng": "116.32642656808596", "radius": "150" }
   ]
 }
 
