@@ -4,7 +4,6 @@
 
   - have Node.js and NPM installed, latest versions
   - have Tile38 installed
-  - have Vue installed
 
 ## Project setup
 
