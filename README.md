@@ -11,7 +11,7 @@
   2. `cd` into project root folder
   3. run `npm install`
   4. `cd` into `backend`folder
-  5. run `npm config set @here:registry https://repo.platform.here.com/artifactory/api/npm/maps-api-for-javascript/
+  5. run `npm config set @here:registry https://repo.platform.here.com/artifactory/api/npm/maps-api-for-javascript/`
   6. run `npm install`
   7. `cd` into `entityVehicle`folder
   8. run `npm install`
