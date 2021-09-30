@@ -18,11 +18,22 @@
      - 1 of each in `entityVehicle` folder
   5. `cd` into project root folder
   6. run `npm install`
-  7. `cd` into `backend` folder
-  8. run `npm config set @here:registry https://repo.platform.here.com/artifactory/api/npm/maps-api-for-javascript/`
-  9. run `npm install`
-  10. `cd` into `entityPatient` folder (`entityVehicle` is not working atm)
-  11. run `npm install`
+     - if you get error similar to the one below, try also `npm install -f fsevents@2.3.2`
+
+```
+npm ERR! code EBADPLATFORM
+npm ERR! notsup Unsupported platform for fsevents@2.3.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})
+npm ERR! notsup Valid OS:    darwin
+npm ERR! notsup Valid Arch:  any
+npm ERR! notsup Actual OS:   win32
+npm ERR! notsup Actual Arch: x64
+```
+
+  8. `cd` into `backend` folder
+  9. run `npm config set @here:registry https://repo.platform.here.com/artifactory/api/npm/maps-api-for-javascript/`
+  10. run `npm install`
+  11. `cd` into `entityPatient` folder (`entityVehicle` is not working atm)
+  12. run `npm install`
 
 ## Run project
 
