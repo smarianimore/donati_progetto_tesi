@@ -9,8 +9,8 @@
 ## Project setup
 
   1. Clone codebase, **branch `develop`**
-     a. `git clone ...`
-     b. `git checkout -b develop origin/develop`
+     1. `git clone ...`
+     2. `git checkout -b develop origin/develop`
   3. delete *every* `node_modules` directory and `package-lock.json` file
      - there should be 1 of each in project root folder
      - 1 of each in `backend` folder
