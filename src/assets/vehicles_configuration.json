@@ -1,0 +1,35 @@
+{
+  "center": [39.984702,116.318417],
+  "entity": "vehicles",
+  "indexes": [
+    { "component": "IndexButton","text": "Noise", "criterion": "tertile" },
+    { "component": "IndexButton", "text": "Vibrations", "criterion": "quartile" },
+    { "component": "IndexButton", "text": "Fuel", "criterion": "vehicles[.fuel < 30]" },
+    { "component": "IndexButton", "text": "Ergonomics", "criterion": "vehicles[.ergonomics < 30]" }
+  ],
+  "values": [
+    { "text": "Vehicle", "value": "vehicle" },
+    { "text": "Manufacturer", "value": "manufacturer" },
+    { "text": "Model", "value": "model" },
+    { "text": "Type", "value": "type" },
+    { "text": "Vin", "value": "vin" },
+    { "text": "Noise (db/A)", "value": "noise" },
+    { "text": "Vibrations (m/s^2)", "value": "vibrations" },
+    { "text": "Fuel %", "value": "fuel" },
+    { "text": "Ergonomics %", "value": "ergonomics" }
+  ],
+  "fences": [
+    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Tsinghua Science and Technology Park",
+      "lat": "39.994", "lng": "116.326", "radius": "500" },
+    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Southern Daoxiangyuan Community",
+      "lat": "39.981", "lng": "116.300", "radius": "500" },
+    { "component":"FenceTextArea", "circle":"CircleFence", "id": "Qinghua Road",
+      "lat": "39.999", "lng": "116.314", "radius": "500" },
+    { "component":"FenceTextArea", "circle":"CircleFence", "id": "East Zhongguancun Road",
+      "lat": "39.983", "lng": "116.328", "radius": "500" }
+  ]
+}
+
+
+
+
